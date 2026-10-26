@@ -153,7 +153,57 @@ msg('Ocorreu um problema de conexão. Tente novamente.', true);
 }
 });
 
-$('toggleAuth').addEventListener('click',()=>{const signup=$('authMode').value!=='signup';$('authMode').value=signup?'signup':'login';$('authSubmit').textContent=signup?'Criar conta':'Entrar';$('toggleAuth').textContent=signup?'Já tenho conta — entrar':'Não tenho conta — criar cadastro';msg('')});
+$('toggleAuth').addEventListener('click',()=>{const signup=$('authMode').value!=='signup';$('authMode').value=signup?'signup':'login';$('authSubmit').textContent=signup?'Criar conta':'Entrar';$('toggleAuth').textContent=signup?'Já tenho conta — entrar':'Não tenho conta — criar cadastro';msg('')});// Recuperação de senha — Minha Estética
+(function () {
+const authForm = document.getElementById('authForm');
+
+if (!authForm || document.getElementById('forgotPasswordBtn')) return;
+
+const forgotBtn = document.createElement('button');
+forgotBtn.id = 'forgotPasswordBtn';
+forgotBtn.type = 'button';
+forgotBtn.textContent = 'Esqueci minha senha';
+forgotBtn.style.cssText =
+'display:block;margin-top:14px;border:0;background:none;color:#8b6b3f;text-decoration:underline;cursor:pointer;font-size:14px;';
+
+authForm.appendChild(forgotBtn);
+
+forgotBtn.addEventListener('click', async () => {
+const email = document.getElementById('authEmail').value.trim();
+
+```
+if (!email) {
+  msg('Digite seu e-mail primeiro.');
+  document.getElementById('authEmail').focus();
+  return;
+}
+
+forgotBtn.disabled = true;
+msg('Enviando solicitação...');
+
+try {
+  const { error } = await db.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + window.location.pathname
+  });
+
+  if (error) {
+    console.error('Erro ao solicitar recuperação:', error);
+    msg('Não foi possível solicitar a recuperação. Tente novamente.', true);
+    return;
+  }
+
+  msg('Se o e-mail estiver cadastrado, você receberá as instruções para redefinir sua senha. Confira também o spam.');
+} catch (error) {
+  console.error(error);
+  msg('Erro de conexão. Tente novamente.', true);
+} finally {
+  forgotBtn.disabled = false;
+}
+```
+
+});
+})();
+
 $('logoutBtn').addEventListener('click',async()=>{await db.auth.signOut();user=null;$('authScreen').style.display='grid';$('appShell').style.display='none'});
 async function syncSession(){const {data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){$('authScreen').style.display='none';$('appShell').style.display='grid';$('userEmail').textContent=user.email||'';await loadData()}else{$('authScreen').style.display='grid';$('appShell').style.display='none'}}
 db.auth.onAuthStateChange(()=>{setTimeout(syncSession,0)});syncSession();

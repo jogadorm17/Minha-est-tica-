@@ -1,1 +1,196 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minha Estética | Gestão profissional</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#f7f2e9;--card:#fffdf9;--gold:#b08d57;--gold-dark:#84683b;--ink:#302c27;--muted:#80786d;--line:#e9dfd0;--green:#47765c;--red:#a84d48}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.sidebar{background:#fffdf9;border-right:1px solid var(--line);padding:26px 17px}.brand{font-family:Georgia,serif;font-size:25px;color:var(--gold-dark);margin:0 10px 4px}.subbrand{font-size:12px;color:var(--muted);margin:0 10px 30px}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;text-align:left;padding:12px 13px;border-radius:12px;color:#5f584e;font-size:14px;cursor:pointer}.nav button.active,.nav button:hover{background:#f1e7d6;color:#6f542c;font-weight:650}.sidebar-note{margin:35px 9px 0;color:var(--muted);font-size:12px}.main{padding:28px;max-width:1450px;width:100%;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.eyebrow{text-transform:uppercase;letter-spacing:.13em;color:var(--gold-dark);font-size:11px;font-weight:750}.top h1{font-size:27px;margin:4px 0;font-weight:650}.top p{color:var(--muted);margin:0}.badge{background:#eee3d1;color:#70552c;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:650}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0}.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:0 5px 20px #5b47200a}.card .label{color:var(--muted);font-size:13px}.card .value{font-size:25px;font-weight:750;margin:8px 0 2px}.card .hint{font-size:12px;color:var(--muted)}.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:15px}.panel h2{font-size:17px;margin:0 0 14px}.panel .desc{color:var(--muted);font-size:13px;margin-top:-7px;margin-bottom:15px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.row small{display:block;color:var(--muted);margin-top:3px}.pill{font-size:11px;padding:5px 8px;border-radius:999px;background:#f0e8db;color:#715a37;white-space:nowrap}.empty{padding:18px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:13px;text-align:center}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:white;color:var(--ink);padding:10px 13px;border-radius:10px;cursor:pointer;font-weight:600}.btn.primary{background:var(--gold);border-color:var(--gold);color:white}.btn:hover{filter:brightness(.97)}.section{display:none}.section.active{display:block}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}.toolbar h2{margin:0;font-size:21px}.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:var(--muted);font-weight:650}.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink);font:inherit}.field textarea{min-height:76px;resize:vertical}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:650}.money-in{color:var(--green);font-weight:700}.money-out{color:var(--red);font-weight:700}.section-intro{color:var(--muted);margin:5px 0 18px;font-size:13px}.notice{padding:13px 15px;background:#f2e8d8;border:1px solid #e5d5ba;border-radius:12px;color:#6f542c;font-size:13px;margin-top:16px}.footer{color:var(--muted);font-size:11px;text-align:center;margin-top:25px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{padding:15px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:22px}.subbrand{margin-bottom:14px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.sidebar-note{display:none}.main{padding:18px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}}
+@media(max-width:520px){.top{align-items:flex-start;flex-direction:column}.top h1{font-size:23px}.cards{gap:9px}.card{padding:14px}.card .value{font-size:21px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.toolbar{align-items:flex-start;flex-direction:column}}
 
+.auth-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:var(--bg)}.auth-card{width:min(100%,430px);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 10px 35px #5b472012}.auth-card h1{font-family:Georgia,serif;color:var(--gold-dark);margin:0 0 6px}.auth-card p{color:var(--muted);font-size:13px}.auth-card .form{margin-top:20px}.auth-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.auth-small{font-size:12px;color:var(--muted);margin-top:15px}.top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.user-email{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<section id="authScreen" class="auth-screen"><div class="auth-card"><h1>Minha Estética</h1><p>Gestão profissional • entre na sua conta para acessar seus dados com segurança.</p><form id="authForm" class="form"><div class="field full"><label>E-mail</label><input id="authEmail" type="email" required autocomplete="email" placeholder="voce@email.com"></div><div class="field full"><label>Senha (mínimo 6 caracteres)</label><input id="authPassword" type="password" minlength="6" required autocomplete="current-password" placeholder="Sua senha"></div><input id="authMode" type="hidden" value="login"><div class="field full auth-actions"><button id="authSubmit" class="btn primary" type="submit">Entrar</button><button id="toggleAuth" class="btn" type="button">Não tenho conta — criar cadastro</button></div></form><p id="authMsg" role="status"></p><div class="auth-small">Se o cadastro exigir confirmação, confira sua caixa de entrada. Use uma senha forte e não a compartilhe.</div></div></section>
+<div id="appShell" class="app" style="display:none">
+<aside class="sidebar"><h2 class="brand">Minha Estética</h2><p class="subbrand">GESTÃO PROFISSIONAL</p>
+<nav class="nav" aria-label="Menu principal">
+<button class="active" data-view="inicio">⌂ &nbsp; Início</button><button data-view="financeiro">▤ &nbsp; Financeiro</button><button data-view="fichas">✧ &nbsp; Fichas técnicas</button><button data-view="clientes">♙ &nbsp; Clientes</button><button data-view="agenda">▦ &nbsp; Agenda</button>
+</nav><p class="sidebar-note">Organização, cuidado e resultados em um só lugar.</p></aside>
+<main class="main">
+<header class="top"><div><div class="eyebrow">Seu espaço de gestão</div><h1 id="pageTitle">Bom dia! ✨</h1><p id="pageSubtitle">Aqui está um resumo do seu negócio.</p></div><div class="top-right"><span id="userEmail" class="user-email"></span><button id="logoutBtn" class="btn" type="button">Sair</button><span class="badge">Sincronizado com a nuvem</span></div></header>
+<section class="section active" id="view-inicio">
+<div class="cards"><div class="card"><div class="label">Entradas registradas</div><div class="value" id="dashIn">R$ 0,00</div><div class="hint">Total dos lançamentos</div></div><div class="card"><div class="label">Despesas registradas</div><div class="value" id="dashOut">R$ 0,00</div><div class="hint">Total dos lançamentos</div></div><div class="card"><div class="label">Saldo estimado</div><div class="value" id="dashBalance">R$ 0,00</div><div class="hint">Entradas menos despesas</div></div><div class="card"><div class="label">Clientes cadastrados</div><div class="value" id="dashClients">0</div><div class="hint">Na sua lista</div></div></div>
+<div class="grid2"><div class="panel"><h2>Atalhos rápidos</h2><p class="desc">Acesse as tarefas mais comuns.</p><div class="actions"><button class="btn primary" data-go="clientes">＋ Cadastrar cliente</button><button class="btn" data-go="financeiro">＋ Lançamento financeiro</button><button class="btn" data-go="fichas">＋ Nova ficha técnica</button><button class="btn" data-go="agenda">＋ Agendar atendimento</button></div><div class="notice">Dica: cadastre seus procedimentos e custos para entender melhor a rentabilidade de cada serviço.</div></div><div class="panel"><h2>Próximos atendimentos</h2><p class="desc">Seus compromissos registrados.</p><div id="dashAppointments" class="empty">Nenhum atendimento cadastrado ainda.</div></div></div>
+</section>
+<section class="section" id="view-financeiro"><div class="toolbar"><h2>Controle financeiro</h2></div><p class="section-intro">Registre entradas e despesas para acompanhar seu caixa.</p><div class="panel"><form id="financeForm" class="form"><div class="field"><label>Tipo de lançamento</label><select id="finType"><option value="entrada">Entrada</option><option value="despesa">Despesa</option></select></div><div class="field"><label>Valor (R$)</label><input id="finAmount" type="number" min="0.01" step="0.01" required placeholder="0,00"></div><div class="field"><label>Descrição</label><input id="finDesc" required placeholder="Ex.: Massagem relaxante"></div><div class="field"><label>Data</label><input id="finDate" type="date" required></div><div class="field full"><button class="btn primary" type="submit">Salvar lançamento</button></div></form></div><div class="panel" style="margin-top:15px"><h2>Histórico de lançamentos</h2><div class="table-wrap"><table><thead><tr><th>Data</th><th>Descrição</th><th>Tipo</th><th>Valor</th><th></th></tr></thead><tbody id="financeRows"><tr><td colspan="5">Nenhum lançamento.</td></tr></tbody></table></div></div></section>
+<section class="section" id="view-fichas"><div class="toolbar"><h2>Fichas técnicas</h2></div><p class="section-intro">Cadastre serviços, custos e preço sugerido. O cálculo abaixo não substitui a avaliação de todos os custos do negócio.</p><div class="panel"><form id="procedureForm" class="form"><div class="field"><label>Nome do procedimento</label><input id="procName" required placeholder="Ex.: Massagem relaxante"></div><div class="field"><label>Duração (minutos)</label><input id="procDuration" type="number" min="1" placeholder="60"></div><div class="field"><label>Custo dos produtos (R$)</label><input id="procProducts" type="number" min="0" step="0.01" value="0" required></div><div class="field"><label>Outros custos variáveis (R$)</label><input id="procOther" type="number" min="0" step="0.01" value="0" required></div><div class="field"><label>Preço cobrado (R$)</label><input id="procPrice" type="number" min="0" step="0.01" required></div><div class="field"><label>Produtos / materiais</label><input id="procMaterials" placeholder="Óleo, creme, toalhas..."></div><div class="field full"><label>Etapas e observações</label><textarea id="procNotes" placeholder="Descreva o protocolo, cuidados e observações profissionais."></textarea></div><div class="field full"><button class="btn primary" type="submit">Salvar ficha técnica</button></div></form></div><div class="panel" style="margin-top:15px"><h2>Procedimentos cadastrados</h2><div class="table-wrap"><table><thead><tr><th>Procedimento</th><th>Duração</th><th>Custo variável</th><th>Preço</th><th>Resultado estimado</th><th></th></tr></thead><tbody id="procedureRows"><tr><td colspan="6">Nenhuma ficha técnica.</td></tr></tbody></table></div></div></section>
+<section class="section" id="view-clientes"><div class="toolbar"><h2>Cadastro de clientes</h2></div><p class="section-intro">Guarde apenas as informações necessárias para o atendimento e proteja os dados dos seus clientes.</p><div class="panel"><form id="clientForm" class="form"><div class="field"><label>Nome completo</label><input id="clientName" required placeholder="Nome do cliente"></div><div class="field"><label>Telefone</label><input id="clientPhone" placeholder="(00) 00000-0000"></div><div class="field"><label>E-mail (opcional)</label><input id="clientEmail" type="email" placeholder="cliente@email.com"></div><div class="field"><label>Observação não sensível</label><input id="clientNotes" placeholder="Preferência de horário, por exemplo"></div><div class="field full"><button class="btn primary" type="submit">Cadastrar cliente</button></div></form></div><div class="panel" style="margin-top:15px"><h2>Clientes cadastrados</h2><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Telefone</th><th>E-mail</th><th>Observação</th><th></th></tr></thead><tbody id="clientRows"><tr><td colspan="5">Nenhum cliente cadastrado.</td></tr></tbody></table></div></div></section>
+<section class="section" id="view-agenda"><div class="toolbar"><h2>Agenda de atendimentos</h2></div><p class="section-intro">Registre os horários e acompanhe os compromissos.</p><div class="panel"><form id="appointmentForm" class="form"><div class="field"><label>Cliente</label><select id="apptClient" required><option value="">Selecione um cliente</option></select></div><div class="field"><label>Procedimento</label><select id="apptProcedure"><option value="">Selecione um procedimento (opcional)</option></select></div><div class="field"><label>Data</label><input id="apptDate" type="date" required></div><div class="field"><label>Horário</label><input id="apptTime" type="time" required></div><div class="field full"><button class="btn primary" type="submit">Salvar agendamento</button></div></form></div>```html
+<div class="field">
+  <label>Status</label>
+  <select id="apptStatus" required>
+    <option value="agendado">Agendado</option>
+    <option value="realizado">Realizado</option>
+    <option value="cancelado">Cancelado</option>
+    <option value="faltou">Faltou</option>
+  </select>
+</div>
+```
+<div class="panel" style="margin-top:15px"><h2>Agendamentos</h2><div class="table-wrap"><table><thead><tr><th>Data e hora</th><th>Cliente</th><th>Procedimento</th><th>Status</th><th></th></tr></thead><tbody id="appointmentRows"><tr><td colspan="5">Nenhum agendamento.</td></tr></tbody></table></div></div></section>
+<div class="footer">Minha Estética • Seus registros são salvos na sua conta.</div>
+</main></div>
+<script>
+const SUPABASE_URL='https://bfxgthcsmxrxgsmcwcvn.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_CIHwVMpZjtIP6ewP7rVL8w_U2ry9uI1';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id);const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(n)||0);const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+let user=null,data={finance:[],procedures:[],clients:[],appointments:[]};
+function msg(t,isError=false){const el=$('authMsg');if(el){el.textContent=t;el.style.color=isError?'#a84d48':'#47765c'}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+const titles={inicio:['Seja Benvindo!! ✨','Aqui está um resumo do seu negócio.'],financeiro:['Financeiro','Entradas, despesas e acompanhamento do caixa.'],fichas:['Fichas técnicas','Organize seus procedimentos e calcule custos.'],clientes:['Clientes','Seus cadastros e contatos em um só lugar.'],agenda:['Agenda','Organize os próximos atendimentos.']};
+function go(view){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));$('view-'+view).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===view));$('pageTitle').textContent=titles[view][0];$('pageSubtitle').textContent=titles[view][1]}
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+$('finDate').value=today();$('apptDate').value=today();
+async function loadData(){if(!user)return;try{const [f,p,c,a]=await Promise.all([db.from('financial_transactions').select('*').order('transaction_date',{ascending:false}),db.from('procedures').select('*').order('created_at',{ascending:false}),db.from('clients').select('*').order('created_at',{ascending:false}),db.from('appointments').select('*').order('scheduled_at',{ascending:true})]);for(const r of [f,p,c,a])if(r.error)throw r.error;data.finance=f.data.map(x=>({...x,desc:x.description,date:x.transaction_date}));data.procedures=p.data.map(x=>({...x,duration:x.duration_minutes,products:Number(x.material_cost||0),other:Number(x.other_cost||0),price:Number(x.price||0),materials:x.products_used||'',notes:x.description||''}));data.clients=c.data;data.appointments=a.data.map(x=>({...x,date:x.scheduled_at.slice(0,10),time:x.scheduled_at.slice(11,16),clientId:x.client_id,procedureId:x.procedure_id,status:x.status}));render()}catch(e){alert('Não foi possível carregar os dados: '+(e.message||e));console.error(e)}}
+async function runSave(query){const {error}=await query;if(error){alert('Não foi possível salvar: '+error.message);console.error(error);return false}await loadData();return true}async function runSave(query) {
+try {
+const { error } = await query;
+
+```
+if (error) {
+  alert('Não foi possível salvar: ' + error.message);
+  console.error('Erro ao salvar:', error);
+  return false;
+}
+
+await loadData();
+alert('Dados salvos com sucesso!');
+return true;
+```
+
+} catch (error) {
+console.error('Erro inesperado ao salvar:', error);
+alert('Ocorreu um erro ao salvar. Verifique sua conexão e tente novamente.');
+return false;
+}
+}
+
+$('financeForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,type:$('finType').value,amount:Number($('finAmount').value),description:$('finDesc').value.trim(),transaction_date:$('finDate').value,payment_status:'pago'};if(await runSave(db.from('financial_transactions').insert(row))){e.target.reset();$('finDate').value=today()}});
+$('procedureForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('procName').value.trim(),duration_minutes:$('procDuration').value?Number($('procDuration').value):null,material_cost:Number($('procProducts').value||0),other_cost:Number($('procOther').value||0),price:Number($('procPrice').value||0),products_used:$('procMaterials').value.trim()||null,description:$('procNotes').value.trim()||null};if(await runSave(db.from('procedures').insert(row))){e.target.reset();$('procProducts').value='0';$('procOther').value='0'}});
+$('clientForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('clientName').value.trim(),phone:$('clientPhone').value.trim()||null,email:$('clientEmail').value.trim()||null,notes:$('clientNotes').value.trim()||null};if(await runSave(db.from('clients').insert(row)))e.target.reset()});
+$('appointmentForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const client=$('apptClient').value;if(!client){alert('Cadastre e selecione um cliente antes de agendar.');return}const row={user_id:user.id,client_id:client,procedure_id:$('apptProcedure').value||null,scheduled_at:$('apptDate').value+'T'+$('apptTime').value+':00',status:$('apptStatus').value,notes:null};if(await runSave(db.from('appointments').insert(row))){e.target.reset();$('apptDate').value=today()}});
+async function del(type,id){if(!confirm('Deseja excluir este registro?'))return;const table={finance:'financial_transactions',procedures:'procedures',clients:'clients',appointments:'appointments'}[type];const {error}=await db.from(table).delete().eq('id',id);if(error){alert('Não foi possível excluir. Verifique se há atendimentos ou lançamentos vinculados. '+error.message);return}await loadData()}
+function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=money(ins);$('dashOut').textContent=money(outs);$('dashBalance').textContent=money(ins-outs);$('dashClients').textContent=data.clients.length;
+$('financeRows').innerHTML=data.finance.length?data.finance.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.desc)}</td><td>${x.type==='entrada'?'Entrada':'Despesa'}</td><td class="${x.type==='entrada'?'money-in':'money-out'}">${x.type==='entrada'?'+':'−'} ${money(x.amount)}</td><td><button class="btn" onclick="del('finance','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum lançamento.</td></tr>';
+$('procedureRows').innerHTML=data.procedures.length?data.procedures.map(x=>`<tr><td><strong>${esc(x.name)}</strong><small>${esc(x.materials||'')}</small></td><td>${x.duration?esc(x.duration)+' min':'—'}</td><td>${money(x.products+x.other)}</td><td>${money(x.price)}</td><td class="${x.price-x.products-x.other>=0?'money-in':'money-out'}">${money(x.price-x.products-x.other)}</td><td><button class="btn" onclick="del('procedures','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
+$('clientRows').innerHTML=data.clients.length?data.clients.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone||'—')}</td><td>${esc(x.email||'—')}</td><td>${esc(x.notes||'—')}</td><td><button class="btn" onclick="del('clients','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum cliente cadastrado.</td></tr>';
+$('apptClient').innerHTML='<option value="">Selecione um cliente</option>'+data.clients.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');$('apptProcedure').innerHTML='<option value="">Selecione um procedimento (opcional)</option>'+data.procedures.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
+const sorted=[...data.appointments].sort((a,b)=>a.scheduled_at.localeCompare(b.scheduled_at));$('appointmentRows').innerHTML=sorted.length?sorted.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<tr><td>${esc(x.date)} ${esc(x.time)}</td><td>${esc(c?.name||'Cliente')}</td><td>${esc(p?.name||'—')}</td><td><select aria-label="Status" onchange="updateStatus('${x.id}',this.value)"><option value="agendado" ${x.status==='agendado'?'selected':''}>Agendado</option><option value="realizado" ${x.status==='realizado'?'selected':''}>Realizado</option><option value="cancelado" ${x.status==='cancelado'?'selected':''}>Cancelado</option><option value="faltou" ${x.status==='faltou'?'selected':''}>Faltou</option></select></td><td><button class="btn" onclick="del('appointments','${x.id}')">Excluir</button></td></tr>`}).join(''):'<tr><td colspan="5">Nenhum agendamento.</td></tr>';
+const upcoming=sorted.filter(x=>x.date>=today()&&x.status==='agendado').slice(0,4);$('dashAppointments').innerHTML=upcoming.length?upcoming.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<div class="row"><div><strong>${esc(c?.name||'Cliente')}</strong><small>${esc(x.date)} às ${esc(x.time)}${p?' • '+esc(p.name):''}</small></div><span class="pill">Agendado</span></div>`}).join(''):'<div class="empty">Nenhum atendimento futuro cadastrado.</div>'}
+async function updateStatus(id,status){await runSave(db.from('appointments').update({status}).eq('id',id))}
+window.del=del;window.updateStatus=updateStatus;
+$('authForm').addEventListener('submit', async e => {
+e.preventDefault();
+
+const email = $('authEmail').value.trim();
+const password = $('authPassword').value;
+const mode = $('authMode').value;
+
+msg('Aguarde...');
+
+try {
+let result;
+if (mode === 'signup') {
+  result = await db.auth.signUp({ email, password });
+} else {
+  result = await db.auth.signInWithPassword({ email, password });
+}
+
+if (result.error) {
+  const erro = result.error.message.toLowerCase();
+
+  if (
+    erro.includes('invalid login credentials') ||
+    erro.includes('invalid_credentials')
+  ) {
+    msg('E-mail ou senha incorretos. Confira seus dados e tente novamente.', true);
+  } else if (erro.includes('email not confirmed')) {
+    msg('Confirme seu e-mail antes de entrar.', true);
+  } else if (erro.includes('too many requests')) {
+    msg('Muitas tentativas. Aguarde alguns minutos e tente novamente.', true);
+  } else {
+    msg(
+      mode === 'signup'
+        ? 'Não foi possível criar sua conta. Verifique os dados e tente novamente.'
+        : 'Não foi possível entrar. Verifique os dados e tente novamente.',
+      true
+    );
+
+    console.error('Erro de autenticação:', result.error);
+  }
+
+  return;
+}
+
+if (mode === 'signup' && !result.data.session) {
+  msg('Cadastro iniciado! Confira seu e-mail para confirmar a conta e depois faça login.');
+  return;
+}
+
+msg('Acesso confirmado!');
+await syncSession();
+```
+
+} catch (error) {
+console.error('Erro inesperado na autenticação:', error);
+msg('Ocorreu um problema de conexão. Tente novamente.', true);
+}
+});
+
+$('toggleAuth').addEventListener('click',()=>{const signup=$('authMode').value!=='signup';$('authMode').value=signup?'signup':'login';$('authSubmit').textContent=signup?'Criar conta':'Entrar';$('toggleAuth').textContent=signup?'Já tenho conta — entrar':'Não tenho conta — criar cadastro';msg('')});// Recuperação de senha — Minha Estética
+(function () {
+const authForm = document.getElementById('authForm');
+
+if (!authForm || document.getElementById('forgotPasswordBtn')) return;
+
+const forgotBtn = document.createElement('button');
+forgotBtn.id = 'forgotPasswordBtn';
+forgotBtn.type = 'button';
+forgotBtn.textContent = 'Esqueci minha senha';
+forgotBtn.style.cssText =
+'display:block;margin-top:14px;border:0;background:none;color:#8b6b3f;text-decoration:underline;cursor:pointer;font-size:14px;';
+
+authForm.appendChild(forgotBtn);
+
+forgotBtn.addEventListener('click', async () => {
+const email = document.getElementById('authEmail').value.trim();
+if (!email) {
+  msg('Digite seu e-mail primeiro.');
+  document.getElementById('authEmail').focus();
+  return;
+}
+
+forgotBtn.disabled = true;
+msg('Enviando solicitação...');
+
+try {
+  const { error } = await db.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + window.location.pathname  });
+ if (error) {
+    console.error('Erro ao solicitar recuperação:', error);
+    msg('Não foi possível solicitar a recuperação. Tente novamente.', true);
+    return;  }
+  msg('Se o e-mail estiver cadastrado, você receberá as instruções para redefinir sua senha. Confira também o spam.');
+} catch (error) {
+  console.error(error);
+  msg('Erro de conexão. Tente novamente.', true);
+} finally {forgotBtn.disabled = false;}});})();
+$('logoutBtn').addEventListener('click',async()=>{await db.auth.signOut();user=null;$('authScreen').style.display='grid';$('appShell').style.display='none'});
+async function syncSession(){const {data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){$('authScreen').style.display='none';$('appShell').style.display='grid';$('userEmail').textContent=user.email||'';await loadData()}else{$('authScreen').style.display='grid';$('appShell').style.display='none'}}
+db.auth.onAuthStateChange(()=>{setTimeout(syncSession,0)});syncSession();
+
+</script></body></html>

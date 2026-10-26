@@ -104,8 +104,6 @@ msg('Aguarde...');
 
 try {
 let result;
-
-```
 if (mode === 'signup') {
   result = await db.auth.signUp({ email, password });
 } else {
@@ -170,8 +168,6 @@ authForm.appendChild(forgotBtn);
 
 forgotBtn.addEventListener('click', async () => {
 const email = document.getElementById('authEmail').value.trim();
-
-```
 if (!email) {
   msg('Digite seu e-mail primeiro.');
   document.getElementById('authEmail').focus();
@@ -183,27 +179,16 @@ msg('Enviando solicitação...');
 
 try {
   const { error } = await db.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + window.location.pathname
-  });
-
-  if (error) {
+    redirectTo: window.location.origin + window.location.pathname  });
+ if (error) {
     console.error('Erro ao solicitar recuperação:', error);
     msg('Não foi possível solicitar a recuperação. Tente novamente.', true);
-    return;
-  }
-
+    return;  }
   msg('Se o e-mail estiver cadastrado, você receberá as instruções para redefinir sua senha. Confira também o spam.');
 } catch (error) {
   console.error(error);
   msg('Erro de conexão. Tente novamente.', true);
-} finally {
-  forgotBtn.disabled = false;
-}
-```
-
-});
-})();
-
+} finally {forgotBtn.disabled = false;}});})();
 $('logoutBtn').addEventListener('click',async()=>{await db.auth.signOut();user=null;$('authScreen').style.display='grid';$('appShell').style.display='none'});
 async function syncSession(){const {data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){$('authScreen').style.display='none';$('appShell').style.display='grid';$('userEmail').textContent=user.email||'';await loadData()}else{$('authScreen').style.display='grid';$('appShell').style.display='none'}}
 db.auth.onAuthStateChange(()=>{setTimeout(syncSession,0)});syncSession();

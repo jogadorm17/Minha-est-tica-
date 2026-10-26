@@ -39,7 +39,6 @@
     <option value="faltou">Faltou</option>
   </select>
 </div>
-```
 <div class="panel" style="margin-top:15px"><h2>Agendamentos</h2><div class="table-wrap"><table><thead><tr><th>Data e hora</th><th>Cliente</th><th>Procedimento</th><th>Status</th><th></th></tr></thead><tbody id="appointmentRows"><tr><td colspan="5">Nenhum agendamento.</td></tr></tbody></table></div></div></section>
 <div class="footer">Minha Estética • Seus registros são salvos na sua conta.</div>
 </main></div>
@@ -59,8 +58,6 @@ async function loadData(){if(!user)return;try{const [f,p,c,a]=await Promise.all(
 async function runSave(query){const {error}=await query;if(error){alert('Não foi possível salvar: '+error.message);console.error(error);return false}await loadData();return true}async function runSave(query) {
 try {
 const { error } = await query;
-
-```
 if (error) {
   alert('Não foi possível salvar: ' + error.message);
   console.error('Erro ao salvar:', error);
@@ -70,8 +67,6 @@ if (error) {
 await loadData();
 alert('Dados salvos com sucesso!');
 return true;
-```
-
 } catch (error) {
 console.error('Erro inesperado ao salvar:', error);
 alert('Ocorreu um erro ao salvar. Verifique sua conexão e tente novamente.');
@@ -143,8 +138,6 @@ if (mode === 'signup' && !result.data.session) {
 
 msg('Acesso confirmado!');
 await syncSession();
-```
-
 } catch (error) {
 console.error('Erro inesperado na autenticação:', error);
 msg('Ocorreu um problema de conexão. Tente novamente.', true);
@@ -192,5 +185,4 @@ try {
 $('logoutBtn').addEventListener('click',async()=>{await db.auth.signOut();user=null;$('authScreen').style.display='grid';$('appShell').style.display='none'});
 async function syncSession(){const {data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){$('authScreen').style.display='none';$('appShell').style.display='grid';$('userEmail').textContent=user.email||'';await loadData()}else{$('authScreen').style.display='grid';$('appShell').style.display='none'}}
 db.auth.onAuthStateChange(()=>{setTimeout(syncSession,0)});syncSession();
-
 </script></body></html>

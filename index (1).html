@@ -93,7 +93,66 @@ const sorted=[...data.appointments].sort((a,b)=>a.scheduled_at.localeCompare(b.s
 const upcoming=sorted.filter(x=>x.date>=today()&&x.status==='agendado').slice(0,4);$('dashAppointments').innerHTML=upcoming.length?upcoming.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<div class="row"><div><strong>${esc(c?.name||'Cliente')}</strong><small>${esc(x.date)} às ${esc(x.time)}${p?' • '+esc(p.name):''}</small></div><span class="pill">Agendado</span></div>`}).join(''):'<div class="empty">Nenhum atendimento futuro cadastrado.</div>'}
 async function updateStatus(id,status){await runSave(db.from('appointments').update({status}).eq('id',id))}
 window.del=del;window.updateStatus=updateStatus;
-$('authForm').addEventListener('submit',async e=>{e.preventDefault();const email=$('authEmail').value.trim(),password=$('authPassword').value;const mode=$('authMode').value;msg('Aguarde...');let result;if(mode==='signup')result=await db.auth.signUp({email,password});else result=await db.auth.signInWithPassword({email,password});if(result.error){msg(result.error.message,true);return}if(mode==='signup'&&!result.data.session){msg('Cadastro iniciado! Confira seu e-mail para confirmar a conta e depois faça login.');return}msg('Acesso confirmado!');await syncSession()});
+$('authForm').addEventListener('submit', async e => {
+e.preventDefault();
+
+const email = $('authEmail').value.trim();
+const password = $('authPassword').value;
+const mode = $('authMode').value;
+
+msg('Aguarde...');
+
+try {
+let result;
+
+```
+if (mode === 'signup') {
+  result = await db.auth.signUp({ email, password });
+} else {
+  result = await db.auth.signInWithPassword({ email, password });
+}
+
+if (result.error) {
+  const erro = result.error.message.toLowerCase();
+
+  if (
+    erro.includes('invalid login credentials') ||
+    erro.includes('invalid_credentials')
+  ) {
+    msg('E-mail ou senha incorretos. Confira seus dados e tente novamente.', true);
+  } else if (erro.includes('email not confirmed')) {
+    msg('Confirme seu e-mail antes de entrar.', true);
+  } else if (erro.includes('too many requests')) {
+    msg('Muitas tentativas. Aguarde alguns minutos e tente novamente.', true);
+  } else {
+    msg(
+      mode === 'signup'
+        ? 'Não foi possível criar sua conta. Verifique os dados e tente novamente.'
+        : 'Não foi possível entrar. Verifique os dados e tente novamente.',
+      true
+    );
+
+    console.error('Erro de autenticação:', result.error);
+  }
+
+  return;
+}
+
+if (mode === 'signup' && !result.data.session) {
+  msg('Cadastro iniciado! Confira seu e-mail para confirmar a conta e depois faça login.');
+  return;
+}
+
+msg('Acesso confirmado!');
+await syncSession();
+```
+
+} catch (error) {
+console.error('Erro inesperado na autenticação:', error);
+msg('Ocorreu um problema de conexão. Tente novamente.', true);
+}
+});
+
 $('toggleAuth').addEventListener('click',()=>{const signup=$('authMode').value!=='signup';$('authMode').value=signup?'signup':'login';$('authSubmit').textContent=signup?'Criar conta':'Entrar';$('toggleAuth').textContent=signup?'Já tenho conta — entrar':'Não tenho conta — criar cadastro';msg('')});
 $('logoutBtn').addEventListener('click',async()=>{await db.auth.signOut();user=null;$('authScreen').style.display='grid';$('appShell').style.display='none'});
 async function syncSession(){const {data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){$('authScreen').style.display='none';$('appShell').style.display='grid';$('userEmail').textContent=user.email||'';await loadData()}else{$('authScreen').style.display='grid';$('appShell').style.display='none'}}

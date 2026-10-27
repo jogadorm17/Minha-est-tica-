@@ -146,9 +146,11 @@
     }
 
     
-    .fc .fc-button {
+   
+ .fc .fc-button {
     padding: 6px 8px;
     font-size: 12px;
+}
 }
 
 :root {
@@ -168,42 +170,41 @@
 @media(max-width:520px){.top{align-items:flex-start;flex-direction:column}.top h1{font-size:23px}.cards{gap:9px}.card{padding:14px}.card .value{font-size:21px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.toolbar{align-items:flex-start;flex-direction:column}}
 .auth-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:var(--bg)}.auth-card{width:min(100%,430px);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 10px 35px #5b472012}.auth-card h1{font-family:Georgia,serif;color:var(--gold-dark);margin:0 0 6px}.auth-card p{color:var(--muted);font-size:13px}.auth-card .form{margin-top:20px}.auth-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.auth-small{font-size:12px;color:var(--muted);margin-top:15px}.top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.user-email{font-size:12px;color:var(--muted)}
 
-/* Recuperação visual — Minha Estética */
-body {
-    background: var(--bg);
-    color: var(--ink);
-}
+
+/* Ajustes visuais — paleta nude e dourado */
 
 .sidebar {
-    background: #171717;
-    border-color: var(--line);
+    background: var(--card);
+    border-right-color: var(--line);
+    color: var(--ink);
 }
 
 .nav button {
     color: var(--ink);
 }
 
+
 .nav button.active,
 .nav button:hover {
-    background: #302819;
+    background: #EDE1D0;
     color: var(--gold-dark);
 }
 
 .badge,
 .pill {
-    background: #302819;
+    background: #F2E8D8;
     color: var(--gold-dark);
 }
 
 .btn {
-    background: #252525;
+    background: var(--card);
     color: var(--ink);
     border-color: var(--line);
 }
 
 .btn.primary {
     background: var(--gold);
-    color: #17130c;
+    color: #FFFFFF;
     border-color: var(--gold);
 }
 
@@ -211,16 +212,84 @@ body {
 .field select,
 .field textarea,
 select[aria-label="Status"] {
-    background: #252525;
+    background: var(--card);
     color: var(--ink);
     border-color: var(--line);
 }
 
 .notice {
-    background: #292318;
-    color: #e0bd75;
-    border-color: #51432b;
+    background: #F5EBDD;
+    color: var(--gold-dark);
+    border-color: var(--line);
 }
+
+
+#calendar {
+    --fc-page-bg-color: #FFFEFB;
+    --fc-neutral-bg-color: #F5EFE6;
+    --fc-neutral-text-color: #877B6C;
+    --fc-border-color: var(--line);
+    --fc-today-bg-color: #F5EBDD;
+    color: var(--ink);
+}
+
+.fc .fc-col-header-cell-cushion,
+.fc .fc-daygrid-day-number,
+.fc .fc-list-day-text,
+.fc .fc-list-day-side-text {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.fc .fc-button-primary {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #FFFFFF;
+}
+
+.fc .fc-button-primary:hover,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+    color: #FFFFFF;
+}
+
+body {
+    background: var(--bg);
+    color: var(--ink);
+}
+
+
+
+
+.nav button.active,
+.nav button:hover {
+    background: #EDE1D0;
+    color: var(--gold-dark);
+}
+
+.badge,
+.pill {
+    background: #F2E8D8;
+    color: var(--gold-dark);
+}
+
+.btn {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.btn.primary {
+    background: var(--gold);
+    color: #FFFFFF;
+    border-color: var(--gold);
+}
+
+.field input,
+.field select,
+.field text
+
 
 #calendar {
     --fc-page-bg-color: #1c1c1c;

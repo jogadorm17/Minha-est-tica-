@@ -502,11 +502,16 @@ function initCalendar() {
 
     calendar = new FullCalendar.Calendar(el, {
         locale: 'pt-br',
-        initialView: 'dayGridMonth',
+        initialView: 'timeGridWeek',
         height: 'auto',
-        expandRows: true,
-        dayMaxEvents: true,
-        nowIndicator: true,
+contentHeight: 650,
+expandRows: true,
+nowIndicator: true,
+slotMinTime: '07:00:00',
+slotMaxTime: '22:00:00',
+slotDuration: '00:30:00',
+scrollTime: '08:00:00',
+allDaySlot: false,
 
         headerToolbar: {
             left: 'prev,next today',
@@ -522,9 +527,7 @@ function initCalendar() {
             list: 'Lista'
         },
 
-        allDaySlot: false,
-        slotMinTime: '07:00:00',
-        slotMaxTime: '22:00:00',
+        
 
         eventTimeFormat: {
             hour: '2-digit',

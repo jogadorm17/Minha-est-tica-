@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="pt-BR">
-<head>
+<head><script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.19/locales-all.global.min.js"></script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Minha Estética | Gestão profissional</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -156,7 +157,7 @@
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.sidebar{background:#fffdf9;border-right:1px solid var(--line);padding:26px 17px}.brand{font-family:Georgia,serif;font-size:25px;color:var(--gold-dark);margin:0 10px 4px}.subbrand{font-size:12px;color:var(--muted);margin:0 10px 30px}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;text-align:left;padding:12px 13px;border-radius:12px;color:#5f584e;font-size:14px;cursor:pointer}.nav button.active,.nav button:hover{background:#f1e7d6;color:#6f542c;font-weight:650}.sidebar-note{margin:35px 9px 0;color:var(--muted);font-size:12px}.main{padding:28px;max-width:1450px;width:100%;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.eyebrow{text-transform:uppercase;letter-spacing:.13em;color:var(--gold-dark);font-size:11px;font-weight:750}.top h1{font-size:27px;margin:4px 0;font-weight:650}.top p{color:var(--muted);margin:0}.badge{background:#eee3d1;color:#70552c;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:650}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0}.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:0 5px 20px #5b47200a}.card .label{color:var(--muted);font-size:13px}.card .value{font-size:25px;font-weight:750;margin:8px 0 2px}.card .hint{font-size:12px;color:var(--muted)}.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:15px}.panel h2{font-size:17px;margin:0 0 14px}.panel .desc{color:var(--muted);font-size:13px;margin-top:-7px;margin-bottom:15px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.row small{display:block;color:var(--muted);margin-top:3px}.pill{font-size:11px;padding:5px 8px;border-radius:999px;background:#f0e8db;color:#715a37;white-space:nowrap}.empty{padding:18px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:13px;text-align:center}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:white;color:var(--ink);padding:10px 13px;border-radius:10px;cursor:pointer;font-weight:600}.btn.primary{background:var(--gold);border-color:var(--gold);color:white}.btn:hover{filter:brightness(.97)}.section{display:none}.section.active{display:block}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}.toolbar h2{margin:0;font-size:21px}.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:var(--muted);font-weight:650}.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink);font:inherit}.field textarea{min-height:76px;resize:vertical}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:650}.money-in{color:var(--green);font-weight:700}.money-out{color:var(--red);font-weight:700}.section-intro{color:var(--muted);margin:5px 0 18px;font-size:13px}.notice{padding:13px 15px;background:#f2e8d8;border:1px solid #e5d5ba;border-radius:12px;color:#6f542c;font-size:13px;margin-top:16px}.footer{color:var(--muted);font-size:11px;text-align:center;margin-top:25px}
 @media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{padding:15px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:22px}.subbrand{margin-bottom:14px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.sidebar-note{display:none}.main{padding:18px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}}
 @media(max-width:520px){.top{align-items:flex-start;flex-direction:column}.top h1{font-size:23px}.cards{gap:9px}.card{padding:14px}.card .value{font-size:21px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.toolbar{align-items:flex-start;flex-direction:column}}
-
+  
 .auth-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:var(--bg)}.auth-card{width:min(100%,430px);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 10px 35px #5b472012}.auth-card h1{font-family:Georgia,serif;color:var(--gold-dark);margin:0 0 6px}.auth-card p{color:var(--muted);font-size:13px}.auth-card .form{margin-top:20px}.auth-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.auth-small{font-size:12px;color:var(--muted);margin-top:15px}.top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.user-email{font-size:12px;color:var(--muted)}
 </style>
 </head>
@@ -195,6 +196,152 @@ const SUPABASE_PUBLISHABLE_KEY='sb_publishable_CIHwVMpZjtIP6ewP7rVL8w_U2ry9uI1';
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const $=id=>document.getElementById(id);const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(n)||0);const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 let user=null,data={finance:[],procedures:[],clients:[],appointments:[]};
+  let calendar = null;
+
+function localDateTime(date) {
+  const pad = n => String(n).padStart(2, '0');
+
+  return (
+    date.getFullYear() + '-' +
+    pad(date.getMonth() + 1) + '-' +
+    pad(date.getDate()) + 'T' +
+    pad(date.getHours()) + ':' +
+    pad(date.getMinutes()) + ':00'
+  );
+}
+
+function initCalendar() {
+  const element = document.getElementById('calendar');
+
+  if (!element || calendar) return;
+
+  calendar = new FullCalendar.Calendar(element, {
+    locale: 'pt-br',
+    initialView: 'dayGridMonth',
+    height: 'auto',
+    nowIndicator: true,
+    editable: true,
+    dayMaxEvents: true,
+    allDaySlot: false,
+
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+    },
+
+    buttonText: {
+      today: 'Hoje',
+      month: 'Mês',
+      week: 'Semana',
+      day: 'Dia',
+      list: 'Lista'
+    },
+
+    slotMinTime: '07:00:00',
+    slotMaxTime: '22:00:00',
+    slotDuration: '00:30:00',
+    snapDuration: '00:15:00',
+    expandRows: true,
+
+    events: [],
+
+    dateClick(info) {
+      const date = info.date;
+
+      const pad = n => String(n).padStart(2, '0');
+
+      document.getElementById('apptDate').value =
+        date.getFullYear() + '-' +
+        pad(date.getMonth() + 1) + '-' +
+        pad(date.getDate());
+
+      if (info.dateStr.includes('T')) {
+        document.getElementById('apptTime').value =
+          pad(date.getHours()) + ':' +
+          pad(date.getMinutes());
+      } else {
+        document.getElementById('apptTime').value = '09:00';
+      }
+
+      document.getElementById('appointmentForm').scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    },
+
+    eventClick(info) {
+      const event = info.event;
+
+      alert(
+        'Atendimento: ' + event.title +
+        '\nData: ' + event.start.toLocaleDateString('pt-BR') +
+        '\nHorário: ' + event.start.toLocaleTimeString('pt-BR', {
+          hour: '2-digit',
+          minute: '2-digit'
+        }) +
+        '\nStatus: ' + (event.extendedProps.status || 'agendado')
+      );
+    },
+
+    async eventDrop(info) {
+      const event = info.event;
+
+      if (!user) {
+        info.revert();
+        return;
+      }
+
+      const { error } = await db
+        .from('appointments')
+        .update({
+          scheduled_at: localDateTime(event.start)
+        })
+        .eq('id', event.id);
+
+      if (error) {
+        info.revert();
+        alert('Não foi possível reagendar: ' + error.message);
+        return;
+      }
+
+      await loadData();
+    }
+  });
+
+  calendar.render();
+refreshCalendar();
+}
+function refreshCalendar() {
+  if (!calendar) return;
+
+  const events = data.appointments
+    .filter(a => a.status !== 'cancelado')
+    .map(a => {
+      const client = data.clients.find(c => c.id === a.client_id);
+      const procedure = data.procedures.find(p => p.id === a.procedure_id);
+
+      return {
+        id: String(a.id),
+        title: (client?.name || 'Cliente') +
+          (procedure ? ' • ' + procedure.name : ''),
+        start: a.scheduled_at,
+        allDay: false,
+        backgroundColor:
+          a.status === 'realizado' ? '#426b50' :
+          a.status === 'faltou' ? '#813f3b' :
+          '#5c4927',
+        borderColor: '#c9a45c',
+        textColor: '#fff2d4',
+        extendedProps: {
+          status: a.status
+        }
+      };
+    });
+
+  calendar.removeAllEvents();
+  calendar.addEventSource(events);
+}
 function msg(t,isError=false){const el=$('authMsg');if(el){el.textContent=t;el.style.color=isError?'#a84d48':'#47765c'}}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 const titles={inicio:['Seja Benvindo!! ✨','Aqui está um resumo do seu negócio.'],financeiro:['Financeiro','Entradas, despesas e acompanhamento do caixa.'],fichas:['Fichas técnicas','Organize seus procedimentos e calcule custos.'],clientes:['Clientes','Seus cadastros e contatos em um só lugar.'],agenda:['Agenda','Organize os próximos atendimentos.']};

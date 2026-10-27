@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -630,28 +631,7 @@ allDaySlot: false,
     };
 },
 
-events: [],
-        eventClick(info) {
-            const status = {
-                agendado: 'Agendado',
-                realizado: 'Realizado',
-                cancelado: 'Cancelado',
-                faltou: 'Faltou'
-            };
-
-            alert(
-                info.event.title +
-                '\nHorário: ' +
-                (info.event.start
-                    ? info.event.start.toLocaleTimeString('pt-BR', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    })
-                    : 'Não informado') +
-                '\nStatus: ' +
-                (status[info.event.extendedProps.status] || 'Agendado')
-            );
-        }
+events: []
     });
 
     calendar.render();
@@ -678,11 +658,18 @@ function refreshCalendar() {
         );
 
         const status = x.status || 'agendado';
+        const statusLabels = {
+            agendado: 'Agendado',
+            realizado: 'Realizado',
+            cancelado: 'Cancelado',
+            faltou: 'Faltou'
+        };
 
         return {
             id: String(x.id),
             title: (client?.name || 'Cliente') +
-                (procedure ? ' · ' + procedure.name : ''),
+                (procedure ? ' · ' + procedure.name : '') +
+                ' · ' + (statusLabels[status] || 'Agendado'),
             start: x.date + 'T' + x.time + ':00',
             backgroundColor: colors[status] || colors.agendado,
             borderColor: colors[status] || colors.agendado,
@@ -729,7 +716,13 @@ $('clientRows').innerHTML=data.clients.length?data.clients.map(x=>`<tr><td>${esc
 $('apptClient').innerHTML='<option value="">Selecione um cliente</option>'+data.clients.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');$('apptProcedure').innerHTML='<option value="">Selecione um procedimento (opcional)</option>'+data.procedures.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
 const sorted=[...data.appointments].sort((a,b)=>a.scheduled_at.localeCompare(b.scheduled_at));$('appointmentRows').innerHTML=sorted.length?sorted.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<tr><td>${esc(x.date)} ${esc(x.time)}</td><td>${esc(c?.name||'Cliente')}</td><td>${esc(p?.name||'—')}</td><td><select aria-label="Status" onchange="updateStatus('${x.id}',this.value)"><option value="agendado" ${x.status==='agendado'?'selected':''}>Agendado</option><option value="realizado" ${x.status==='realizado'?'selected':''}>Realizado</option><option value="cancelado" ${x.status==='cancelado'?'selected':''}>Cancelado</option><option value="faltou" ${x.status==='faltou'?'selected':''}>Faltou</option></select></td><td><button class="btn" onclick="del('appointments','${x.id}')">Excluir</button></td></tr>`}).join(''):'<tr><td colspan="5">Nenhum agendamento.</td></tr>';
 const upcoming=sorted.filter(x=>x.date>=today()&&x.status==='agendado').slice(0,4);$('dashAppointments').innerHTML=upcoming.length?upcoming.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<div class="row"><div><strong>${esc(c?.name||'Cliente')}</strong><small>${esc(x.date)} às ${esc(x.time)}${p?' • '+esc(p.name):''}</small></div><span class="pill">Agendado</span></div>`}).join(''):'<div class="empty">Nenhum atendimento futuro cadastrado.</div>'}
-async function updateStatus(id,status){await runSave(db.from('appointments').update({status}).eq('id',id))}
+async function updateStatus(id, status) {
+    return await runSave(
+        db.from('appointments')
+            .update({ status })
+            .eq('id', id)
+    );
+}
 window.del=del;window.updateStatus=updateStatus;
 $('authForm').addEventListener('submit', async e => {
 e.preventDefault();

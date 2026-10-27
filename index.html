@@ -602,7 +602,7 @@ function refreshCalendar() {
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
 $('finDate').value=today();$('apptDate').value=today();
 async function loadData(){if(!user)return;try{const [f,p,c,a]=await Promise.all([db.from('financial_transactions').select('*').order('transaction_date',{ascending:false}),db.from('procedures').select('*').order('created_at',{ascending:false}),db.from('clients').select('*').order('created_at',{ascending:false}),db.from('appointments').select('*').order('scheduled_at',{ascending:true})]);for(const r of [f,p,c,a])if(r.error)throw r.error;data.finance=f.data.map(x=>({...x,desc:x.description,date:x.transaction_date}));data.procedures=p.data.map(x=>({...x,duration:x.duration_minutes,products:Number(x.material_cost||0),other:Number(x.other_cost||0),price:Number(x.price||0),materials:x.products_used||'',notes:x.description||''}));data.clients=c.data;data.appointments=a.data.map(x=>({...x,date:x.scheduled_at.slice(0,10),time:x.scheduled_at.slice(11,16),clientId:x.client_id,procedureId:x.procedure_id,status:x.status}));render()}catch(e){alert('Não foi possível carregar os dados: '+(e.message||e));console.error(e)}}
-async function runSave(query){const {error}=await query;if(error){alert('Não foi possível salvar: '+error.message);console.error(error);return false}await loadData();return true}async function runSave(query) {
+async function runSave(query) { 
 try {
 const { error } = await query;
 if (error) {

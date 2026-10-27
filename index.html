@@ -610,11 +610,17 @@ allDaySlot: false,
 
         const botao = janela.querySelector('#salvarStatus');
         botao.disabled = true;
-        botao.textContent = 'Salvando...';
+              botao.textContent = 'Salvando...';
 
         try {
-            await updateStatus(evento.id, novoStatus);
-            janela.remove();
+            const salvo = await updateStatus(evento.id, novoStatus);
+
+            if (salvo) {
+                janela.remove();
+            } else {
+                botao.disabled = false;
+                botao.textContent = 'Salvar status';
+            }
         } catch (erro) {
             botao.disabled = false;
             botao.textContent = 'Salvar status';
@@ -623,10 +629,8 @@ allDaySlot: false,
         }
     };
 },
-        },
 
-        events: [],
-
+events: [],
         eventClick(info) {
             const status = {
                 agendado: 'Agendado',

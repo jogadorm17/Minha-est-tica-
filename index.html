@@ -168,6 +168,98 @@
 @media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{padding:15px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:22px}.subbrand{margin-bottom:14px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.sidebar-note{display:none}.main{padding:18px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}}
 @media(max-width:520px){.top{align-items:flex-start;flex-direction:column}.top h1{font-size:23px}.cards{gap:9px}.card{padding:14px}.card .value{font-size:21px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.toolbar{align-items:flex-start;flex-direction:column}}
 .auth-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:var(--bg)}.auth-card{width:min(100%,430px);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 10px 35px #5b472012}.auth-card h1{font-family:Georgia,serif;color:var(--gold-dark);margin:0 0 6px}.auth-card p{color:var(--muted);font-size:13px}.auth-card .form{margin-top:20px}.auth-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.auth-small{font-size:12px;color:var(--muted);margin-top:15px}.top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.user-email{font-size:12px;color:var(--muted)}
+
+/* Recuperação visual — Minha Estética */
+body {
+    background: var(--bg);
+    color: var(--ink);
+}
+
+.sidebar {
+    background: #171717;
+    border-color: var(--line);
+}
+
+.nav button {
+    color: var(--ink);
+}
+
+.nav button.active,
+.nav button:hover {
+    background: #302819;
+    color: var(--gold-dark);
+}
+
+.badge,
+.pill {
+    background: #302819;
+    color: var(--gold-dark);
+}
+
+.btn {
+    background: #252525;
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.btn.primary {
+    background: var(--gold);
+    color: #17130c;
+    border-color: var(--gold);
+}
+
+.field input,
+.field select,
+.field textarea,
+select[aria-label="Status"] {
+    background: #252525;
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.notice {
+    background: #292318;
+    color: #e0bd75;
+    border-color: #51432b;
+}
+
+#calendar {
+    --fc-page-bg-color: #1c1c1c;
+    --fc-neutral-bg-color: #252525;
+    --fc-neutral-text-color: #aaa49a;
+    --fc-border-color: #38342d;
+    --fc-today-bg-color: #302819;
+    color: var(--ink);
+}
+
+.fc .fc-col-header-cell-cushion,
+.fc .fc-daygrid-day-number,
+.fc .fc-list-day-text,
+.fc .fc-list-day-side-text {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.fc .fc-button-primary {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #17130c;
+}
+
+.fc .fc-button-primary:hover,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+    color: #17130c;
+}
+
+.auth-screen {
+    background: var(--bg);
+}
+
+.footer {
+    color: var(--muted);
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/locales-all.global.min.js"></script></head>

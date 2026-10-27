@@ -1,4 +1,4 @@
-/<!doctype html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -148,7 +148,17 @@
         padding: 6px 8px;
         font-size: 12px;
     }
-}:root{--bg:#f7f2e9;--card:#fffdf9;--gold:#b08d57;--gold-dark:#84683b;--ink:#302c27;--muted:#80786d;--line:#e9dfd0;--green:#47765c;--red:#a84d48}
+:root {
+  --bg: #111111;
+  --card: #1c1c1c;
+  --gold: #c9a45c;
+  --gold-dark: #e0bd75;
+  --ink: #f5f1e8;
+  --muted: #aaa49a;
+  --line: #38342d;
+  --green: #78b58b;
+  --red: #e17c76;
+}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.sidebar{background:#fffdf9;border-right:1px solid var(--line);padding:26px 17px}.brand{font-family:Georgia,serif;font-size:25px;color:var(--gold-dark);margin:0 10px 4px}.subbrand{font-size:12px;color:var(--muted);margin:0 10px 30px}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;text-align:left;padding:12px 13px;border-radius:12px;color:#5f584e;font-size:14px;cursor:pointer}.nav button.active,.nav button:hover{background:#f1e7d6;color:#6f542c;font-weight:650}.sidebar-note{margin:35px 9px 0;color:var(--muted);font-size:12px}.main{padding:28px;max-width:1450px;width:100%;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.eyebrow{text-transform:uppercase;letter-spacing:.13em;color:var(--gold-dark);font-size:11px;font-weight:750}.top h1{font-size:27px;margin:4px 0;font-weight:650}.top p{color:var(--muted);margin:0}.badge{background:#eee3d1;color:#70552c;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:650}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0}.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:0 5px 20px #5b47200a}.card .label{color:var(--muted);font-size:13px}.card .value{font-size:25px;font-weight:750;margin:8px 0 2px}.card .hint{font-size:12px;color:var(--muted)}.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:15px}.panel h2{font-size:17px;margin:0 0 14px}.panel .desc{color:var(--muted);font-size:13px;margin-top:-7px;margin-bottom:15px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.row small{display:block;color:var(--muted);margin-top:3px}.pill{font-size:11px;padding:5px 8px;border-radius:999px;background:#f0e8db;color:#715a37;white-space:nowrap}.empty{padding:18px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:13px;text-align:center}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:white;color:var(--ink);padding:10px 13px;border-radius:10px;cursor:pointer;font-weight:600}.btn.primary{background:var(--gold);border-color:var(--gold);color:white}.btn:hover{filter:brightness(.97)}.section{display:none}.section.active{display:block}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}.toolbar h2{margin:0;font-size:21px}.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:var(--muted);font-weight:650}.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink);font:inherit}.field textarea{min-height:76px;resize:vertical}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:650}.money-in{color:var(--green);font-weight:700}.money-out{color:var(--red);font-weight:700}.section-intro{color:var(--muted);margin:5px 0 18px;font-size:13px}.notice{padding:13px 15px;background:#f2e8d8;border:1px solid #e5d5ba;border-radius:12px;color:#6f542c;font-size:13px;margin-top:16px}.footer{color:var(--muted);font-size:11px;text-align:center;margin-top:25px}
 @media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{padding:15px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:22px}.subbrand{margin-bottom:14px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.sidebar-note{display:none}.main{padding:18px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}}
 @media(max-width:520px){.top{align-items:flex-start;flex-direction:column}.top h1{font-size:23px}.cards{gap:9px}.card{padding:14px}.card .value{font-size:21px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.toolbar{align-items:flex-start;flex-direction:column}}
@@ -271,24 +281,7 @@
     </div>
   </div>
 </section>
-<div class="field">
-  <div class="panel" style="margin-bottom: 20px;">
-    <h2>Calendário de atendimentos</h2>
-    <p class="section-intro">
-        Visualize seus compromissos por dia, semana ou mês.
-    </p>
 
-    <div id="calendar"></div>
-</div>
-  <label>Status</label>
-  <select id="apptStatus" required>
-    <option value="agendado">Agendado</option>
-    <option value="realizado">Realizado</option>
-    <option value="cancelado">Cancelado</option>
-    <option value="faltou">Faltou</option>
-  </select>
-</div>
-<div class="panel" style="margin-top:15px"><h2>Agendamentos</h2><div class="table-wrap"><table><thead><tr><th>Data e hora</th><th>Cliente</th><th>Procedimento</th><th>Status</th><th></th></tr></thead><tbody id="appointmentRows"><tr><td colspan="5">Nenhum agendamento.</td></tr></tbody></table></div></div></section>
 <div class="footer">Minha Estética • Seus registros são salvos na sua conta.</div>
 </main></div>
 <script>

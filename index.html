@@ -6,21 +6,32 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
     #calendar {
-        max-width: 100%;
-        margin: 15px auto;
-        font-size: 13px;
-    }
+    width: 100%;
+    max-width: 100%;
+    margin: 10px auto;
+    font-size: 13px;
+    --fc-border-color: var(--line);
+    --fc-today-bg-color: #F5EBDD;
+    --fc-page-bg-color: #FFFEFB;
+    --fc-neutral-bg-color: #F5EFE6;
+    --fc-neutral-text-color: var(--muted);
+}
 
     .fc .fc-button {
-        background: #b08d57;
-        border-color: #b08d57;
-    }
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #FFFFFF;
+    box-shadow: none;
+    text-transform: capitalize;
+    border-radius: 8px;
+}
 
     .fc .fc-button:hover,
-    .fc .fc-button:focus {
-        background: #84683b;
-        border-color: #84683b;
-    }
+.fc .fc-button:focus {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+    color: #FFFFFF;
+}
 
     .fc .fc-daygrid-day-number {
         color: #302c27;

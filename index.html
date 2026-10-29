@@ -780,6 +780,31 @@ $('cancelClientEdit').addEventListener('click', () => {
 });
    
 $('appointmentForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const client=$('apptClient').value;if(!client){alert('Cadastre e selecione um cliente antes de agendar.');return}const row={user_id:user.id,client_id:client,procedure_id:$('apptProcedure').value||null,scheduled_at:$('apptDate').value+'T'+$('apptTime').value+':00',status:$('apptStatus').value,notes:null};if(await runSave(db.from('appointments').insert(row))){e.target.reset();$('apptDate').value=today()}});
+function editClient(id) {
+  const cliente = data.clients.find(x => String(x.id) === String(id));
+
+  if (!cliente) {
+    alert('Cliente não encontrado.');
+    return;
+  }
+
+  const form = $('clientForm');
+
+  $('clientName').value = cliente.name || '';
+  $('clientPhone').value = cliente.phone || '';
+  $('clientEmail').value = cliente.email || '';
+  $('clientNotes').value = cliente.notes || '';
+
+  form.dataset.editingId = cliente.id;
+  form.querySelector('button[type="submit"]').textContent = 'Salvar alterações';
+  $('cancelClientEdit').hidden = false;
+
+  form.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center'
+  });
+}
+
 async function del(type,id){if(!confirm('Deseja excluir este registro?'))return;const table={finance:'financial_transactions',procedures:'procedures',clients:'clients',appointments:'appointments'}[type];const {error}=await db.from(table).delete().eq('id',id);if(error){alert('Não foi possível excluir. Verifique se há atendimentos ou lançamentos vinculados. '+error.message);return}await loadData()}
 function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=money(ins);$('dashOut').textContent=money(outs);$('dashBalance').textContent=money(ins-outs);$('dashClients').textContent=data.clients.length;
 $('financeRows').innerHTML=data.finance.length?data.finance.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.desc)}</td><td>${x.type==='entrada'?'Entrada':'Despesa'}</td><td class="${x.type==='entrada'?'money-in':'money-out'}">${x.type==='entrada'?'+':'−'} ${money(x.amount)}</td><td><button class="btn" onclick="del('finance','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum lançamento.</td></tr>';
@@ -799,7 +824,10 @@ $('clientRows').innerHTML = clientesFiltrados.length
       <td>${esc(x.phone || '—')}</td>
       <td>${esc(x.email || '—')}</td>
       <td>${esc(x.notes || '—')}</td>
-      <td><button class="btn" onclick="del('clients','${x.id}')">Excluir</button></td>
+      <td>
+  <button class="btn" onclick="editClient('${x.id}')">Editar</button>
+  <button class="btn" onclick="del('clients','${x.id}')">Excluir</button>
+</td>
     </tr>`).join('')
   : `<tr><td colspan="5">${
       campo

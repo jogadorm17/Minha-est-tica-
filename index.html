@@ -718,6 +718,7 @@ return false;
 }
 
 $('financeForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,type:$('finType').value,amount:Number($('finAmount').value),description:$('finDesc').value.trim(),transaction_date:$('finDate').value,payment_status:'pago'};if(await runSave(db.from('financial_transactions').insert(row))){e.target.reset();$('finDate').value=today()}});
+$('clientSearch').addEventListener('input', render);
 $('procedureForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('procName').value.trim(),duration_minutes:$('procDuration').value?Number($('procDuration').value):null,material_cost:Number($('procProducts').value||0),other_cost:Number($('procOther').value||0),price:Number($('procPrice').value||0),products_used:$('procMaterials').value.trim()||null,description:$('procNotes').value.trim()||null};if(await runSave(db.from('procedures').insert(row))){e.target.reset();$('procProducts').value='0';$('procOther').value='0'}});
 $('clientForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('clientName').value.trim(),phone:$('clientPhone').value.trim()||null,email:$('clientEmail').value.trim()||null,notes:$('clientNotes').value.trim()||null};if(await runSave(db.from('clients').insert(row)))e.target.reset()});
 $('appointmentForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const client=$('apptClient').value;if(!client){alert('Cadastre e selecione um cliente antes de agendar.');return}const row={user_id:user.id,client_id:client,procedure_id:$('apptProcedure').value||null,scheduled_at:$('apptDate').value+'T'+$('apptTime').value+':00',status:$('apptStatus').value,notes:null};if(await runSave(db.from('appointments').insert(row))){e.target.reset();$('apptDate').value=today()}});
@@ -725,7 +726,30 @@ async function del(type,id){if(!confirm('Deseja excluir este registro?'))return;
 function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=money(ins);$('dashOut').textContent=money(outs);$('dashBalance').textContent=money(ins-outs);$('dashClients').textContent=data.clients.length;
 $('financeRows').innerHTML=data.finance.length?data.finance.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.desc)}</td><td>${x.type==='entrada'?'Entrada':'Despesa'}</td><td class="${x.type==='entrada'?'money-in':'money-out'}">${x.type==='entrada'?'+':'−'} ${money(x.amount)}</td><td><button class="btn" onclick="del('finance','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum lançamento.</td></tr>';
 $('procedureRows').innerHTML=data.procedures.length?data.procedures.map(x=>`<tr><td><strong>${esc(x.name)}</strong><small>${esc(x.materials||'')}</small></td><td>${x.duration?esc(x.duration)+' min':'—'}</td><td>${money(x.products+x.other)}</td><td>${money(x.price)}</td><td class="${x.price-x.products-x.other>=0?'money-in':'money-out'}">${money(x.price-x.products-x.other)}</td><td><button class="btn" onclick="del('procedures','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
-$('clientRows').innerHTML=data.clients.length?data.clients.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone||'—')}</td><td>${esc(x.email||'—')}</td><td>${esc(x.notes||'—')}</td><td><button class="btn" onclick="del('clients','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum cliente cadastrado.</td></tr>';
+
+
+const campo = $('clientSearch').value.trim().toLowerCase();
+const clientesFiltrados = data.clients.filter(x =>
+  (x.name || '').toLowerCase().includes(campo) ||
+  (x.phone || '').toLowerCase().includes(campo) ||
+  (x.email || '').toLowerCase().includes(campo)
+);
+
+$('clientRows').innerHTML = clientesFiltrados.length
+  ? clientesFiltrados.map(x => `<tr>
+      <td>${esc(x.name)}</td>
+      <td>${esc(x.phone || '—')}</td>
+      <td>${esc(x.email || '—')}</td>
+      <td>${esc(x.notes || '—')}</td>
+      <td><button class="btn" onclick="del('clients','${x.id}')">Excluir</button></td>
+    </tr>`).join('')
+  : `<tr><td colspan="5">${
+      campo
+        ? 'Nenhum cliente encontrado para essa pesquisa.'
+        : 'Nenhum cliente cadastrado.'
+    }</td></tr>`;
+
+
 $('apptClient').innerHTML='<option value="">Selecione um cliente</option>'+data.clients.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');$('apptProcedure').innerHTML='<option value="">Selecione um procedimento (opcional)</option>'+data.procedures.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
 const sorted=[...data.appointments].sort((a,b)=>a.scheduled_at.localeCompare(b.scheduled_at));$('appointmentRows').innerHTML=sorted.length?sorted.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<tr><td>${esc(x.date)} ${esc(x.time)}</td><td>${esc(c?.name||'Cliente')}</td><td>${esc(p?.name||'—')}</td><td><select aria-label="Status" onchange="updateStatus('${x.id}',this.value)"><option value="agendado" ${x.status==='agendado'?'selected':''}>Agendado</option><option value="realizado" ${x.status==='realizado'?'selected':''}>Realizado</option><option value="cancelado" ${x.status==='cancelado'?'selected':''}>Cancelado</option><option value="faltou" ${x.status==='faltou'?'selected':''}>Faltou</option></select></td><td><button class="btn" onclick="del('appointments','${x.id}')">Excluir</button></td></tr>`}).join(''):'<tr><td colspan="5">Nenhum agendamento.</td></tr>';
 const upcoming=sorted.filter(x=>x.date>=today()&&x.status==='agendado').slice(0,4);$('dashAppointments').innerHTML=upcoming.length?upcoming.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<div class="row"><div><strong>${esc(c?.name||'Cliente')}</strong><small>${esc(x.date)} às ${esc(x.time)}${p?' • '+esc(p.name):''}</small></div><span class="pill">Agendado</span></div>`}).join(''):'<div class="empty">Nenhum atendimento futuro cadastrado.</div>'}

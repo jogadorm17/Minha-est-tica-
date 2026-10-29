@@ -809,6 +809,7 @@ async function editClient(id) {
 
   $('clientForm').dataset.editingId = cliente.id;
   $('clientForm').querySelector('button[type="submit"]').textContent = 'Salvar alterações';
+$('cancelClientEdit').hidden = false;
 
   $('clientName').focus();
 }

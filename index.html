@@ -788,6 +788,8 @@ $('clientForm').addEventListener('submit', async e => {
     form.reset();
     delete form.dataset.editingId;
     form.querySelector('button[type="submit"]').textContent = 'Cadastrar cliente';
+    $('cancelClientEdit').hidden = true;
+}
   }
 });
 

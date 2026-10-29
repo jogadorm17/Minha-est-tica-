@@ -338,7 +338,50 @@ body {
 .footer {
     color: var(--muted);
 }
-</style>
+/* Compactação complementar */
+.card,
+.panel {
+    padding: 13px;
+    border-radius: 13px;
+}
+
+.grid2 {
+    gap: 10px;
+}
+
+.top {
+    margin-bottom: 16px;
+}
+
+.panel h2 {
+    margin-bottom: 10px;
+}
+
+.form {
+    gap: 9px;
+    margin-bottom: 12px;
+}
+
+.field {
+    gap: 4px;
+}
+
+.field input,
+.field select,
+.field textarea {
+    padding: 9px 10px;
+}
+
+@media (max-width: 520px) {
+    .main {
+        padding: 12px;
+    }
+
+    .card,
+    .panel {
+        padding: 10px;
+    }
+}</style>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/locales-all.global.min.js"></script></head>
 <body>

@@ -870,8 +870,27 @@ $('clientRows').innerHTML = clientesFiltrados.length
 
 $('apptClient').innerHTML='<option value="">Selecione um cliente</option>'+data.clients.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');$('apptProcedure').innerHTML='<option value="">Selecione um procedimento (opcional)</option>'+data.procedures.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
 const sorted=[...data.appointments].sort((a,b)=>a.scheduled_at.localeCompare(b.scheduled_at));$('appointmentRows').innerHTML=sorted.length?sorted.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<tr><td>${esc(x.date)} ${esc(x.time)}</td><td>${esc(c?.name||'Cliente')}</td><td>${esc(p?.name||'—')}</td><td><select aria-label="Status" onchange="updateStatus('${x.id}',this.value)"><option value="agendado" ${x.status==='agendado'?'selected':''}>Agendado</option><option value="realizado" ${x.status==='realizado'?'selected':''}>Realizado</option><option value="cancelado" ${x.status==='cancelado'?'selected':''}>Cancelado</option><option value="faltou" ${x.status==='faltou'?'selected':''}>Faltou</option></select></td><td><button class="btn" onclick="del('appointments','${x.id}')">Excluir</button></td></tr>`}).join(''):'<tr><td colspan="5">Nenhum agendamento.</td></tr>';
-const upcoming=sorted.filter(x=>x.date>=today()&&x.status==='agendado').slice(0,4);$('dashAppointments').innerHTML=upcoming.length?upcoming.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<div class="row"><div><strong>${esc(c?.name||'Cliente')}</strong><small>${esc(x.date)} às ${esc(x.time)}${p?' • '+esc(p.name):''}</small></div><span class="pill">Agendado</span></div>`}).join(''):'<div class="empty">Nenhum atendimento futuro cadastrado.</div>'}
-if (calendar) refreshCalendar();
+  const upcoming = sorted
+    .filter(x => x.date >= today() && x.status === 'agendado')
+    .slice(0, 4);
+
+  $('dashAppointments').innerHTML = upcoming.length
+    ? upcoming.map(x => {
+        const c = data.clients.find(y => y.id === x.client_id);
+        const p = data.procedures.find(y => y.id === x.procedure_id);
+
+        return `<div class="row">
+          <div>
+            <strong>${esc(c?.name || 'Cliente')}</strong>
+            <small>${esc(x.date)} às ${esc(x.time)}${p ? ' • ' + esc(p.name) : ''}</small>
+          </div>
+          <span class="pill">Agendado</span>
+        </div>`;
+      }).join('')
+    : '<div class="empty">Nenhum atendimento futuro cadastrado.</div>';
+
+  if (calendar) refreshCalendar();
+}
 async function updateStatus(id, status) {
     return await runSave(
         db.from('appointments')

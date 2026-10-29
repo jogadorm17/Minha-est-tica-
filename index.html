@@ -889,8 +889,13 @@ const sorted=[...data.appointments].sort((a,b)=>a.scheduled_at.localeCompare(b.s
       }).join('')
     : '<div class="empty">Nenhum atendimento futuro cadastrado.</div>';
 
-  if (calendar) refreshCalendar();
+        if (calendar) refreshCalendar();
 }
+
+$('clientSearch').addEventListener('input', () => {
+    render();
+});
+
 async function updateStatus(id, status) {
     return await runSave(
         db.from('appointments')
@@ -898,9 +903,12 @@ async function updateStatus(id, status) {
             .eq('id', id)
     );
 }
-window.del=del;window.updateStatus=updateStatus;
+
+window.del = del;
+window.updateStatus = updateStatus;
+
 $('authForm').addEventListener('submit', async e => {
-e.preventDefault();
+    e.preventDefault();
 
 const email = $('authEmail').value.trim();
 const password = $('authPassword').value;

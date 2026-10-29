@@ -755,7 +755,7 @@ alert('Ocorreu um erro ao salvar. Verifique sua conexão e tente novamente.');
 return false;
 }
 }
-
+;
 $('financeForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,type:$('finType').value,amount:Number($('finAmount').value),description:$('finDesc').value.trim(),transaction_date:$('finDate').value,payment_status:'pago'};if(await runSave(db.from('financial_transactions').insert(row))){e.target.reset();$('finDate').value=today()}});
 
 $('clientForm').addEventListener('submit', async e => {
@@ -794,14 +794,13 @@ $('clientForm').addEventListener('submit', async e => {
   if (await runSave(query)) {
     form.reset();
     delete form.dataset.editingId;
-    form.querySelector('button[type="submit"]').textContent = 'Cadastrar cliente';
+    form.querySelector('button[type="submit"]').textContent =
+      'Cadastrar cliente';
     $('cancelClientEdit').hidden = true;
-}
   }
 });
 
-$('procedureForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('procName').value.trim(),duration_minutes:$('procDuration').value?Number($('procDuration').value):null,material_cost:Number($('procProducts').value||0),other_cost:Number($('procOther').value||0),price:Number($('procPrice').value||0),products_used:$('procMaterials').value.trim()||null,description:$('procNotes').value.trim()||null};if(await runSave(db.from('procedures').insert(row))){e.target.reset();$('procProducts').value='0';$('procOther').value='0'}});
-$('clientForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('clientName').value.trim(),phone:$('clientPhone').value.trim()||null,email:$('clientEmail').value.trim()||null,notes:$('clientNotes').value.trim()||null};if(await runSave(db.from('clients').insert(row)))e.target.reset()});
+    $('procedureForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('procName').value.trim(),duration_minutes:$('procDuration').value?Number($('procDuration').value):null,material_cost:Number($('procProducts').value||0),other_cost:Number($('procOther').value||0),price:Number($('procPrice').value||0),products_used:$('procMaterials').value.trim()||null,description:$('procNotes').value.trim()||null};if(await runSave(db.from('procedures').insert(row))){e.target.reset();$('procProducts').value='0';$('procOther').value='0'}});
 $('appointmentForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const client=$('apptClient').value;if(!client){alert('Cadastre e selecione um cliente antes de agendar.');return}const row={user_id:user.id,client_id:client,procedure_id:$('apptProcedure').value||null,scheduled_at:$('apptDate').value+'T'+$('apptTime').value+':00',status:$('apptStatus').value,notes:null};if(await runSave(db.from('appointments').insert(row))){e.target.reset();$('apptDate').value=today()}});
 async function del(type,id){if(!confirm('Deseja excluir este registro?'))return;const table={finance:'financial_transactions',procedures:'procedures',clients:'clients',appointments:'appointments'}[type];const {error}=await db.from(table).delete().eq('id',id);if(error){alert('Não foi possível excluir. Verifique se há atendimentos ou lançamentos vinculados. '+error.message);return}await loadData()}
 async function editClient(id) {
@@ -824,6 +823,19 @@ $('cancelClientEdit').hidden = false;
 }
 
 window.editClient = editClient;
+    ```javascript
+$('cancelClientEdit').addEventListener('click', () => {
+  const form = $('clientForm');
+
+  form.reset();
+  delete form.dataset.editingId;
+
+  form.querySelector('button[type="submit"]').textContent =
+    'Cadastrar cliente';
+
+  $('cancelClientEdit').hidden = true;
+});
+```
 
 function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=money(ins);$('dashOut').textContent=money(outs);$('dashBalance').textContent=money(ins-outs);$('dashClients').textContent=data.clients.length;
 $('financeRows').innerHTML=data.finance.length?data.finance.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.desc)}</td><td>${x.type==='entrada'?'Entrada':'Despesa'}</td><td class="${x.type==='entrada'?'money-in':'money-out'}">${x.type==='entrada'?'+':'−'} ${money(x.amount)}</td><td><button class="btn" onclick="del('finance','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum lançamento.</td></tr>';

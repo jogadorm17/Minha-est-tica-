@@ -802,7 +802,44 @@ $('clientForm').addEventListener('submit', async e => {
 
     $('procedureForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('procName').value.trim(),duration_minutes:$('procDuration').value?Number($('procDuration').value):null,material_cost:Number($('procProducts').value||0),other_cost:Number($('procOther').value||0),price:Number($('procPrice').value||0),products_used:$('procMaterials').value.trim()||null,description:$('procNotes').value.trim()||null};if(await runSave(db.from('procedures').insert(row))){e.target.reset();$('procProducts').value='0';$('procOther').value='0'}});
 $('appointmentForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const client=$('apptClient').value;if(!client){alert('Cadastre e selecione um cliente antes de agendar.');return}const row={user_id:user.id,client_id:client,procedure_id:$('apptProcedure').value||null,scheduled_at:$('apptDate').value+'T'+$('apptTime').value+':00',status:$('apptStatus').value,notes:null};if(await runSave(db.from('appointments').insert(row))){e.target.reset();$('apptDate').value=today()}});
-async function del(type,id){if(!confirm('Deseja excluir este registro?'))return;const table={finance:'financial_transactions',procedures:'procedures',clients:'clients',appointments:'appointments'}[type];const {error}=await db.from(table).delete().eq('id',id);if(error){alert('Não foi possível excluir. Verifique se há atendimentos ou lançamentos vinculados. '+error.message);return}await loadData()}
+async function 
+async function del(type, id) {
+    if (!user?.id) {
+        alert('Faça login para continuar.');
+        return;
+    }
+
+    if (!confirm('Deseja excluir este registro?')) return;
+
+    const table = {
+        finance: 'financial_transactions',
+        procedures: 'procedures',
+        clients: 'clients',
+        appointments: 'appointments'
+    }[type];
+
+    if (!table) {
+        alert('Tipo de registro inválido.');
+        return;
+    }
+
+    const { error } = await db
+        .from(table)
+        .delete()
+        .eq('id', id)
+        .eq('user_id', user.id);
+
+    if (error) {
+        alert(
+            'Não foi possível excluir. Verifique se há atendimentos ou lançamentos vinculados. ' +
+            error.message
+        );
+        return;
+    }
+
+    await loadData();
+}
+
 async function editClient(id) {
   const cliente = data.clients.find(x => x.id === id);
   if (!cliente) {

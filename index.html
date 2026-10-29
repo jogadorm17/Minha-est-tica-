@@ -727,19 +727,6 @@ $('financeForm').addEventListener('submit',async e=>{e.preventDefault();if(!user
 $('clientSearch').addEventListener('input', render);
 $('procedureForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('procName').value.trim(),duration_minutes:$('procDuration').value?Number($('procDuration').value):null,material_cost:Number($('procProducts').value||0),other_cost:Number($('procOther').value||0),price:Number($('procPrice').value||0),products_used:$('procMaterials').value.trim()||null,description:$('procNotes').value.trim()||null};if(await runSave(db.from('procedures').insert(row))){e.target.reset();$('procProducts').value='0';$('procOther').value='0'}});
 
-$('clientForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  if (!user) return;
-
-  const form = $('clientForm');
-  const id = form.dataset.editingId;
-
-  const row = {
-    name: $('clientName').value.trim(),
-    phone: $('clientPhone').value.trim() || null,
-    email: $('clientEmail').value.trim() || null,
-    notes: $('clientNotes').value.trim() || null
-  };
 
 });
  

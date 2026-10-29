@@ -835,7 +835,6 @@ $('cancelClientEdit').addEventListener('click', () => {
 
   $('cancelClientEdit').hidden = true;
 });
-```
 
 function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=money(ins);$('dashOut').textContent=money(outs);$('dashBalance').textContent=money(ins-outs);$('dashClients').textContent=data.clients.length;
 $('financeRows').innerHTML=data.finance.length?data.finance.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.desc)}</td><td>${x.type==='entrada'?'Entrada':'Despesa'}</td><td class="${x.type==='entrada'?'money-in':'money-out'}">${x.type==='entrada'?'+':'−'} ${money(x.amount)}</td><td><button class="btn" onclick="del('finance','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum lançamento.</td></tr>';

@@ -745,6 +745,7 @@ events: []
 }
 
 
+
 function refreshCalendar() {
     if (!calendar) return;
 
@@ -764,41 +765,66 @@ function refreshCalendar() {
 
     const events = data.appointments.map(x => {
         const client = data.clients.find(c =>
-            String(c.id) === String(x.client_id)
+            String(c.id) === String(x.client_id || x.clientId)
         );
 
         const procedure = data.procedures.find(p =>
-            String(p.id) === String(x.procedure_id)
+            String(p.id) === String(x.procedure_id || x.procedureId)
         );
 
         const status = x.status || 'agendado';
 
-        // Compatibilidade com os formatos de data existentes
-        const start = x.scheduled_at
-            ? x.scheduled_at.replace(' ', 'T')
+        const scheduledAt = x.scheduled_at;
+
+        const start = scheduledAt
+            ? scheduledAt.replace(' ', 'T')
             : x.date && x.time
-                ? x.date + 'T' + x.time + ':00'
+                ? x.date + 'T' + x.time
                 : null;
 
         if (!start) return null;
+
+        const startDate = new Date(start);
+
+        if (isNaN(startDate.getTime())) return null;
+
+        // Duração automática do procedimento
+        const duration = Number(procedure?.duration || 30);
+
+        const endDate = new Date(
+            startDate.getTime() + duration * 60000
+        );
 
         return {
             id: String(x.id),
 
             title:
                 (client?.name || 'Cliente') +
-                (procedure ? ' · ' + procedure.name : '') +
-                ' · ' + (statusLabels[status] || 'Agendado'),
+                ' · ' +
+                (procedure?.name || 'Procedimento'),
 
-            start: start,
+            start: startDate,
+            end: endDate,
 
             backgroundColor: colors[status] || colors.agendado,
             borderColor: colors[status] || colors.agendado,
 
+            textColor: '#ffffff',
+
             extendedProps: {
                 status: status,
-                clientId: x.client_id,
-                procedureId: x.procedure_id
+                statusLabel: statusLabels[status] || 'Agendado',
+
+                clientId: x.client_id || x.clientId,
+                clientName: client?.name || 'Cliente',
+                clientPhone: client?.phone || '',
+
+                procedureId: x.procedure_id || x.procedureId,
+                procedureName: procedure?.name || 'Procedimento',
+
+                duration: duration,
+                scheduledAt: x.scheduled_at,
+                notes: x.notes || x.description || ''
             }
         };
     }).filter(Boolean);
@@ -806,6 +832,7 @@ function refreshCalendar() {
     calendar.removeAllEvents();
     calendar.addEventSource(events);
 }
+
 
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
 $('finDate').value=today();$('apptDate').value=today();

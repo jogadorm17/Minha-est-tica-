@@ -979,7 +979,54 @@ $('clientForm').addEventListener('submit', async e => {
     $('cancelClientEdit').hidden = true;
   }
 });
+// EDITAR CLIENTE
+function editClient(id) {
+    const cliente = data.clients.find(
+        x => String(x.id) === String(id)
+    );
 
+    if (!cliente) {
+        alert('Cliente não encontrado.');
+        return;
+    }
+
+    $('clientName').value = cliente.name || '';
+    $('clientPhone').value = cliente.phone || '';
+    $('clientEmail').value = cliente.email || '';
+    $('clientNotes').value = cliente.notes || '';
+
+    $('clientForm').dataset.editingId = cliente.id;
+
+    $('clientForm').querySelector(
+        'button[type="submit"]'
+    ).textContent = 'Salvar alterações';
+
+    $('cancelClientEdit').hidden = false;
+
+    $('clientForm').scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
+
+    $('clientName').focus();
+}
+
+// Permite que o botão HTML acione a função
+window.editClient = editClient;
+
+// CANCELAR EDIÇÃO
+$('cancelClientEdit').addEventListener('click', () => {
+    const form = $('clientForm');
+
+    form.reset();
+    delete form.dataset.editingId;
+
+    form.querySelector(
+        'button[type="submit"]'
+    ).textContent = 'Cadastrar cliente';
+
+    $('cancelClientEdit').hidden = true;
+});
 const productItems = $('productItems');
 
 function updateProductTotal() {

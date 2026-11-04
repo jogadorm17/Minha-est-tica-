@@ -1058,7 +1058,13 @@ $('appointmentForm').addEventListener('submit', async e => {
 
 
    
- 
+     if (await runSave(
+        db.from('appointments').insert(row)
+    )) {
+        e.target.reset();
+        $('apptDate').value = today();
+    }
+});
 $('clientForm').addEventListener('submit', async e => {
   e.preventDefault();
   if (!user) return;

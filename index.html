@@ -741,6 +741,7 @@ events: []
     refreshCalendar();
 }
 
+
 function refreshCalendar() {
     if (!calendar) return;
 
@@ -749,6 +750,13 @@ function refreshCalendar() {
         realizado: '#47765c',
         cancelado: '#a84d48',
         faltou: '#858585'
+    };
+
+    const statusLabels = {
+        agendado: 'Agendado',
+        realizado: 'Realizado',
+        cancelado: 'Cancelado',
+        faltou: 'Faltou'
     };
 
     const events = data.appointments.map(x => {
@@ -761,30 +769,41 @@ function refreshCalendar() {
         );
 
         const status = x.status || 'agendado';
-        const statusLabels = {
-            agendado: 'Agendado',
-            realizado: 'Realizado',
-            cancelado: 'Cancelado',
-            faltou: 'Faltou'
-        };
+
+        // Compatibilidade com os formatos de data existentes
+        const start = x.scheduled_at
+            ? x.scheduled_at.replace(' ', 'T')
+            : x.date && x.time
+                ? x.date + 'T' + x.time + ':00'
+                : null;
+
+        if (!start) return null;
 
         return {
             id: String(x.id),
-            title: (client?.name || 'Cliente') +
+
+            title:
+                (client?.name || 'Cliente') +
                 (procedure ? ' · ' + procedure.name : '') +
                 ' · ' + (statusLabels[status] || 'Agendado'),
-            start: x.date + 'T' + x.time + ':00',
+
+            start: start,
+
             backgroundColor: colors[status] || colors.agendado,
             borderColor: colors[status] || colors.agendado,
+
             extendedProps: {
-                 status: x.status
-},
+                status: status,
+                clientId: x.client_id,
+                procedureId: x.procedure_id
+            }
         };
-    });
+    }).filter(Boolean);
 
     calendar.removeAllEvents();
     calendar.addEventSource(events);
 }
+
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
 $('finDate').value=today();$('apptDate').value=today();
 

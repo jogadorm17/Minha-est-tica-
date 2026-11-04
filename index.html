@@ -906,6 +906,74 @@ $('clientForm').addEventListener('submit', async e => {
   }
 });
 
+const productItems = $('productItems');
+
+function updateProductTotal() {
+  let total = 0;
+
+  productItems.querySelectorAll('.product-item').forEach(item => {
+    const quantity = Number(item.querySelector('.product-quantity').value || 0);
+    const unitCost = Number(item.querySelector('.product-unit-cost').value || 0);
+
+    const subtotal = quantity * unitCost;
+
+    item.querySelector('.product-subtotal').value = subtotal.toFixed(2);
+    total += subtotal;
+  });
+
+  $('procProducts').value = total.toFixed(2);
+}
+
+function addProductRow() {
+  const item = document.createElement('div');
+  item.className = 'product-item field full';
+
+  item.innerHTML = `
+    <div class="field">
+      <label>Nome do produto</label>
+      <input type="text" class="product-name" placeholder="Ex.: Óleo corporal">
+    </div>
+
+    <div class="field">
+      <label>Quantidade</label>
+      <input type="number" class="product-quantity" min="0" step="0.001" value="1">
+    </div>
+
+    <div class="field">
+      <label>Custo unitário (R$)</label>
+      <input type="number" class="product-unit-cost" min="0" step="0.01" value="0">
+    </div>
+
+    <div class="field">
+      <label>Subtotal (R$)</label>
+      <input type="number" class="product-subtotal" readonly value="0.00">
+    </div>
+
+    <button type="button" class="btn remove-product">
+      Remover produto
+    </button>
+
+    <hr>
+  `;
+
+  productItems.appendChild(item);
+
+  item.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', updateProductTotal);
+  });
+
+  item.querySelector('.remove-product').addEventListener('click', () => {
+    item.remove();
+    updateProductTotal();
+  });
+
+  updateProductTotal();
+}
+
+$('addProductBtn').addEventListener('click', addProductRow);
+
+addProductRow();
+
     $('procedureForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('procName').value.trim(),duration_minutes:$('procDuration').value?Number($('procDuration').value):null,material_cost:Number($('procProducts').value||0),other_cost:Number($('procOther').value||0),price:Number($('procPrice').value||0),products_used:$('procMaterials').value.trim()||null,description:$('procNotes').value.trim()||null};if(await runSave(db.from('procedures').insert(row))){e.target.reset();$('procProducts').value='0';$('procOther').value='0'}});
 $('appointmentForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const client=$('apptClient').value;if(!client){alert('Cadastre e selecione um cliente antes de agendar.');return}const row={user_id:user.id,client_id:client,procedure_id:$('apptProcedure').value||null,scheduled_at:$('apptDate').value+'T'+$('apptTime').value+':00',status:$('apptStatus').value,notes:null};if(await runSave(db.from('appointments').insert(row))){e.target.reset();$('apptDate').value=today()}});
 async function del(type, id) {

@@ -1051,7 +1051,7 @@ $('appointmentForm').addEventListener('submit', async e => {
         user_id: user.id,
         client_id: client,
         procedure_id: procedureId || null,
-        scheduled_at: date + 'T' + time + ':00',
+        scheduled_at: horarioParaSalvar(date, time),
         status: status,
         notes: null
     };

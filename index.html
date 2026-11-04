@@ -1115,32 +1115,6 @@ $('procedureRows').innerHTML = data.procedures.length
     }).join('')
   : '<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
 
-      const totalCost = x.products + x.other;
-      const profit = x.price - totalCost;
-      const margin = x.price > 0
-        ? (profit / x.price * 100).toFixed(1)
-        : '0.0';
-
-      return `<tr>
-        <td>
-          <strong>${esc(x.name)}</strong>
-          ${productsHtml}
-        </td>
-        <td>${x.duration ? esc(x.duration) + ' min' : '—'}</td>
-        <td>${money(totalCost)}</td>
-        <td>${money(x.price)}</td>
-        <td class="${profit >= 0 ? 'money-in' : 'money-out'}">
-          ${money(profit)}
-          <small style="display:block">${margin}% de margem</small>
-        </td>
-        <td>
-          <button class="btn" onclick="del('procedures','${x.id}')">
-            Excluir
-          </button>
-        </td>
-      </tr>`;
-    }).join('')
-  : '<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
 
 
 const campo = $('clientSearch').value.trim().toLowerCase();

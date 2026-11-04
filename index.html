@@ -1072,7 +1072,46 @@ $('procedureForm').addEventListener('submit', async e => {
 
 function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=money(ins);$('dashOut').textContent=money(outs);$('dashBalance').textContent=money(ins-outs);$('dashClients').textContent=data.clients.length;
 $('financeRows').innerHTML=data.finance.length?data.finance.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.desc)}</td><td>${x.type==='entrada'?'Entrada':'Despesa'}</td><td class="${x.type==='entrada'?'money-in':'money-out'}">${x.type==='entrada'?'+':'−'} ${money(x.amount)}</td><td><button class="btn" onclick="del('finance','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum lançamento.</td></tr>';
-$('procedureRows').innerHTML=data.procedures.length?data.procedures.map(x=>`<tr><td><strong>${esc(x.name)}</strong><small>${esc(x.materials||'')}</small></td><td>${x.duration?esc(x.duration)+' min':'—'}</td><td>${money(x.products+x.other)}</td><td>${money(x.price)}</td><td class="${x.price-x.products-x.other>=0?'money-in':'money-out'}">${money(x.price-x.products-x.other)}</td><td><button class="btn" onclick="del('procedures','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
+$('procedureRows').innerHTML = data.procedures.length
+  ? data.procedures.map(x => {
+      const productsHtml = x.items?.length
+        ? `<div style="margin-top:8px;font-size:12px;color:#76664f">
+            ${x.items.map(item => `
+              <div>
+                • ${esc(item.product_name)} —
+                ${esc(item.quantity)} × ${money(item.unit_cost)}
+                = <strong>${money(item.total_cost)}</strong>
+              </div>
+            `).join('')}
+          </div>`
+        : '<small>Nenhum produto detalhado</small>';
+
+      const totalCost = x.products + x.other;
+      const profit = x.price - totalCost;
+      const margin = x.price > 0
+        ? (profit / x.price * 100).toFixed(1)
+        : '0.0';
+
+      return `<tr>
+        <td>
+          <strong>${esc(x.name)}</strong>
+          ${productsHtml}
+        </td>
+        <td>${x.duration ? esc(x.duration) + ' min' : '—'}</td>
+        <td>${money(totalCost)}</td>
+        <td>${money(x.price)}</td>
+        <td class="${profit >= 0 ? 'money-in' : 'money-out'}">
+          ${money(profit)}
+          <small style="display:block">${margin}% de margem</small>
+        </td>
+        <td>
+          <button class="btn" onclick="del('procedures','${x.id}')">
+            Excluir
+          </button>
+        </td>
+      </tr>`;
+    }).join('')
+  : '<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
 
 
 const campo = $('clientSearch').value.trim().toLowerCase();

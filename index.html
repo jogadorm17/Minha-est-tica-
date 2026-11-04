@@ -1067,29 +1067,7 @@ $('appointmentForm').addEventListener('submit', async e => {
 });
 
 
-  const button = e.target.querySelector('button[type="submit"]');
-  button.disabled = true;
-  button.textContent = 'Salvando...';
-
-  try {
-    const salvo = await runSave(
-      db.from('appointments').insert(row)
-    );
-
-    if (salvo) {
-      e.target.reset();
-      $('apptDate').value = today();
-      alert('Agendamento registrado com sucesso!');
-    }
-  } catch (error) {
-    console.error('Erro no agendamento:', error);
-    alert('Erro ao registrar agendamento: ' + error.message);
-  } finally {
-    button.disabled = false;
-    button.textContent = '+ Salvar agendamento';
-  }
-});
-
+ 
 $('clientForm').addEventListener('submit', async e => {
   e.preventDefault();
   if (!user) return;

@@ -985,15 +985,6 @@ function addProductRow() {
   updateProductTotal();
 }
 
-
-  item.querySelector('.remove-product').addEventListener('click', () => {
-    item.remove();
-    updateProductTotal();
-  });
-
-  updateProductTotal();
-}
-
 $('addProductBtn').addEventListener('click', addProductRow);
 
 addProductRow();

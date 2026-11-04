@@ -1072,6 +1072,8 @@ $('procedureForm').addEventListener('submit', async e => {
 
 function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=money(ins);$('dashOut').textContent=money(outs);$('dashBalance').textContent=money(ins-outs);$('dashClients').textContent=data.clients.length;
 $('financeRows').innerHTML=data.finance.length?data.finance.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.desc)}</td><td>${x.type==='entrada'?'Entrada':'Despesa'}</td><td class="${x.type==='entrada'?'money-in':'money-out'}">${x.type==='entrada'?'+':'−'} ${money(x.amount)}</td><td><button class="btn" onclick="del('finance','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum lançamento.</td></tr>';
+
+
 $('procedureRows').innerHTML = data.procedures.length
   ? data.procedures.map(x => {
       const productsHtml = x.items?.length
@@ -1085,6 +1087,33 @@ $('procedureRows').innerHTML = data.procedures.length
             `).join('')}
           </div>`
         : '<small>Nenhum produto detalhado</small>';
+
+      const totalCost = x.products + x.other;
+      const profit = x.price - totalCost;
+      const margin = x.price > 0
+        ? (profit / x.price * 100).toFixed(1)
+        : '0.0';
+
+      return `<tr>
+        <td>
+          <strong>${esc(x.name)}</strong>
+          ${productsHtml}
+        </td>
+        <td>${x.duration ? esc(x.duration) + ' min' : '—'}</td>
+        <td>${money(totalCost)}</td>
+        <td>${money(x.price)}</td>
+        <td class="${profit >= 0 ? 'money-in' : 'money-out'}">
+          <strong>${money(profit)}</strong>
+          <small style="display:block;margin-top:4px">${margin}% de margem</small>
+        </td>
+        <td>
+          <button class="btn" onclick="del('procedures','${x.id}')">
+            Excluir
+          </button>
+        </td>
+      </tr>`;
+    }).join('')
+  : '<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
 
       const totalCost = x.products + x.other;
       const profit = x.price - totalCost;

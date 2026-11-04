@@ -393,7 +393,41 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 <div class="cards"><div class="card"><div class="label">Entradas registradas</div><div class="value" id="dashIn">R$ 0,00</div><div class="hint">Total dos lançamentos</div></div><div class="card"><div class="label">Despesas registradas</div><div class="value" id="dashOut">R$ 0,00</div><div class="hint">Total dos lançamentos</div></div><div class="card"><div class="label">Saldo estimado</div><div class="value" id="dashBalance">R$ 0,00</div><div class="hint">Entradas menos despesas</div></div><div class="card"><div class="label">Clientes cadastrados</div><div class="value" id="dashClients">0</div><div class="hint">Na sua lista</div></div></div>
 <div class="grid2"><div class="panel"><h2>Atalhos rápidos</h2><p class="desc">Acesse as tarefas mais comuns.</p><div class="actions"><button class="btn primary" data-go="clientes">＋ Cadastrar cliente</button><button class="btn" data-go="financeiro">＋ Lançamento financeiro</button><button class="btn" data-go="fichas">＋ Nova ficha técnica</button><button class="btn" data-go="agenda">＋ Agendar atendimento</button></div><div class="notice">Dica: cadastre seus procedimentos e custos para entender melhor a rentabilidade de cada serviço.</div></div><div class="panel"><h2>Próximos atendimentos</h2><p class="desc">Seus compromissos registrados.</p><div id="dashAppointments" class="empty">Nenhum atendimento cadastrado ainda.</div></div></div>
 </section>
-<section class="section" id="view-financeiro"><div class="toolbar"><h2>Controle financeiro</h2></div><p class="section-intro">Registre entradas e despesas para acompanhar seu caixa.</p><div class="panel"><form id="financeForm" class="form"><div class="field"><label>Tipo de lançamento</label><select id="finType"><option value="entrada">Entrada</option><option value="despesa">Despesa</option></select></div><div class="field"><label>Valor (R$)</label><input id="finAmount" type="number" min="0.01" step="0.01" required placeholder="0,00"></div><div class="field"><label>Descrição</label><input id="finDesc" required placeholder="Ex.: Massagem relaxante"></div><div class="field"><label>Data</label><input id="finDate" type="date" required></div><div class="field full"><button class="btn primary" type="submit">Salvar lançamento</button></div></form></div><div class="panel" style="margin-top:15px"><h2>Histórico de lançamentos</h2><div class="table-wrap"><table><thead><tr><th>Data</th><th>Descrição</th><th>Tipo</th><th>Valor</th><th></th></tr></thead><tbody id="financeRows"><tr><td colspan="5">Nenhum lançamento.</td></tr></tbody></table></div></div></section>
+<section class="section" id="view-financeiro"><div class="toolbar"><h2>Controle financeiro</h2></div><p class="section-intro">Registre entradas e despesas para acompanhar seu caixa.</p><div class="panel"><form id="financeForm" class="form"><div class="field"><label>Tipo de lançamento</label><select id="finType"><option value="entrada">Entrada</option><option value="despesa">Despesa</option></select></div><div class="field"><label>Valor (R$)</label><input id="finAmount" type="number" min="0.01" step="0.01" required placeholder="0,00"></div><div class="field"><label>Descrição</label><input id="finDesc" required placeholder="Ex.: Massagem relaxante"></div><div class="field"><label>Data</label><input id="finDate" type="date" required></div><div class="field full"><button class="btn primary" type="submit">Salvar lançamento</button></div></form></div>
+<div class="panel" id="financialReport" style="margin-top:15px">
+  <div class="toolbar">
+    <h2>Relatório financeiro</h2>
+    <select id="reportMonth">
+      <option value="all">Todo o período</option>
+    </select>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span>Total de entradas</span>
+      <strong id="reportIncome">R$ 0,00</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Total de despesas</span>
+      <strong id="reportExpenses">R$ 0,00</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Saldo do período</span>
+      <strong id="reportBalance">R$ 0,00</strong>
+    </div>
+  </div>
+
+  <div style="margin-top:20px">
+    <h3>Entradas x despesas</h3>
+    <div id="reportChart"
+         style="display:flex;gap:12px;align-items:end;height:180px;padding:15px 0">
+      Aguardando lançamentos...
+    </div>
+  </div>
+</div>
+<div class="panel" style="margin-top:15px"><h2>Histórico de lançamentos</h2><div class="table-wrap"><table><thead><tr><th>Data</th><th>Descrição</th><th>Tipo</th><th>Valor</th><th></th></tr></thead><tbody id="financeRows"><tr><td colspan="5">Nenhum lançamento.</td></tr></tbody></table></div></div></section>
 <section class="section" id="view-fichas"><div class="toolbar"><h2>Fichas técnicas</h2></div><p class="section-intro">Cadastre serviços, custos e preço sugerido. O cálculo abaixo não substitui a avaliação de todos os custos do negócio.</p><div class="panel">
 <form id="procedureForm" class="form">
 
@@ -1118,6 +1152,79 @@ $('procedureForm').addEventListener('submit', async e => {
     console.error(error);
   }
 });
+
+function renderFinancialReport() {
+  const select = $('reportMonth');
+  if (!select) return;
+
+  const previous = select.value;
+
+  const months = [...new Set(
+    data.finance
+      .map(x => (x.date || '').slice(0, 7))
+      .filter(Boolean)
+  )].sort().reverse();
+
+  select.innerHTML =
+    '<option value="all">Todo o período</option>' +
+    months.map(month => {
+      const [year, number] = month.split('-');
+      return `<option value="${month}">${number}/${year}</option>`;
+    }).join('');
+
+  select.value = months.includes(previous) || previous === 'all'
+    ? previous
+    : 'all';
+
+  const selectedMonth = select.value;
+
+  const records = selectedMonth === 'all'
+    ? data.finance
+    : data.finance.filter(x =>
+        (x.date || '').slice(0, 7) === selectedMonth
+      );
+
+  const income = records
+    .filter(x => x.type === 'entrada')
+    .reduce((sum, x) => sum + Number(x.amount || 0), 0);
+
+  const expenses = records
+    .filter(x => x.type === 'despesa')
+    .reduce((sum, x) => sum + Number(x.amount || 0), 0);
+
+  const balance = income - expenses;
+
+  $('reportIncome').textContent = money(income);
+  $('reportExpenses').textContent = money(expenses);
+  $('reportBalance').textContent = money(balance);
+
+  $('reportBalance').style.color =
+    balance >= 0 ? '#4d8061' : '#b65353';
+
+  const maximum = Math.max(income, expenses, 1);
+
+  const incomeHeight = income > 0
+    ? Math.max(6, income / maximum * 110)
+    : 0;
+
+  const expenseHeight = expenses > 0
+    ? Math.max(6, expenses / maximum * 110)
+    : 0;
+
+  $('reportChart').innerHTML = `
+    <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px">
+      <strong style="font-size:12px">${money(income)}</strong>
+      <div style="width:55px;height:${incomeHeight}px;background:#b08d57;border-radius:6px 6px 0 0"></div>
+      <small>Entradas</small>
+    </div>
+
+    <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px">
+      <strong style="font-size:12px">${money(expenses)}</strong>
+      <div style="width:55px;height:${expenseHeight}px;background:#c58b82;border-radius:6px 6px 0 0"></div>
+      <small>Despesas</small>
+    </div>
+  `;
+}
 
 function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=money(ins);$('dashOut').textContent=money(outs);$('dashBalance').textContent=money(ins-outs);$('dashClients').textContent=data.clients.length;
 $('financeRows').innerHTML=data.finance.length?data.finance.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.desc)}</td><td>${x.type==='entrada'?'Entrada':'Despesa'}</td><td class="${x.type==='entrada'?'money-in':'money-out'}">${x.type==='entrada'?'+':'−'} ${money(x.amount)}</td><td><button class="btn" onclick="del('finance','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum lançamento.</td></tr>';

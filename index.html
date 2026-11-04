@@ -795,7 +795,7 @@ async function loadData(){
     console.error(e);
   }
 }
-
+async function runSave(query) {
 try {
 const { error } = await query;
 if (error) {

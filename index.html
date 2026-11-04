@@ -1020,9 +1020,7 @@ $('appointmentForm').addEventListener('submit', async e => {
                 )
             );
 
-            const existingDuration = Number(
-                existingProcedure?.duration || 30
-            );
+         const existingDuration = obterDuracao(existingProcedure);
 
             const existingEnd = new Date(
                 existingStart.getTime() +

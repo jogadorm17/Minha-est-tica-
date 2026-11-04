@@ -879,15 +879,21 @@ async function loadData(){
 
     data.clients=c.data;
 
-    data.appointments=a.data.map(x=>({
-      ...x,
-      date:x.scheduled_at.slice(0,10),
-      time:x.scheduled_at.slice(11,16),
-      clientId:x.client_id,
-      procedureId:x.procedure_id,
-      status:x.status
-    }));
+    data.appointments = a.data.map(x => ({
+    ...x,
 
+    date: x.scheduled_at
+        ? x.scheduled_at.slice(0, 10)
+        : '',
+
+    time: x.scheduled_at
+        ? x.scheduled_at.slice(11, 16)
+        : '',
+
+    clientId: x.client_id,
+    procedureId: x.procedure_id,
+    status: x.status || 'agendado'
+}));
     render();
 
   }catch(e){

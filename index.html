@@ -1130,6 +1130,93 @@ async function updateStatus(id, status) {
 }
 
 
+async function del(table, id) {
+  if (!user?.id) {
+    alert('Faça login para continuar.');
+    return;
+  }
+
+  const nomes = {
+    finance: 'este lançamento financeiro',
+    procedures: 'esta ficha técnica',
+    clients: 'este cliente',
+    appointments: 'este agendamento'
+  };
+
+  let aviso = `Deseja realmente excluir ${nomes[table] || 'este registro'}?`;
+
+  if (table === 'clients') {
+    aviso += '\n\nOs agendamentos vinculados a este cliente também serão excluídos.';
+  }
+
+  if (table === 'procedures') {
+    aviso += '\n\nOs produtos vinculados e os agendamentos deste procedimento também serão excluídos.';
+  }
+
+  if (!confirm(aviso)) return;
+
+  try {
+    // Exclui os agendamentos vinculados antes de excluir cliente ou procedimento.
+    if (table === 'clients') {
+      const { error } = await db
+        .from('appointments')
+        .delete()
+        .eq('client_id', id)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+    }
+
+    if (table === 'procedures') {
+      const { error: apptError } = await db
+        .from('appointments')
+        .delete()
+        .eq('procedure_id', id)
+        .eq('user_id', user.id);
+
+      if (apptError) throw apptError;
+
+      const { error: productError } = await db
+        .from('procedure_products')
+        .delete()
+        .eq('procedure_id', id)
+        .eq('user_id', user.id);
+
+      if (productError) throw productError;
+    }
+
+    const tabelas = {
+      finance: 'financial_transactions',
+      procedures: 'procedures',
+      clients: 'clients',
+      appointments: 'appointments'
+    };
+
+    const tabelaReal = tabelas[table];
+
+    if (!tabelaReal) {
+      throw new Error('Tipo de registro inválido.');
+    }
+
+    const { error } = await db
+      .from(tabelaReal)
+      .delete()
+      .eq('id', id)
+      .eq('user_id', user.id);
+
+    if (error) throw error;
+
+    alert('Registro excluído com sucesso!');
+    await loadData();
+
+  } catch (error) {
+    console.error('Erro ao excluir:', error);
+    alert('Não foi possível excluir: ' + error.message);
+  }
+}
+
+window.del = del;
+
 window.updateStatus = updateStatus;
 
 $('authForm').addEventListener('submit', async e => {

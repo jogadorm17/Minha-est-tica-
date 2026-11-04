@@ -1323,7 +1323,7 @@ const sorted=[...data.appointments].sort((a,b)=>a.scheduled_at.localeCompare(b.s
 
         if (calendar) refreshCalendar();
 }
-
+$('reportMonth').addEventListener('change', renderFinancialReport);
 $('clientSearch').addEventListener('input', () => {
     render();
 });

@@ -6,59 +6,13 @@
 <title>Dermavie | Gestão profissional</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-    #calendar {
-    width: 100%;
-    max-width: 100%;
-    margin: 10px auto;
-    font-size: 13px;
-    --fc-border-color: var(--line);
-    --fc-today-bg-color: #F5EBDD;
-    --fc-page-bg-color: #FFFEFB;
-    --fc-neutral-bg-color: #F5EFE6;
-    --fc-neutral-text-color: var(--muted);
-}
+   /* AGENDA PROFISSIONAL */
 
-    .fc .fc-button {
-    background: var(--gold);
-    border-color: var(--gold);
-    color: #FFFFFF;
-    box-shadow: none;
-    text-transform: capitalize;
-    border-radius: 8px;
-}
-
-    .fc .fc-button:hover,
-.fc .fc-button:focus {
-    background: var(--gold-dark);
-    border-color: var(--gold-dark);
-    color: #FFFFFF;
-}
-
-    .fc .fc-daygrid-day-number {
-        color: #302c27;
-        text-decoration: none;
-    }
-
-    .fc .fc-toolbar-title {
-        font-size: 20px;
-    }
-
-    @media (max-width: 520px) {
-        .fc .fc-toolbar {
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .fc .fc-toolbar-title {
-            font-size: 17px;
-        }
-    }
-
-
-  
 .calendar-panel {
     padding: 24px;
     overflow: hidden;
+    background: var(--card);
+    border-radius: 16px;
 }
 
 .calendar-heading {
@@ -73,12 +27,13 @@
 .calendar-heading h2 {
     font-size: 21px;
     margin-bottom: 8px;
+    color: var(--ink);
 }
 
 .calendar-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 14px;
     font-size: 12px;
     color: var(--muted);
 }
@@ -102,31 +57,40 @@
 .legend-faltou { background: #858585; }
 
 #calendar {
+    width: 100%;
     max-width: 100%;
     margin: 10px auto;
     font-size: 13px;
     --fc-border-color: var(--line);
     --fc-today-bg-color: #f8f0e2;
     --fc-page-bg-color: #fffdf9;
+    --fc-neutral-bg-color: #f5efe6;
+    --fc-neutral-text-color: var(--muted);
 }
 
 .fc .fc-toolbar-title {
     color: var(--ink);
-    font-family: Georgia, serif;
-    font-size: 22px;
+    font-size: 20px;
 }
 
-.fc .fc-button-primary {
+.fc .fc-button {
     background: var(--gold);
     border-color: var(--gold);
+    color: #fff;
     box-shadow: none;
     text-transform: capitalize;
+    border-radius: 8px;
 }
 
-.fc .fc-button-primary:hover,
+.fc .fc-button:hover,
+.fc .fc-button:focus,
 .fc .fc-button-primary:not(:disabled).fc-button-active {
     background: var(--gold-dark);
     border-color: var(--gold-dark);
+}
+
+.fc .fc-button:disabled {
+    opacity: .55;
 }
 
 .fc .fc-daygrid-day-number {
@@ -139,8 +103,8 @@
     padding: 2px 4px;
     border: 0;
     cursor: pointer;
+    font-size: 11px;
 }
-
 
 @media (max-width: 600px) {
     .calendar-panel {
@@ -154,15 +118,13 @@
     }
 
     .fc .fc-toolbar-title {
-        font-size: 18px;
+        font-size: 17px;
     }
 
-    
-   
- .fc .fc-button {
-    padding: 6px 8px;
-    font-size: 12px;
-}
+    .fc .fc-button {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
 }
 
 :root {

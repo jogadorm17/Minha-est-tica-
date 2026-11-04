@@ -922,31 +922,150 @@ return false;
 ;
 $('financeForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,type:$('finType').value,amount:Number($('finAmount').value),description:$('finDesc').value.trim(),transaction_date:$('finDate').value,payment_status:'pago'};if(await runSave(db.from('financial_transactions').insert(row))){e.target.reset();$('finDate').value=today()}});
 
+
 $('appointmentForm').addEventListener('submit', async e => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!user) {
-    alert('Faça login para agendar um atendimento.');
-    return;
-  }
+    if (!user) {
+        alert('Faça login para agendar um atendimento.');
+        return;
+    }
 
-  const client = $('apptClient').value;
-  const date = $('apptDate').value;
-  const time = $('apptTime').value;
+    const client = $('apptClient').value;
+    const procedureId = $('apptProcedure').value;
+    const date = $('apptDate').value;
+    const time = $('apptTime').value;
+    const status = $('apptStatus').value;
 
-  if (!client || !date || !time) {
-    alert('Preencha o cliente, a data e o horário.');
-    return;
-  }
+    if (!client || !date || !time) {
+        alert('Preencha o cliente, a data e o horário.');
+        return;
+    }
 
-  const row = {
-    user_id: user.id,
-    client_id: client,
-    procedure_id: $('apptProcedure').value || null,
-    scheduled_at: date + 'T' + time + ':00',
-    status: $('apptStatus').value,
-    notes: null
-  };
+    // Identificar procedimento e duração
+    const procedure = data.procedures.find(p =>
+        String(p.id) === String(procedureId)
+    );
+
+    const duration = Number(procedure?.duration || 30);
+
+    // Converter horário escolhido
+    const start = new Date(`${date}T${time}:00`);
+
+    if (isNaN(start.getTime())) {
+        alert('Data ou horário inválido.');
+        return;
+    }
+
+    const end = new Date(
+        start.getTime() + duration * 60000
+    );
+
+    // Verificar conflitos com outros agendamentos
+    if (status === 'agendado') {
+
+        const conflito = data.appointments.find(x => {
+
+            if (x.status !== 'agendado') return false;
+
+            const existingStartValue = x.scheduled_at ||
+                (x.date && x.time
+                    ? `${x.date}T${x.time}:00`
+                    : null);
+
+            if (!existingStartValue) return false;
+
+            const existingStart = new Date(
+                existingStartValue.replace(' ', 'T')
+            );
+
+            if (isNaN(existingStart.getTime())) return false;
+
+            const existingProcedure = data.procedures.find(p =>
+                String(p.id) === String(
+                    x.procedure_id || x.procedureId
+                )
+            );
+
+            const existingDuration = Number(
+                existingProcedure?.duration || 30
+            );
+
+            const existingEnd = new Date(
+                existingStart.getTime() +
+                existingDuration * 60000
+            );
+
+            return (
+                start < existingEnd &&
+                end > existingStart
+            );
+        });
+
+        if (conflito) {
+            const conflictClient = data.clients.find(c =>
+                String(c.id) === String(conflito.client_id)
+            );
+
+            const conflictTime = conflito.scheduled_at
+                ? conflito.scheduled_at.slice(11, 16)
+                : conflito.time;
+
+            alert(
+                'Horário indisponível!\n\n' +
+                'Já existe um atendimento agendado para ' +
+                (conflictClient?.name || 'outro cliente') +
+                ' às ' + conflictTime + '.\n\n' +
+                'Escolha outro horário.'
+            );
+
+            return;
+        }
+    }
+
+    const row = {
+        user_id: user.id,
+        client_id: client,
+        procedure_id: procedureId || null,
+        scheduled_at: date + 'T' + time + ':00',
+        status: status,
+        notes: null
+    };
+
+    const button = e.target.querySelector(
+        'button[type="submit"]'
+    );
+
+    button.disabled = true;
+    button.textContent = 'Salvando...';
+
+    try {
+        const salvo = await runSave(
+            db.from('appointments').insert(row)
+        );
+
+        if (salvo) {
+            e.target.reset();
+
+            $('apptDate').value = today();
+
+            alert('Agendamento registrado com sucesso!');
+        }
+
+    } catch (error) {
+        console.error('Erro no agendamento:', error);
+
+        alert(
+            'Erro ao registrar agendamento: ' +
+            error.message
+        );
+
+    } finally {
+        button.disabled = false;
+        button.textContent = '+ Salvar agendamento';
+    }
+});
+
 
   const button = e.target.querySelector('button[type="submit"]');
   button.disabled = true;

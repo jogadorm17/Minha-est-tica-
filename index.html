@@ -1011,7 +1011,7 @@ $('appointmentForm').addEventListener('submit', async e => {
            const existingStart = new Date(existingStartValue);
 
 if (isNaN(existingStart.getTime())) return false;
-            if (isNaN(existingStart.getTime())) return false;
+            
 
             const existingProcedure = data.procedures.find(p =>
                 String(p.id) === String(

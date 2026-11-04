@@ -974,76 +974,85 @@ $('addProductBtn').addEventListener('click', addProductRow);
 
 addProductRow();
 
-    $('procedureForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('procName').value.trim(),duration_minutes:$('procDuration').value?Number($('procDuration').value):null,material_cost:Number($('procProducts').value||0),other_cost:Number($('procOther').value||0),price:Number($('procPrice').value||0),products_used:$('procMaterials').value.trim()||null,description:$('procNotes').value.trim()||null};if(await runSave(db.from('procedures').insert(row))){e.target.reset();$('procProducts').value='0';$('procOther').value='0'}});
-$('appointmentForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const client=$('apptClient').value;if(!client){alert('Cadastre e selecione um cliente antes de agendar.');return}const row={user_id:user.id,client_id:client,procedure_id:$('apptProcedure').value||null,scheduled_at:$('apptDate').value+'T'+$('apptTime').value+':00',status:$('apptStatus').value,notes:null};if(await runSave(db.from('appointments').insert(row))){e.target.reset();$('apptDate').value=today()}});
-async function del(type, id) {
-    if (!user?.id) {
-        alert('Faça login para continuar.');
-        return;
+   
+$('procedureForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!user) return;
+
+  const productRows = [...$('productItems').querySelectorAll('.product-item')];
+
+  const products = productRows.map(item => ({
+    product_name: item.querySelector('.product-name').value.trim(),
+    quantity: Number(item.querySelector('.product-quantity').value || 0),
+    unit_cost: Number(item.querySelector('.product-unit-cost').value || 0)
+  })).filter(item => item.product_name);
+
+  for (const item of products) {
+    if (item.quantity <= 0 || item.unit_cost < 0) {
+      alert('Confira a quantidade e o custo de cada produto.');
+      return;
     }
-
-    if (!confirm('Deseja excluir este registro?')) return;
-
-    const table = {
-        finance: 'financial_transactions',
-        procedures: 'procedures',
-        clients: 'clients',
-        appointments: 'appointments'
-    }[type];
-
-    if (!table) {
-        alert('Tipo de registro inválido.');
-        return;
-    }
-
-    const { error } = await db
-        .from(table)
-        .delete()
-        .eq('id', id)
-        .eq('user_id', user.id);
-
-    if (error) {
-        alert(
-            'Não foi possível excluir. Verifique se há atendimentos ou lançamentos vinculados. ' +
-            error.message
-        );
-        return;
-    }
-
-    await loadData();
-}
-
-async function editClient(id) {
-  const cliente = data.clients.find(x => x.id === id);
-  if (!cliente) {
-    alert('Cliente não encontrado.');
-    return;
   }
 
-  $('clientName').value = cliente.name || '';
-  $('clientPhone').value = cliente.phone || '';
-  $('clientEmail').value = cliente.email || '';
-  $('clientNotes').value = cliente.notes || '';
+  const totalProducts = products.reduce(
+    (sum, item) => sum + item.quantity * item.unit_cost, 0
+  );
 
-  $('clientForm').dataset.editingId = cliente.id;
-  $('clientForm').querySelector('button[type="submit"]').textContent = 'Salvar alterações';
-$('cancelClientEdit').hidden = false;
+  const row = {
+    user_id: user.id,
+    name: $('procName').value.trim(),
+    duration_minutes: $('procDuration').value
+      ? Number($('procDuration').value) : null,
+    material_cost: totalProducts,
+    other_cost: Number($('procOther').value || 0),
+    price: Number($('procPrice').value || 0),
+    products_used: products.map(item => item.product_name).join(', ') || null,
+    description: $('procNotes').value.trim() || null
+  };
 
-  $('clientName').focus();
-}
+  try {
+    const { data: procedure, error } = await db
+      .from('procedures')
+      .insert(row)
+      .select('id')
+      .single();
 
-window.editClient = editClient;
+    if (error) throw error;
 
-$('cancelClientEdit').addEventListener('click', () => {
-  const form = $('clientForm');
+    if (products.length > 0) {
+      const productRecords = products.map(item => ({
+        user_id: user.id,
+        procedure_id: procedure.id,
+        product_name: item.product_name,
+        quantity: item.quantity,
+        unit_cost: item.unit_cost,
+        total_cost: item.quantity * item.unit_cost
+      }));
 
-  form.reset();
-  delete form.dataset.editingId;
+      const { error: productError } = await db
+        .from('procedure_products')
+        .insert(productRecords);
 
-  form.querySelector('button[type="submit"]').textContent =
-    'Cadastrar cliente';
+      if (productError) {
+        alert('A ficha foi criada, mas houve erro ao salvar os produtos: ' + productError.message);
+        await loadData();
+        return;
+      }
+    }
 
-  $('cancelClientEdit').hidden = true;
+    alert('Ficha técnica e produtos salvos com sucesso!');
+    e.target.reset();
+    $('procProducts').value = '0';
+    $('procOther').value = '0';
+    $('productItems').innerHTML = '';
+    addProductRow();
+
+    await loadData();
+
+  } catch (error) {
+    alert('Não foi possível salvar a ficha: ' + error.message);
+    console.error(error);
+  }
 });
 
 function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=money(ins);$('dashOut').textContent=money(outs);$('dashBalance').textContent=money(ins-outs);$('dashClients').textContent=data.clients.length;

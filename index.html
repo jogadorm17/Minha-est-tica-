@@ -871,6 +871,55 @@ return false;
 ;
 $('financeForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,type:$('finType').value,amount:Number($('finAmount').value),description:$('finDesc').value.trim(),transaction_date:$('finDate').value,payment_status:'pago'};if(await runSave(db.from('financial_transactions').insert(row))){e.target.reset();$('finDate').value=today()}});
 
+$('appointmentForm').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  if (!user) {
+    alert('Faça login para agendar um atendimento.');
+    return;
+  }
+
+  const client = $('apptClient').value;
+  const date = $('apptDate').value;
+  const time = $('apptTime').value;
+
+  if (!client || !date || !time) {
+    alert('Preencha o cliente, a data e o horário.');
+    return;
+  }
+
+  const row = {
+    user_id: user.id,
+    client_id: client,
+    procedure_id: $('apptProcedure').value || null,
+    scheduled_at: date + 'T' + time + ':00',
+    status: $('apptStatus').value,
+    notes: null
+  };
+
+  const button = e.target.querySelector('button[type="submit"]');
+  button.disabled = true;
+  button.textContent = 'Salvando...';
+
+  try {
+    const salvo = await runSave(
+      db.from('appointments').insert(row)
+    );
+
+    if (salvo) {
+      e.target.reset();
+      $('apptDate').value = today();
+      alert('Agendamento registrado com sucesso!');
+    }
+  } catch (error) {
+    console.error('Erro no agendamento:', error);
+    alert('Erro ao registrar agendamento: ' + error.message);
+  } finally {
+    button.disabled = false;
+    button.textContent = '+ Salvar agendamento';
+  }
+});
+
 $('clientForm').addEventListener('submit', async e => {
   e.preventDefault();
   if (!user) return;

@@ -567,7 +567,31 @@ const SUPABASE_URL='https://bfxgthcsmxrxgsmcwcvn.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_CIHwVMpZjtIP6ewP7rVL8w_U2ry9uI1';
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const $=id=>document.getElementById(id);const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(n)||0);const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-let user=null,data={finance:[],procedures:[],clients:[],appointments:[]},calendar=null;
+// PADRÃO DE DATA E HORA — HORÁRIO LOCAL
+function horarioParaSalvar(data, hora) {
+    return new Date(`${data}T${hora}:00`).toISOString();
+}
+
+function dataHoraLocal(valor) {
+    const d = new Date(valor);
+
+    if (isNaN(d.getTime())) {
+        return { data: '', hora: '' };
+    }
+
+    const data = [
+        d.getFullYear(),
+        String(d.getMonth() + 1).padStart(2, '0'),
+        String(d.getDate()).padStart(2, '0')
+    ].join('-');
+
+    const hora =
+        String(d.getHours()).padStart(2, '0') + ':' +
+        String(d.getMinutes()).padStart(2, '0');
+
+    return { data, hora };
+}
+   let user=null,data={finance:[],procedures:[],clients:[],appointments:[]},calendar=null;
 function msg(t,isError=false){const el=$('authMsg');if(el){el.textContent=t;el.style.color=isError?'#a84d48':'#47765c'}}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 const titles={inicio:['Seja Benvindo!! ✨','Aqui está um resumo do seu negócio.'],financeiro:['Financeiro','Entradas, despesas e acompanhamento do caixa.'],fichas:['Fichas técnicas','Organize seus procedimentos e calcule custos.'],clientes:['Clientes','Seus cadastros e contatos em um só lugar.'],agenda:['Agenda','Organize os próximos atendimentos.']};

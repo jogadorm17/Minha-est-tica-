@@ -592,6 +592,15 @@ function dataHoraLocal(valor) {
     return { data, hora };
 }
    let user=null,data={finance:[],procedures:[],clients:[],appointments:[]},calendar=null;
+   function obterDuracao(procedure) {
+    const minutos = Number(
+        procedure?.duration_minutes ?? procedure?.duration
+    );
+
+    return Number.isFinite(minutos) && minutos > 0
+        ? minutos
+        : 30;
+}
 function msg(t,isError=false){const el=$('authMsg');if(el){el.textContent=t;el.style.color=isError?'#a84d48':'#47765c'}}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 const titles={inicio:['Seja Benvindo!! ✨','Aqui está um resumo do seu negócio.'],financeiro:['Financeiro','Entradas, despesas e acompanhamento do caixa.'],fichas:['Fichas técnicas','Organize seus procedimentos e calcule custos.'],clientes:['Clientes','Seus cadastros e contatos em um só lugar.'],agenda:['Agenda','Organize os próximos atendimentos.']};

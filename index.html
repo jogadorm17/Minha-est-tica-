@@ -931,36 +931,44 @@ function updateProductTotal() {
   $('procProducts').value = total.toFixed(2);
 }
 
+
 function addProductRow() {
   const item = document.createElement('div');
-  item.className = 'product-item field full';
+  item.className = 'product-item';
 
   item.innerHTML = `
-    <div class="field">
+    <div class="product-header">
+      <strong>Produto utilizado</strong>
+      <button type="button" class="btn remove-product">
+        Remover
+      </button>
+    </div>
+
+    <div class="field full">
       <label>Nome do produto</label>
-      <input type="text" class="product-name" placeholder="Ex.: Óleo corporal">
+      <input type="text" class="product-name"
+        placeholder="Ex.: Óleo corporal">
     </div>
 
-    <div class="field">
-      <label>Quantidade</label>
-      <input type="number" class="product-quantity" min="0" step="0.001" value="1">
+    <div class="product-fields">
+      <div class="field">
+        <label>Quantidade</label>
+        <input type="number" class="product-quantity"
+          min="0" step="0.001" value="1">
+      </div>
+
+      <div class="field">
+        <label>Custo unitário (R$)</label>
+        <input type="number" class="product-unit-cost"
+          min="0" step="0.01" value="0">
+      </div>
     </div>
 
-    <div class="field">
-      <label>Custo unitário (R$)</label>
-      <input type="number" class="product-unit-cost" min="0" step="0.01" value="0">
+    <div class="product-total">
+      <span>Subtotal do produto</span>
+      <strong>R$ <span class="product-subtotal-display">0,00</span></strong>
+      <input type="hidden" class="product-subtotal" value="0.00">
     </div>
-
-    <div class="field">
-      <label>Subtotal (R$)</label>
-      <input type="number" class="product-subtotal" readonly value="0.00">
-    </div>
-
-    <button type="button" class="btn remove-product">
-      Remover produto
-    </button>
-
-    <hr>
   `;
 
   productItems.appendChild(item);
@@ -968,6 +976,15 @@ function addProductRow() {
   item.querySelectorAll('input').forEach(input => {
     input.addEventListener('input', updateProductTotal);
   });
+
+  item.querySelector('.remove-product').addEventListener('click', () => {
+    item.remove();
+    updateProductTotal();
+  });
+
+  updateProductTotal();
+}
+
 
   item.querySelector('.remove-product').addEventListener('click', () => {
     item.remove();

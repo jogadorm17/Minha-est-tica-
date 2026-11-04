@@ -903,21 +903,21 @@ async function loadData(){
 
     data.clients=c.data;
 
-    data.appointments = a.data.map(x => ({
-    ...x,
+data.appointments = a.data.map(x => {
+    const local = x.scheduled_at
+        ? dataHoraLocal(x.scheduled_at)
+        : { data: '', hora: '' };
 
-    date: x.scheduled_at
-        ? x.scheduled_at.slice(0, 10)
-        : '',
+    return {
+        ...x,
+        date: local.data,
+        time: local.hora,
+        clientId: x.client_id,
+        procedureId: x.procedure_id,
+        status: x.status || 'agendado'
+    };
+});
 
-    time: x.scheduled_at
-        ? x.scheduled_at.slice(11, 16)
-        : '',
-
-    clientId: x.client_id,
-    procedureId: x.procedure_id,
-    status: x.status || 'agendado'
-}));
     render();
 
   }catch(e){

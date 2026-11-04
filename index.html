@@ -822,7 +822,7 @@ function refreshCalendar() {
         if (isNaN(startDate.getTime())) return null;
 
         // Duração automática do procedimento
-        const duration = Number(procedure?.duration || 30);
+        const duration = obterDuracao(procedure);
 
         const endDate = new Date(
             startDate.getTime() + duration * 60000

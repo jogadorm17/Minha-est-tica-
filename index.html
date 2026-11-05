@@ -1823,11 +1823,67 @@ async function syncSession() {
 }
 
 // IDENTIFICA QUANDO O USUÁRIO ABRE O LINK DE RECUPERAÇÃO
+// FORMULÁRIO PARA SALVAR A NOVA SENHA
+$('resetPasswordForm').addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const password = $('newPassword').value;
+    const confirmPassword = $('confirmPassword').value;
+    const submitButton = e.target.querySelector('button[type="submit"]');
+
+    if (password.length < 6) {
+        msg('A senha precisa ter pelo menos 6 caracteres.', true);
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        msg('As senhas não são iguais. Confira e tente novamente.', true);
+        return;
+    }
+
+    submitButton.disabled = true;
+    msg('Salvando nova senha...');
+
+    try {
+        const { error } = await db.auth.updateUser({
+            password: password
+        });
+
+        if (error) {
+            console.error('Erro ao atualizar senha:', error);
+            msg('Não foi possível atualizar a senha. Solicite um novo link de recuperação.', true);
+            return;
+        }
+
+        alert('Senha atualizada com sucesso! Você já pode acessar o aplicativo.');
+
+        e.target.reset();
+        await syncSession();
+
+    } catch (error) {
+        console.error('Erro inesperado ao atualizar senha:', error);
+        msg('Erro de conexão. Tente novamente.', true);
+    } finally {
+        submitButton.disabled = false;
+    }
+});
+
+// IDENTIFICAR O RETORNO DO LINK DE RECUPERAÇÃO
 db.auth.onAuthStateChange((event, session) => {
 
     if (event === 'PASSWORD_RECOVERY') {
         user = session?.user || null;
-        showPasswordReset();
+
+        $('authScreen').style.display = 'grid';
+        $('appShell').style.display = 'none';
+
+        $('authForm').style.display = 'none';
+        $('resetPasswordForm').hidden = false;
+
+        const aviso = document.querySelector('.auth-small');
+        if (aviso) aviso.style.display = 'none';
+
+        msg('Digite e confirme sua nova senha.');
         return;
     }
 
@@ -1835,7 +1891,16 @@ db.auth.onAuthStateChange((event, session) => {
 });
 
 // ESTADO INICIAL
-$('resetPasswordForm').style.display = 'none';
+$('resetPasswordForm').hidden = true;
+$('resetPasswordForm').style.display = '';
+
+syncSession();
+
+;
+
+// ESTADO INICIAL
+$('resetPasswordForm').hidden = true;
+$('resetPasswordForm').style.display = '';
 
 syncSession();
 </script></body></html>

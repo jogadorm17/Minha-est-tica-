@@ -1168,6 +1168,13 @@ function updateProductTotal() {
     const subtotal = quantity * unitCost;
 
     item.querySelector('.product-subtotal').value = subtotal.toFixed(2);
+
+    item.querySelector('.product-subtotal-display').textContent =
+      subtotal.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+
     total += subtotal;
   });
 

@@ -6,13 +6,16 @@
 <title>Minha Estética | Gestão profissional</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-   /* AGENDA PROFISSIONAL */
+  
+/* AGENDA PROFISSIONAL - MODELO ELEGANTE */
 
 .calendar-panel {
-    padding: 24px;
+    padding: 26px;
     overflow: hidden;
     background: var(--card);
-    border-radius: 16px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(81, 69, 56, .05);
 }
 
 .calendar-heading {
@@ -21,19 +24,20 @@
     align-items: flex-start;
     gap: 18px;
     flex-wrap: wrap;
-    margin-bottom: 22px;
+    margin-bottom: 24px;
 }
 
 .calendar-heading h2 {
-    font-size: 21px;
+    font-size: 22px;
     margin-bottom: 8px;
     color: var(--ink);
+    font-family: Georgia, serif;
 }
 
 .calendar-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px;
+    gap: 15px;
     font-size: 12px;
     color: var(--muted);
 }
@@ -41,7 +45,7 @@
 .calendar-legend span {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
 }
 
 .calendar-legend i {
@@ -61,49 +65,165 @@
     max-width: 100%;
     margin: 10px auto;
     font-size: 13px;
-    --fc-border-color: var(--line);
-    --fc-today-bg-color: #f8f0e2;
-    --fc-page-bg-color: #fffdf9;
-    --fc-neutral-bg-color: #f5efe6;
-    --fc-neutral-text-color: var(--muted);
+
+    --fc-border-color: #EDE3D6;
+    --fc-today-bg-color: #FAF3E8;
+    --fc-page-bg-color: #FFFEFB;
+    --fc-neutral-bg-color: #F7F1E9;
+    --fc-neutral-text-color: #877B6C;
+    --fc-list-event-hover-bg-color: #F8F0E2;
+}
+
+/* CABEÇALHO */
+
+.fc .fc-toolbar {
+    gap: 12px;
+    margin-bottom: 22px !important;
 }
 
 .fc .fc-toolbar-title {
     color: var(--ink);
-    font-size: 20px;
+    font-family: Georgia, serif;
+    font-size: 21px;
+    font-weight: 600;
+    text-transform: capitalize;
 }
 
+/* BOTÕES */
+
 .fc .fc-button {
-    background: var(--gold);
-    border-color: var(--gold);
+    background: #C5A46D;
+    border-color: #C5A46D;
     color: #fff;
-    box-shadow: none;
+    box-shadow: none !important;
     text-transform: capitalize;
-    border-radius: 8px;
+    border-radius: 9px !important;
+    padding: 8px 13px;
+    font-size: 12px;
 }
 
 .fc .fc-button:hover,
 .fc .fc-button:focus,
 .fc .fc-button-primary:not(:disabled).fc-button-active {
-    background: var(--gold-dark);
-    border-color: var(--gold-dark);
+    background: #8A6B3F;
+    border-color: #8A6B3F;
 }
 
 .fc .fc-button:disabled {
     opacity: .55;
 }
 
+/* DIAS DA SEMANA */
+
+.fc .fc-col-header-cell {
+    background: #F7F1E9;
+    padding: 12px 4px;
+}
+
+.fc .fc-col-header-cell-cushion {
+    color: #6F604F;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* NÚMEROS DOS DIAS */
+
 .fc .fc-daygrid-day-number {
     color: var(--ink);
     text-decoration: none;
+    padding: 9px;
 }
 
+.fc .fc-day-today .fc-daygrid-day-number {
+    background: var(--gold);
+    color: white;
+    border-radius: 50%;
+}
+
+/* HORÁRIOS */
+
+.fc .fc-timegrid-slot {
+    height: 48px;
+}
+
+.fc .fc-timegrid-slot-label {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* AGENDAMENTOS */
+
 .fc .fc-event {
-    border-radius: 5px;
-    padding: 2px 4px;
-    border: 0;
+    border-radius: 8px;
+    padding: 4px 6px;
+    border: none;
     cursor: pointer;
     font-size: 11px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.07);
+}
+
+.fc .fc-event-main {
+    font-weight: 500;
+}
+
+.fc .fc-event:hover {
+    filter: brightness(.96);
+}
+
+/* LINHA DO HORÁRIO ATUAL */
+
+.fc .fc-timegrid-now-indicator-line {
+    border-color: #A84D48;
+    border-width: 2px;
+}
+
+.fc .fc-timegrid-now-indicator-arrow {
+    border-color: #A84D48;
+}
+
+/* BORDAS E FUNDO */
+
+.fc .fc-scrollgrid {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.fc td, .fc th {
+    border-color: #EDE3D6;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 600px) {
+    .calendar-panel {
+        padding: 12px;
+        border-radius: 14px;
+    }
+
+    .calendar-heading h2 {
+        font-size: 19px;
+    }
+
+    .fc .fc-toolbar {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 17px;
+    }
+
+    .fc .fc-button {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+
+    .fc .fc-timegrid-slot {
+        height: 42px;
+    }
 }
 
 @media (max-width: 600px) {

@@ -638,6 +638,28 @@ function initCalendar() {
     calendar = new FullCalendar.Calendar(el, {
         locale: 'pt-br',
         initialView: 'timeGridWeek',
+       eventDidMount: function(info) {
+    const props = info.event.extendedProps;
+
+    const inicio = info.event.start;
+    const fim = info.event.end;
+
+    const formatarHora = data =>
+        data.toLocaleTimeString('pt-BR', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+    const tooltip =
+        'CLIENTE: ' + props.clientName + '\n' +
+        'PROCEDIMENTO: ' + props.procedureName + '\n' +
+        'HORÁRIO: ' + formatarHora(inicio) +
+        ' às ' + formatarHora(fim) + '\n' +
+        'DURAÇÃO: ' + props.duration + ' minutos\n' +
+        'STATUS: ' + props.statusLabel;
+
+    info.el.title = tooltip;
+},
         height: 'auto',
 contentHeight: 650,
 expandRows: true,

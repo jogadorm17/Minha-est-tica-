@@ -317,7 +317,41 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/locales-all.global.min.js"></script></head>
 <body>
-<section id="authScreen" class="auth-screen"><div class="auth-card"><h1>Minha Estética</h1><p>Gestão profissional • entre na sua conta para acessar seus dados com segurança.</p><form id="authForm" class="form"><div class="field full"><label>E-mail</label><input id="authEmail" type="email" required autocomplete="email" placeholder="voce@email.com"></div><div class="field full"><label>Senha (mínimo 6 caracteres)</label><input id="authPassword" type="password" minlength="6" required autocomplete="current-password" placeholder="Sua senha"></div><input id="authMode" type="hidden" value="login"><div class="field full auth-actions"><button id="authSubmit" class="btn primary" type="submit">Entrar</button><button id="toggleAuth" class="btn" type="button">Não tenho conta — criar cadastro</button></div></form><p id="authMsg" role="status"></p><div class="auth-small">Se o cadastro exigir confirmação, confira sua caixa de entrada. Use uma senha forte e não a compartilhe.</div></div></section>
+<section id="authScreen" class="auth-screen"><div class="auth-card"><h1>Minha Estética</h1><p>Gestão profissional • entre na sua conta para acessar seus dados com segurança.</p><form id="authForm" class="form"><div class="field full"><label>E-mail</label><input id="authEmail" type="email" required autocomplete="email" placeholder="voce@email.com"></div><div class="field full"><label>Senha (mínimo 6 caracteres)</label><input id="authPassword" type="password" minlength="6" required autocomplete="current-password" placeholder="Sua senha"></div><input id="authMode" type="hidden" value="login"><div class="field full auth-actions"><button id="authSubmit" class="btn primary" type="submit">Entrar</button><button id="toggleAuth" class="btn" type="button">Não tenho conta — criar cadastro</button></div></form>
+
+<form id="resetPasswordForm" class="form" hidden>
+  <div class="field full">
+    <label>Nova senha</label>
+    <input
+      id="newPassword"
+      type="password"
+      minlength="6"
+      required
+      autocomplete="new-password"
+      placeholder="Digite sua nova senha"
+    >
+  </div>
+
+  <div class="field full">
+    <label>Confirmar nova senha</label>
+    <input
+      id="confirmPassword"
+      type="password"
+      minlength="6"
+      required
+      autocomplete="new-password"
+      placeholder="Digite novamente sua senha"
+    >
+  </div>
+
+  <div class="field full">
+    <button class="btn primary" type="submit">
+      Salvar nova senha
+    </button>
+  </div>
+</form>
+
+<p id="authMsg" role="status"></p><div class="auth-small">Se o cadastro exigir confirmação, confira sua caixa de entrada. Use uma senha forte e não a compartilhe.</div></div></section>
 <div id="appShell" class="app" style="display:none">
 <aside class="sidebar"><h2 class="brand">Minha Estética</h2><p class="subbrand">GESTÃO PROFISSIONAL</p>
 <nav class="nav" aria-label="Menu principal">

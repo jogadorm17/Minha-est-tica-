@@ -1728,6 +1728,114 @@ try {
   msg('Erro de conexão. Tente novamente.', true);
 } finally {forgotBtn.disabled = false;}});})();
 $('logoutBtn').addEventListener('click',async()=>{await db.auth.signOut();user=null;$('authScreen').style.display='grid';$('appShell').style.display='none'});
-async function syncSession(){const {data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){$('authScreen').style.display='none';$('appShell').style.display='grid';$('userEmail').textContent=user.email||'';await loadData()}else{$('authScreen').style.display='grid';$('appShell').style.display='none'}}
-db.auth.onAuthStateChange(()=>{setTimeout(syncSession,0)});syncSession();
+// CONTROLE DA RECUPERAÇÃO DE SENHA
+let passwordRecoveryMode = false;
+
+// Exibe o formulário de criação de nova senha
+function showPasswordReset() {
+    passwordRecoveryMode = true;
+
+    $('authScreen').style.display = 'grid';
+    $('appShell').style.display = 'none';
+
+    $('authForm').style.display = 'none';
+    $('resetPasswordForm').style.display = 'grid';
+
+    msg('Digite sua nova senha e confirme para concluir a recuperação.');
+}
+
+// SALVAR NOVA SENHA
+$('resetPasswordForm').addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const newPassword = $('newPassword').value;
+    const confirmPassword = $('confirmPassword').value;
+
+    if (newPassword.length < 6) {
+        msg('A senha precisa ter pelo menos 6 caracteres.', true);
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        msg('As senhas não são iguais. Confira e tente novamente.', true);
+        return;
+    }
+
+    const button = $('resetPasswordForm').querySelector('button[type="submit"]');
+
+    button.disabled = true;
+    msg('Atualizando sua senha...');
+
+    try {
+        const { error } = await db.auth.updateUser({
+            password: newPassword
+        });
+
+        if (error) {
+            console.error('Erro ao atualizar senha:', error);
+            msg('Não foi possível atualizar sua senha. Solicite um novo link de recuperação.', true);
+            return;
+        }
+
+        passwordRecoveryMode = false;
+
+        $('resetPasswordForm').reset();
+        $('resetPasswordForm').style.display = 'none';
+        $('authForm').style.display = 'grid';
+
+        alert('Senha atualizada com sucesso! Você já pode acessar o aplicativo.');
+
+        await syncSession();
+
+    } catch (error) {
+        console.error('Erro inesperado:', error);
+        msg('Ocorreu um erro ao atualizar sua senha. Tente novamente.', true);
+
+    } finally {
+        button.disabled = false;
+    }
+});
+
+// SINCRONIZAÇÃO DA SESSÃO
+async function syncSession() {
+    const { data: { session } } = await db.auth.getSession();
+
+    // Não deixa a tela de recuperação ser substituída pelo aplicativo
+    if (passwordRecoveryMode) {
+        $('authScreen').style.display = 'grid';
+        $('appShell').style.display = 'none';
+        return;
+    }
+
+    user = session?.user || null;
+
+    if (user) {
+        $('authScreen').style.display = 'none';
+        $('appShell').style.display = 'grid';
+        $('userEmail').textContent = user.email || '';
+
+        await loadData();
+
+    } else {
+        $('authScreen').style.display = 'grid';
+        $('appShell').style.display = 'none';
+    }
+}
+
+// IDENTIFICA QUANDO O USUÁRIO ABRE O LINK DE RECUPERAÇÃO
+db.auth.onAuthStateChange((event, session) => {
+
+    if (event === 'PASSWORD_RECOVERY') {
+        user = session?.user || null;
+        showPasswordReset();
+        return;
+    }
+
+    setTimeout(syncSession, 0);
+});
+
+// ESTADO INICIAL
+$('resetPasswordForm').style.display = 'none';
+
+syncSession();
 </script></body></html>

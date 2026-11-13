@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -459,6 +458,26 @@ body {
         font-size: 17px;
     }
 }
+
+/* Dica flutuante ao passar o mouse sobre um agendamento */
+.calendar-event-tooltip {
+    position: fixed;
+    z-index: 100000;
+    display: none;
+    max-width: 280px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 8px 28px rgba(40, 30, 20, .18);
+    font-size: 13px;
+    line-height: 1.55;
+    white-space: pre-line;
+    pointer-events: none;
+}
+.fc-event { cursor: pointer; }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/locales-all.global.min.js"></script></head>
@@ -477,7 +496,7 @@ body {
 </section>
 <section class="section" id="view-financeiro"><div class="toolbar"><h2>Controle financeiro</h2></div><p class="section-intro">Registre entradas e despesas para acompanhar seu caixa.</p><div class="panel"><form id="financeForm" class="form"><div class="field"><label>Tipo de lançamento</label><select id="finType"><option value="entrada">Entrada</option><option value="despesa">Despesa</option></select></div><div class="field"><label>Valor (R$)</label><input id="finAmount" type="number" min="0.01" step="0.01" required placeholder="0,00"></div><div class="field"><label>Descrição</label><input id="finDesc" required placeholder="Ex.: Massagem relaxante"></div><div class="field"><label>Data</label><input id="finDate" type="date" required></div><div class="field full"><button class="btn primary" type="submit">Salvar lançamento</button></div></form></div><div class="panel finance-history-panel" style="margin-top:15px"><h2>Histórico de lançamentos</h2><div id="financeRows" class="finance-list"><div class="empty">Nenhum lançamento.</div></div></div></section>
 <section class="section" id="view-fichas"><div class="toolbar"><h2>Fichas técnicas</h2></div><p class="section-intro">Cadastre serviços, custos e preço sugerido. O cálculo abaixo não substitui a avaliação de todos os custos do negócio.</p><div class="panel"><form id="procedureForm" class="form"><div class="field"><label>Nome do procedimento</label><input id="procName" required placeholder="Ex.: Massagem relaxante"></div><div class="field"><label>Duração (minutos)</label><input id="procDuration" type="number" min="1" placeholder="60"></div><div class="field"><label>Custo dos produtos (R$)</label><input id="procProducts" type="number" min="0" step="0.01" value="0" required></div><div class="field"><label>Outros custos variáveis (R$)</label><input id="procOther" type="number" min="0" step="0.01" value="0" required></div><div class="field"><label>Preço cobrado (R$)</label><input id="procPrice" type="number" min="0" step="0.01" required></div><div class="field"><label>Produtos / materiais</label><input id="procMaterials" placeholder="Óleo, creme, toalhas..."></div><div class="field full"><label>Etapas e observações</label><textarea id="procNotes" placeholder="Descreva o protocolo, cuidados e observações profissionais."></textarea></div><div class="field full"><button class="btn primary" type="submit">Salvar ficha técnica</button></div></form></div><div class="panel" style="margin-top:15px"><h2>Procedimentos cadastrados</h2><div class="table-wrap"><table><thead><tr><th>Procedimento</th><th>Duração</th><th>Custo variável</th><th>Preço</th><th>Resultado estimado</th><th></th></tr></thead><tbody id="procedureRows"><tr><td colspan="6">Nenhuma ficha técnica.</td></tr></tbody></table></div></div></section>
-<section class="section" id="view-clientes"><div class="toolbar"><h2>Cadastro de clientes</h2></div><p class="section-intro">Guarde apenas as informações necessárias para o atendimento e proteja os dados dos seus clientes.</p><div class="panel"><form id="clientForm" class="form"><div class="field"><label>Nome completo</label><input id="clientName" required placeholder="Nome do cliente"></div><div class="field"><label>Telefone</label><input id="clientPhone" placeholder="(00) 00000-0000"></div><div class="field"><label>E-mail (opcional)</label><input id="clientEmail" type="email" placeholder="cliente@email.com"></div><div class="field"><label>Observação não sensível</label><input id="clientNotes" placeholder="Preferência de horário, por exemplo"></div><div class="field full"><button class="btn primary" type="submit">Cadastrar cliente</button></div></form></div><div class="panel" style="margin-top:15px"><h2>Clientes cadastrados</h2><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Telefone</th><th>E-mail</th><th>Observação</th><th></th></tr></thead><tbody id="clientRows"><tr><td colspan="5">Nenhum cliente cadastrado.</td></tr></tbody></table></div></div></section>
+<section class="section" id="view-clientes"><div class="toolbar"><h2>Cadastro de clientes</h2></div><p class="section-intro">Guarde apenas as informações necessárias para o atendimento e proteja os dados dos seus clientes.</p><div class="panel"><form id="clientForm" class="form"><input id="clientEditId" type="hidden" value=""><div class="field"><label>Nome completo</label><input id="clientName" required placeholder="Nome do cliente"></div><div class="field"><label>Telefone</label><input id="clientPhone" placeholder="(00) 00000-0000"></div><div class="field"><label>E-mail (opcional)</label><input id="clientEmail" type="email" placeholder="cliente@email.com"></div><div class="field"><label>Observação não sensível</label><input id="clientNotes" placeholder="Preferência de horário, por exemplo"></div><div class="field full actions"><button id="clientSubmitBtn" class="btn primary" type="submit">Cadastrar cliente</button><button id="cancelClientEdit" class="btn" type="button" style="display:none">Cancelar edição</button></div></form></div><div class="panel" style="margin-top:15px"><h2>Clientes cadastrados</h2><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Telefone</th><th>E-mail</th><th>Observação</th><th></th></tr></thead><tbody id="clientRows"><tr><td colspan="5">Nenhum cliente cadastrado.</td></tr></tbody></table></div></div></section>
 <section class="section" id="view-agenda">
   <div class="toolbar">
     <h2>Agenda de atendimentos</h2>
@@ -585,7 +604,7 @@ const SUPABASE_URL='https://bfxgthcsmxrxgsmcwcvn.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_CIHwVMpZjtIP6ewP7rVL8w_U2ry9uI1';
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const $=id=>document.getElementById(id);const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(n)||0);const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-let user=null,data={finance:[],procedures:[],clients:[],appointments:[]},calendar=null;
+let user=null,data={finance:[],procedures:[],clients:[],appointments:[]},calendar=null,editingClientId=null,calendarTooltip=null;
 function msg(t,isError=false){const el=$('authMsg');if(el){el.textContent=t;el.style.color=isError?'#a84d48':'#47765c'}}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 const titles={inicio:['Seja Benvindo!! ✨','Aqui está um resumo do seu negócio.'],financeiro:['Financeiro','Entradas, despesas e acompanhamento do caixa.'],fichas:['Fichas técnicas','Organize seus procedimentos e calcule custos.'],clientes:['Clientes','Seus cadastros e contatos em um só lugar.'],agenda:['Agenda','Organize os próximos atendimentos.']};
@@ -752,7 +771,52 @@ allDaySlot: false,
     };
 },
 
-events: []
+        eventDidMount: function(info) {
+            if (!calendarTooltip) {
+                calendarTooltip = document.createElement('div');
+                calendarTooltip.className = 'calendar-event-tooltip';
+                calendarTooltip.setAttribute('role', 'tooltip');
+                document.body.appendChild(calendarTooltip);
+            }
+
+            const details = info.event.extendedProps;
+            const dateLabel = details.date
+                ? new Date(details.date + 'T12:00:00').toLocaleDateString('pt-BR')
+                : '';
+
+            info.el.addEventListener('mouseenter', () => {
+                calendarTooltip.textContent =
+                    'Cliente: ' + (details.clientName || 'Não informado') +
+                    '\nHorário: ' + (details.time || 'Não informado') +
+                    (dateLabel ? '\nData: ' + dateLabel : '') +
+                    '\nProcedimento: ' + (details.procedureName || 'Não informado');
+                calendarTooltip.style.display = 'block';
+            });
+
+            info.el.addEventListener('mousemove', (event) => {
+                const gap = 14;
+                const width = calendarTooltip.offsetWidth || 280;
+                const height = calendarTooltip.offsetHeight || 100;
+                let left = event.clientX + gap;
+                let top = event.clientY + gap;
+
+                if (left + width > window.innerWidth - 8) {
+                    left = event.clientX - width - gap;
+                }
+                if (top + height > window.innerHeight - 8) {
+                    top = event.clientY - height - gap;
+                }
+
+                calendarTooltip.style.left = Math.max(8, left) + 'px';
+                calendarTooltip.style.top = Math.max(8, top) + 'px';
+            });
+
+            info.el.addEventListener('mouseleave', () => {
+                if (calendarTooltip) calendarTooltip.style.display = 'none';
+            });
+        },
+
+        events: []
     });
 
     calendar.render();
@@ -795,8 +859,12 @@ function refreshCalendar() {
             backgroundColor: colors[status] || colors.agendado,
             borderColor: colors[status] || colors.agendado,
             extendedProps: {
-                 status: x.status
-},
+                status: x.status,
+                clientName: client?.name || 'Cliente',
+                procedureName: procedure?.name || 'Não informado',
+                date: x.date,
+                time: x.time
+            }
         };
     });
 
@@ -827,7 +895,59 @@ return false;
 
 $('financeForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,type:$('finType').value,amount:Number($('finAmount').value),description:$('finDesc').value.trim(),transaction_date:$('finDate').value,payment_status:'pago'};if(await runSave(db.from('financial_transactions').insert(row))){e.target.reset();$('finDate').value=today()}});
 $('procedureForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('procName').value.trim(),duration_minutes:$('procDuration').value?Number($('procDuration').value):null,material_cost:Number($('procProducts').value||0),other_cost:Number($('procOther').value||0),price:Number($('procPrice').value||0),products_used:$('procMaterials').value.trim()||null,description:$('procNotes').value.trim()||null};if(await runSave(db.from('procedures').insert(row))){e.target.reset();$('procProducts').value='0';$('procOther').value='0'}});
-$('clientForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('clientName').value.trim(),phone:$('clientPhone').value.trim()||null,email:$('clientEmail').value.trim()||null,notes:$('clientNotes').value.trim()||null};if(await runSave(db.from('clients').insert(row)))e.target.reset()});
+function resetClientForm() {
+    editingClientId = null;
+    $('clientForm').reset();
+    $('clientEditId').value = '';
+    $('clientSubmitBtn').textContent = 'Cadastrar cliente';
+    $('cancelClientEdit').style.display = 'none';
+}
+
+function editClient(id) {
+    const client = data.clients.find(item => String(item.id) === String(id));
+    if (!client) {
+        alert('Não foi possível localizar esse cliente.');
+        return;
+    }
+
+    editingClientId = String(client.id);
+    $('clientEditId').value = String(client.id);
+    $('clientName').value = client.name || '';
+    $('clientPhone').value = client.phone || '';
+    $('clientEmail').value = client.email || '';
+    $('clientNotes').value = client.notes || '';
+    $('clientSubmitBtn').textContent = 'Salvar alterações';
+    $('cancelClientEdit').style.display = 'inline-flex';
+    $('clientForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('clientName').focus();
+}
+
+$('cancelClientEdit').addEventListener('click', resetClientForm);
+
+$('clientForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!user) return;
+
+    const row = {
+        user_id: user.id,
+        name: $('clientName').value.trim(),
+        phone: $('clientPhone').value.trim() || null,
+        email: $('clientEmail').value.trim() || null,
+        notes: $('clientNotes').value.trim() || null
+    };
+
+    let query;
+    if (editingClientId) {
+        query = db.from('clients')
+            .update(row)
+            .eq('id', editingClientId)
+            .eq('user_id', user.id);
+    } else {
+        query = db.from('clients').insert(row);
+    }
+
+    if (await runSave(query)) resetClientForm();
+});
 $('appointmentForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const client=$('apptClient').value;if(!client){alert('Cadastre e selecione um cliente antes de agendar.');return}const row={user_id:user.id,client_id:client,procedure_id:$('apptProcedure').value||null,scheduled_at:$('apptDate').value+'T'+$('apptTime').value+':00',status:$('apptStatus').value,notes:null};if(await runSave(db.from('appointments').insert(row))){e.target.reset();$('apptDate').value=today()}});
 async function del(type,id){
   if(!user){alert('Entre na sua conta para excluir registros.');return;}
@@ -873,7 +993,7 @@ $('financeRows').innerHTML = data.finance.length
   : '<div class="empty">Nenhum lançamento financeiro registrado.</div>';
 
 $('procedureRows').innerHTML=data.procedures.length?data.procedures.map(x=>`<tr><td><strong>${esc(x.name)}</strong><small>${esc(x.materials||'')}</small></td><td>${x.duration?esc(x.duration)+' min':'—'}</td><td>${money(x.products+x.other)}</td><td>${money(x.price)}</td><td class="${x.price-x.products-x.other>=0?'money-in':'money-out'}">${money(x.price-x.products-x.other)}</td><td><button class="btn" onclick="del('procedures','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
-$('clientRows').innerHTML=data.clients.length?data.clients.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone||'—')}</td><td>${esc(x.email||'—')}</td><td>${esc(x.notes||'—')}</td><td><button class="btn" onclick="del('clients','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum cliente cadastrado.</td></tr>';
+$('clientRows').innerHTML=data.clients.length?data.clients.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone||'—')}</td><td>${esc(x.email||'—')}</td><td>${esc(x.notes||'—')}</td><td><div class="actions"><button class="btn" type="button" onclick="editClient('${esc(x.id)}')">Editar</button><button class="btn" type="button" onclick="del('clients','${esc(x.id)}')">Excluir</button></div></td></tr>`).join(''):'<tr><td colspan="5">Nenhum cliente cadastrado.</td></tr>';
 $('apptClient').innerHTML='<option value="">Selecione um cliente</option>'+data.clients.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');$('apptProcedure').innerHTML='<option value="">Selecione um procedimento (opcional)</option>'+data.procedures.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
 const sorted=[...data.appointments].sort((a,b)=>a.scheduled_at.localeCompare(b.scheduled_at));$('appointmentRows').innerHTML=sorted.length?sorted.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<tr><td>${esc(x.date)} ${esc(x.time)}</td><td>${esc(c?.name||'Cliente')}</td><td>${esc(p?.name||'—')}</td><td><select aria-label="Status" onchange="updateStatus('${x.id}',this.value)"><option value="agendado" ${x.status==='agendado'?'selected':''}>Agendado</option><option value="realizado" ${x.status==='realizado'?'selected':''}>Realizado</option><option value="cancelado" ${x.status==='cancelado'?'selected':''}>Cancelado</option><option value="faltou" ${x.status==='faltou'?'selected':''}>Faltou</option></select></td><td><button class="btn" onclick="del('appointments','${x.id}')">Excluir</button></td></tr>`}).join(''):'<tr><td colspan="5">Nenhum agendamento.</td></tr>';
 const upcoming=sorted.filter(x=>x.date>=today()&&x.status==='agendado').slice(0,4);$('dashAppointments').innerHTML=upcoming.length?upcoming.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<div class="row"><div><strong>${esc(c?.name||'Cliente')}</strong><small>${esc(x.date)} às ${esc(x.time)}${p?' • '+esc(p.name):''}</small></div><span class="pill">Agendado</span></div>`}).join(''):'<div class="empty">Nenhum atendimento futuro cadastrado.</div>'}
@@ -885,7 +1005,7 @@ async function updateStatus(id, status) {
             .eq('user_id', user.id)
     );
 }
-window.del=del;window.updateStatus=updateStatus;
+window.del=del;window.updateStatus=updateStatus;window.editClient=editClient;
 $('authForm').addEventListener('submit', async e => {
 e.preventDefault();
 

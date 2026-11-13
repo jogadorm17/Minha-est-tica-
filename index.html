@@ -6,16 +6,59 @@
 <title>Minha Estética | Gestão profissional</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  
-/* AGENDA PROFISSIONAL - MODELO ELEGANTE */
+    #calendar {
+    width: 100%;
+    max-width: 100%;
+    margin: 10px auto;
+    font-size: 13px;
+    --fc-border-color: var(--line);
+    --fc-today-bg-color: #F5EBDD;
+    --fc-page-bg-color: #FFFEFB;
+    --fc-neutral-bg-color: #F5EFE6;
+    --fc-neutral-text-color: var(--muted);
+}
 
+    .fc .fc-button {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #FFFFFF;
+    box-shadow: none;
+    text-transform: capitalize;
+    border-radius: 8px;
+}
+
+    .fc .fc-button:hover,
+.fc .fc-button:focus {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+    color: #FFFFFF;
+}
+
+    .fc .fc-daygrid-day-number {
+        color: #302c27;
+        text-decoration: none;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 20px;
+    }
+
+    @media (max-width: 520px) {
+        .fc .fc-toolbar {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .fc .fc-toolbar-title {
+            font-size: 17px;
+        }
+    }
+
+
+  
 .calendar-panel {
-    padding: 26px;
+    padding: 24px;
     overflow: hidden;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    box-shadow: 0 5px 20px rgba(81, 69, 56, .05);
 }
 
 .calendar-heading {
@@ -24,20 +67,18 @@
     align-items: flex-start;
     gap: 18px;
     flex-wrap: wrap;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
 }
 
 .calendar-heading h2 {
-    font-size: 22px;
+    font-size: 21px;
     margin-bottom: 8px;
-    color: var(--ink);
-    font-family: Georgia, serif;
 }
 
 .calendar-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 12px;
     font-size: 12px;
     color: var(--muted);
 }
@@ -45,7 +86,7 @@
 .calendar-legend span {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
 }
 
 .calendar-legend i {
@@ -61,149 +102,49 @@
 .legend-faltou { background: #858585; }
 
 #calendar {
-    width: 100%;
     max-width: 100%;
     margin: 10px auto;
     font-size: 13px;
-
-    --fc-border-color: #EDE3D6;
-    --fc-today-bg-color: #FAF3E8;
-    --fc-page-bg-color: #FFFEFB;
-    --fc-neutral-bg-color: #F7F1E9;
-    --fc-neutral-text-color: #877B6C;
-    --fc-list-event-hover-bg-color: #F8F0E2;
-}
-
-/* CABEÇALHO */
-
-.fc .fc-toolbar {
-    gap: 12px;
-    margin-bottom: 22px !important;
+    --fc-border-color: var(--line);
+    --fc-today-bg-color: #f8f0e2;
+    --fc-page-bg-color: #fffdf9;
 }
 
 .fc .fc-toolbar-title {
     color: var(--ink);
     font-family: Georgia, serif;
-    font-size: 21px;
-    font-weight: 600;
+    font-size: 22px;
+}
+
+.fc .fc-button-primary {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: none;
     text-transform: capitalize;
 }
 
-/* BOTÕES */
-
-.fc .fc-button {
-    background: #C5A46D;
-    border-color: #C5A46D;
-    color: #fff;
-    box-shadow: none !important;
-    text-transform: capitalize;
-    border-radius: 9px !important;
-    padding: 8px 13px;
-    font-size: 12px;
-}
-
-.fc .fc-button:hover,
-.fc .fc-button:focus,
+.fc .fc-button-primary:hover,
 .fc .fc-button-primary:not(:disabled).fc-button-active {
-    background: #8A6B3F;
-    border-color: #8A6B3F;
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
 }
-
-.fc .fc-button:disabled {
-    opacity: .55;
-}
-
-/* DIAS DA SEMANA */
-
-.fc .fc-col-header-cell {
-    background: #F7F1E9;
-    padding: 12px 4px;
-}
-
-.fc .fc-col-header-cell-cushion {
-    color: #6F604F;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-/* NÚMEROS DOS DIAS */
 
 .fc .fc-daygrid-day-number {
     color: var(--ink);
     text-decoration: none;
-    padding: 9px;
 }
-
-.fc .fc-day-today .fc-daygrid-day-number {
-    background: var(--gold);
-    color: white;
-    border-radius: 50%;
-}
-
-/* HORÁRIOS */
-
-.fc .fc-timegrid-slot {
-    height: 48px;
-}
-
-.fc .fc-timegrid-slot-label {
-    color: var(--muted);
-    font-size: 11px;
-}
-
-/* AGENDAMENTOS */
 
 .fc .fc-event {
-    border-radius: 8px;
-    padding: 4px 6px;
-    border: none;
+    border-radius: 5px;
+    padding: 2px 4px;
+    border: 0;
     cursor: pointer;
-    font-size: 11px;
-    box-shadow: 0 2px 5px rgba(0,0,0,.07);
 }
 
-.fc .fc-event-main {
-    font-weight: 500;
-}
-
-.fc .fc-event:hover {
-    filter: brightness(.96);
-}
-
-/* LINHA DO HORÁRIO ATUAL */
-
-.fc .fc-timegrid-now-indicator-line {
-    border-color: #A84D48;
-    border-width: 2px;
-}
-
-.fc .fc-timegrid-now-indicator-arrow {
-    border-color: #A84D48;
-}
-
-/* BORDAS E FUNDO */
-
-.fc .fc-scrollgrid {
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.fc td, .fc th {
-    border-color: #EDE3D6;
-}
-
-/* RESPONSIVIDADE */
 
 @media (max-width: 600px) {
     .calendar-panel {
         padding: 12px;
-        border-radius: 14px;
-    }
-
-    .calendar-heading h2 {
-        font-size: 19px;
     }
 
     .fc .fc-toolbar {
@@ -213,19 +154,16 @@
     }
 
     .fc .fc-toolbar-title {
-        font-size: 17px;
+        font-size: 18px;
     }
 
-    .fc .fc-button {
-        padding: 6px 8px;
-        font-size: 11px;
-    }
-
-    .fc .fc-timegrid-slot {
-        height: 42px;
-    }
+    
+   
+ .fc .fc-button {
+    padding: 6px 8px;
+    font-size: 12px;
 }
-
+}
 
 :root {
     --bg: #EDE1D0;
@@ -258,7 +196,133 @@
 }
 
 
+.nav button.active,
+.nav button:hover {
+    background: #EDE1D0;
+    color: var(--gold-dark);
+}
 
+.badge,
+.pill {
+    background: #F2E8D8;
+    color: var(--gold-dark);
+}
+
+.btn {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.btn.primary {
+    background: var(--gold);
+    color: #FFFFFF;
+    border-color: var(--gold);
+}
+
+.field input,
+.field select,
+.field textarea,
+select[aria-label="Status"] {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.notice {
+    background: #F5EBDD;
+    color: var(--gold-dark);
+    border-color: var(--line);
+}
+
+
+#calendar {
+    --fc-page-bg-color: #FFFEFB;
+    --fc-neutral-bg-color: #F5EFE6;
+    --fc-neutral-text-color: #877B6C;
+    --fc-border-color: var(--line);
+    --fc-today-bg-color: #F5EBDD;
+    color: var(--ink);
+}
+
+.fc .fc-col-header-cell-cushion,
+.fc .fc-daygrid-day-number,
+.fc .fc-list-day-text,
+.fc .fc-list-day-side-text {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.fc .fc-button-primary {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #FFFFFF;
+}
+
+.fc .fc-button-primary:hover,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+    color: #FFFFFF;
+}
+
+body {
+    background: var(--bg);
+    color: var(--ink);
+}
+
+
+
+
+.nav button.active,
+.nav button:hover {
+    background: #EDE1D0;
+    color: var(--gold-dark);
+}
+
+.badge,
+.pill {
+    background: #F2E8D8;
+    color: var(--gold-dark);
+}
+
+.btn {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.btn.primary {
+    background: var(--gold);
+    color: #FFFFFF;
+    border-color: var(--gold);
+}
+
+
+
+#calendar {
+    --fc-page-bg-color: #FFFEFB;
+    --fc-neutral-bg-color: #F5EFE6;
+    --fc-neutral-text-color: #877B6C;
+    --fc-border-color: #E3D5C2;
+    --fc-today-bg-color: #F5EBDD;
+    color: var(--ink);
+}
+
+
+.fc .fc-col-header-cell-cushion,
+.fc .fc-daygrid-day-number,
+.fc .fc-list-day-text,
+.fc .fc-list-day-side-text {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.fc .fc-button-primary {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #17130c;
+}
 
 .fc .fc-button-primary:hover,
 .fc .fc-button-primary:not(:disabled).fc-button-active {
@@ -275,83 +339,131 @@
     color: var(--muted);
 }
 
-/* Correções de consistência e responsividade */
-html { min-width: 320px; }
-button, input, select, textarea { font: inherit; }
-button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-  outline: 2px solid var(--gold-dark);
-  outline-offset: 2px;
+/* HISTÓRICO FINANCEIRO - CARTÕES INDIVIDUAIS */
+
+#financeRows.finance-list {
+    display: grid;
+    gap: 12px;
 }
-#calendar { min-width: 0; }
-.fc .fc-toolbar { flex-wrap: wrap; gap: 8px; }
-@media (max-width: 760px) {
-  .app { grid-template-columns: 1fr; }
-  .sidebar { border-right: 0; border-bottom: 1px solid var(--line); padding: 14px; }
-  .subbrand { margin-bottom: 14px; }
-  .nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .sidebar-note { margin-top: 14px; }
-  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .grid2 { grid-template-columns: 1fr; }
-  .main { padding: 14px; }
-  .top-right { width: 100%; }
-  .table-wrap { max-width: 100%; overflow-x: auto; }
-  table { min-width: 560px; }
-}
-@media (max-width: 420px) {
-  .nav { grid-template-columns: 1fr 1fr; }
-  .cards { grid-template-columns: 1fr 1fr; }
-  .auth-card { padding: 20px; }
-  .fc .fc-toolbar { flex-direction: column; align-items: stretch; }
-  .fc .fc-toolbar-chunk { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px; }
-  .fc .fc-toolbar-title { font-size: 1rem; white-space: normal; text-align: center; }
+.finance-card-date { color: var(--muted); font-size: 12px; }
+.finance-card { min-width: 0; }
+
+.finance-card {
+    width: 100%;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--card);
+    box-shadow: 0 3px 12px rgba(81, 69, 56, .04);
+    transition: box-shadow .2s ease, transform .2s ease;
 }
 
+.finance-card:hover {
+    box-shadow: 0 6px 18px rgba(81, 69, 56, .08);
+    transform: translateY(-1px);
+}
 
-/* PADRÃO ÚNICO DE FONTE — MINHA ESTÉTICA */
-*,
-*::before,
-*::after {
-    font-family: Arial, sans-serif !important;
+.finance-card-top,
+.finance-card-bottom,
+.finance-card-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.finance-card-info {
+    justify-content: flex-start;
+    min-width: 0;
+}
+
+.finance-card-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 23px;
+}
+
+.finance-card-in .finance-card-icon {
+    background: #EAF2E9;
+    color: var(--green);
+}
+
+.finance-card-out .finance-card-icon {
+    background: #F8EEEE;
+    color: var(--red);
+}
+
+.finance-card-description {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.finance-card-description strong {
+    color: var(--ink);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.finance-card-description small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.finance-card-type {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.finance-card-in .finance-card-type {
+    background: #EAF2E9;
+    color: var(--green);
+}
+
+.finance-card-out .finance-card-type {
+    background: #F8EEEE;
+    color: var(--red);
+}
+
+.finance-card-bottom {
+    margin-top: 17px;
+    padding-top: 13px;
+    border-top: 1px solid var(--line);
+}
+
+.finance-card-value {
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.finance-delete {
+    font-size: 12px;
+    padding: 7px 12px;
+}
+
+@media (max-width: 600px) {
+    .finance-card {
+        padding: 15px;
+    }
+
+    .finance-card-value {
+        font-size: 17px;
+    }
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/locales-all.global.min.js"></script></head>
 <body>
-<section id="authScreen" class="auth-screen"><div class="auth-card"><h1>Minha Estética</h1><p>Gestão profissional • entre na sua conta para acessar seus dados com segurança.</p><form id="authForm" class="form"><div class="field full"><label>E-mail</label><input id="authEmail" type="email" required autocomplete="email" placeholder="voce@email.com"></div><div class="field full"><label>Senha (mínimo 6 caracteres)</label><input id="authPassword" type="password" minlength="6" required autocomplete="current-password" placeholder="Sua senha"></div><input id="authMode" type="hidden" value="login"><div class="field full auth-actions"><button id="authSubmit" class="btn primary" type="submit">Entrar</button><button id="toggleAuth" class="btn" type="button">Não tenho conta — criar cadastro</button></div></form>
-
-<form id="resetPasswordForm" class="form" hidden>
-  <div class="field full">
-    <label>Nova senha</label>
-    <input
-      id="newPassword"
-      type="password"
-      minlength="6"
-      required
-      autocomplete="new-password"
-      placeholder="Digite sua nova senha"
-    >
-  </div>
-
-  <div class="field full">
-    <label>Confirmar nova senha</label>
-    <input
-      id="confirmPassword"
-      type="password"
-      minlength="6"
-      required
-      autocomplete="new-password"
-      placeholder="Digite novamente sua senha"
-    >
-  </div>
-
-  <div class="field full">
-    <button class="btn primary" type="submit">
-      Salvar nova senha
-    </button>
-  </div>
-</form>
-
-<p id="authMsg" role="status"></p><div class="auth-small">Se o cadastro exigir confirmação, confira sua caixa de entrada. Use uma senha forte e não a compartilhe.</div></div></section>
+<section id="authScreen" class="auth-screen"><div class="auth-card"><h1>Minha Estética</h1><p>Gestão profissional • entre na sua conta para acessar seus dados com segurança.</p><form id="authForm" class="form"><div class="field full"><label>E-mail</label><input id="authEmail" type="email" required autocomplete="email" placeholder="voce@email.com"></div><div class="field full"><label>Senha (mínimo 6 caracteres)</label><input id="authPassword" type="password" minlength="6" required autocomplete="current-password" placeholder="Sua senha"></div><input id="authMode" type="hidden" value="login"><div class="field full auth-actions"><button id="authSubmit" class="btn primary" type="submit">Entrar</button><button id="toggleAuth" class="btn" type="button">Não tenho conta — criar cadastro</button></div></form><p id="authMsg" role="status"></p><div class="auth-small">Se o cadastro exigir confirmação, confira sua caixa de entrada. Use uma senha forte e não a compartilhe.</div></div></section>
 <div id="appShell" class="app" style="display:none">
 <aside class="sidebar"><h2 class="brand">Minha Estética</h2><p class="subbrand">GESTÃO PROFISSIONAL</p>
 <nav class="nav" aria-label="Menu principal">
@@ -363,111 +475,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 <div class="cards"><div class="card"><div class="label">Entradas registradas</div><div class="value" id="dashIn">R$ 0,00</div><div class="hint">Total dos lançamentos</div></div><div class="card"><div class="label">Despesas registradas</div><div class="value" id="dashOut">R$ 0,00</div><div class="hint">Total dos lançamentos</div></div><div class="card"><div class="label">Saldo estimado</div><div class="value" id="dashBalance">R$ 0,00</div><div class="hint">Entradas menos despesas</div></div><div class="card"><div class="label">Clientes cadastrados</div><div class="value" id="dashClients">0</div><div class="hint">Na sua lista</div></div></div>
 <div class="grid2"><div class="panel"><h2>Atalhos rápidos</h2><p class="desc">Acesse as tarefas mais comuns.</p><div class="actions"><button class="btn primary" data-go="clientes">＋ Cadastrar cliente</button><button class="btn" data-go="financeiro">＋ Lançamento financeiro</button><button class="btn" data-go="fichas">＋ Nova ficha técnica</button><button class="btn" data-go="agenda">＋ Agendar atendimento</button></div><div class="notice">Dica: cadastre seus procedimentos e custos para entender melhor a rentabilidade de cada serviço.</div></div><div class="panel"><h2>Próximos atendimentos</h2><p class="desc">Seus compromissos registrados.</p><div id="dashAppointments" class="empty">Nenhum atendimento cadastrado ainda.</div></div></div>
 </section>
-<section class="section" id="view-financeiro"><div class="toolbar"><h2>Controle financeiro</h2></div><p class="section-intro">Registre entradas e despesas para acompanhar seu caixa.</p><div class="panel"><form id="financeForm" class="form"><div class="field"><label>Tipo de lançamento</label><select id="finType"><option value="entrada">Entrada</option><option value="despesa">Despesa</option></select></div><div class="field"><label>Valor (R$)</label><input id="finAmount" type="number" min="0.01" step="0.01" required placeholder="0,00"></div><div class="field"><label>Descrição</label><input id="finDesc" required placeholder="Ex.: Massagem relaxante"></div><div class="field"><label>Data</label><input id="finDate" type="date" required></div><div class="field full"><button class="btn primary" type="submit">Salvar lançamento</button></div></form></div>
-<div class="panel" id="financialReport" style="margin-top:15px">
-  <div class="toolbar">
-    <h2>Relatório financeiro</h2>
-    <select id="reportMonth">
-      <option value="all">Todo o período</option>
-    </select>
-  </div>
-
-  <div class="stats-grid">
-    <div class="stat-card">
-      <span>Total de entradas</span>
-      <strong id="reportIncome">R$ 0,00</strong>
-    </div>
-
-    <div class="stat-card">
-      <span>Total de despesas</span>
-      <strong id="reportExpenses">R$ 0,00</strong>
-    </div>
-
-    <div class="stat-card">
-      <span>Saldo do período</span>
-      <strong id="reportBalance">R$ 0,00</strong>
-    </div>
-  </div>
-
-  <div style="margin-top:20px">
-    <h3>Entradas x despesas</h3>
-    <div id="reportChart"
-         style="display:flex;gap:12px;align-items:end;height:180px;padding:15px 0">
-      Aguardando lançamentos...
-    </div>
-  </div>
-</div>
-<div class="panel" style="margin-top:15px"><h2>Histórico de lançamentos</h2><div class="table-wrap"><table><thead><tr><th>Data</th><th>Descrição</th><th>Tipo</th><th>Valor</th><th></th></tr></thead><tbody id="financeRows"><tr><td colspan="5">Nenhum lançamento.</td></tr></tbody></table></div></div></section>
-<section class="section" id="view-fichas"><div class="toolbar"><h2>Fichas técnicas</h2></div><p class="section-intro">Cadastre serviços, custos e preço sugerido. O cálculo abaixo não substitui a avaliação de todos os custos do negócio.</p><div class="panel">
-<form id="procedureForm" class="form">
-
-  <div class="field">
-    <label>Nome do procedimento</label>
-    <input id="procName" required placeholder="Ex.: Massagem relaxante">
-  </div>
-
-  <div class="field">
-    <label>Duração (minutos)</label>
-    <input id="procDuration" type="number" min="1" placeholder="60">
-  </div>
-
-  <div class="field full">
-    <label>Produtos utilizados</label>
-    <div id="productItems">
-      <!-- Os produtos serão adicionados aqui pelo JavaScript -->
-    </div>
-    <button type="button" class="btn" id="addProductBtn">
-      + Adicionar produto
-    </button>
-  </div>
-
-  <div class="field">
-    <label>Total dos produtos (R$)</label>
-    <input id="procProducts" type="number" min="0" step="0.01" value="0" readonly>
-  </div>
-
-  <div class="field">
-    <label>Outros custos variáveis (R$)</label>
-    <input id="procOther" type="number" min="0" step="0.01" value="0" required>
-  </div>
-
-  <div class="field">
-    <label>Preço cobrado (R$)</label>
-    <input id="procPrice" type="number" min="0" step="0.01" required>
-  </div>
-
-  <div class="field full">
-    <label>Etapas e observações</label>
-    <textarea id="procNotes" placeholder="Descreva o protocolo, cuidados e observações profissionais."></textarea>
-  </div>
-
-  <div class="field full">
-    <button class="btn primary" type="submit">Salvar ficha técnica</button>
-  </div>
-
-</form>
-</div><div class="panel" style="margin-top:15px"><h2>Procedimentos cadastrados</h2><div class="table-wrap"><table><thead><tr><th>Procedimento</th><th>Duração</th><th>Custo variável</th><th>Preço</th><th>Resultado estimado</th><th></th></tr></thead><tbody id="procedureRows"><tr><td colspan="6">Nenhuma ficha técnica.</td></tr></tbody></table></div></div></section>
-<section class="section" id="view-clientes"><div class="toolbar"><h2>Cadastro de clientes</h2></div><p class="section-intro">Guarde apenas as informações necessárias para o atendimento e proteja os dados dos seus clientes.</p><div class="panel"><form id="clientForm" class="form"><div class="field"><label>Nome completo</label><input id="clientName" required placeholder="Nome do cliente"></div><div class="field"><label>Telefone</label><input id="clientPhone" placeholder="(00) 00000-0000"></div><div class="field"><label>E-mail (opcional)</label><input id="clientEmail" type="email" placeholder="cliente@email.com"></div><div class="field"><label>Observação não sensível</label><input id="clientNotes" placeholder="Preferência de horário, por exemplo"></div><div class="field full">
-  <button class="btn primary" type="submit">Cadastrar cliente</button>
-  <button class="btn" id="cancelClientEdit" type="button" hidden>
-    Cancelar edição
-  </button>
-</div>
-</form>
-</div>
-<div class="panel" style="margin-top:15px">
-    <h2>Clientes cadastrados</h2>
-
-    <div class="field" style="margin: 12px 0;">
-        <label for="clientSearch">Pesquisar cliente</label>
-        <input
-            id="clientSearch"
-            type="search"
-            placeholder="Digite o nome, telefone ou e-mail..."
-            autocomplete="off"
-        >
-    </div>
-<div class="table-wrap"><table><thead><tr><th>Nome</th><th>Telefone</th><th>E-mail</th><th>Observação</th><th></th></tr></thead><tbody id="clientRows"><tr><td colspan="5">Nenhum cliente cadastrado.</td></tr></tbody></table></div></div></section>
+<section class="section" id="view-financeiro"><div class="toolbar"><h2>Controle financeiro</h2></div><p class="section-intro">Registre entradas e despesas para acompanhar seu caixa.</p><div class="panel"><form id="financeForm" class="form"><div class="field"><label>Tipo de lançamento</label><select id="finType"><option value="entrada">Entrada</option><option value="despesa">Despesa</option></select></div><div class="field"><label>Valor (R$)</label><input id="finAmount" type="number" min="0.01" step="0.01" required placeholder="0,00"></div><div class="field"><label>Descrição</label><input id="finDesc" required placeholder="Ex.: Massagem relaxante"></div><div class="field"><label>Data</label><input id="finDate" type="date" required></div><div class="field full"><button class="btn primary" type="submit">Salvar lançamento</button></div></form></div><div class="panel finance-history-panel" style="margin-top:15px"><h2>Histórico de lançamentos</h2><div id="financeRows" class="finance-list"><div class="empty">Nenhum lançamento.</div></div></div></section>
+<section class="section" id="view-fichas"><div class="toolbar"><h2>Fichas técnicas</h2></div><p class="section-intro">Cadastre serviços, custos e preço sugerido. O cálculo abaixo não substitui a avaliação de todos os custos do negócio.</p><div class="panel"><form id="procedureForm" class="form"><div class="field"><label>Nome do procedimento</label><input id="procName" required placeholder="Ex.: Massagem relaxante"></div><div class="field"><label>Duração (minutos)</label><input id="procDuration" type="number" min="1" placeholder="60"></div><div class="field"><label>Custo dos produtos (R$)</label><input id="procProducts" type="number" min="0" step="0.01" value="0" required></div><div class="field"><label>Outros custos variáveis (R$)</label><input id="procOther" type="number" min="0" step="0.01" value="0" required></div><div class="field"><label>Preço cobrado (R$)</label><input id="procPrice" type="number" min="0" step="0.01" required></div><div class="field"><label>Produtos / materiais</label><input id="procMaterials" placeholder="Óleo, creme, toalhas..."></div><div class="field full"><label>Etapas e observações</label><textarea id="procNotes" placeholder="Descreva o protocolo, cuidados e observações profissionais."></textarea></div><div class="field full"><button class="btn primary" type="submit">Salvar ficha técnica</button></div></form></div><div class="panel" style="margin-top:15px"><h2>Procedimentos cadastrados</h2><div class="table-wrap"><table><thead><tr><th>Procedimento</th><th>Duração</th><th>Custo variável</th><th>Preço</th><th>Resultado estimado</th><th></th></tr></thead><tbody id="procedureRows"><tr><td colspan="6">Nenhuma ficha técnica.</td></tr></tbody></table></div></div></section>
+<section class="section" id="view-clientes"><div class="toolbar"><h2>Cadastro de clientes</h2></div><p class="section-intro">Guarde apenas as informações necessárias para o atendimento e proteja os dados dos seus clientes.</p><div class="panel"><form id="clientForm" class="form"><div class="field"><label>Nome completo</label><input id="clientName" required placeholder="Nome do cliente"></div><div class="field"><label>Telefone</label><input id="clientPhone" placeholder="(00) 00000-0000"></div><div class="field"><label>E-mail (opcional)</label><input id="clientEmail" type="email" placeholder="cliente@email.com"></div><div class="field"><label>Observação não sensível</label><input id="clientNotes" placeholder="Preferência de horário, por exemplo"></div><div class="field full"><button class="btn primary" type="submit">Cadastrar cliente</button></div></form></div><div class="panel" style="margin-top:15px"><h2>Clientes cadastrados</h2><div class="table-wrap"><table><thead><tr><th>Nome</th><th>Telefone</th><th>E-mail</th><th>Observação</th><th></th></tr></thead><tbody id="clientRows"><tr><td colspan="5">Nenhum cliente cadastrado.</td></tr></tbody></table></div></div></section>
 <section class="section" id="view-agenda">
   <div class="toolbar">
     <h2>Agenda de atendimentos</h2>
@@ -575,247 +585,8 @@ const SUPABASE_URL='https://bfxgthcsmxrxgsmcwcvn.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_CIHwVMpZjtIP6ewP7rVL8w_U2ry9uI1';
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 const $=id=>document.getElementById(id);const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(n)||0);const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
-// PADRÃO DE DATA E HORA — HORÁRIO LOCAL
-function horarioParaSalvar(data, hora) {
-    return new Date(`${data}T${hora}:00`).toISOString();
-}
-
-function dataHoraLocal(valor) {
-    const d = new Date(valor);
-
-    if (isNaN(d.getTime())) {
-        return { data: '', hora: '' };
-    }
-
-    const data = [
-        d.getFullYear(),
-        String(d.getMonth() + 1).padStart(2, '0'),
-        String(d.getDate()).padStart(2, '0')
-    ].join('-');
-
-    const hora =
-        String(d.getHours()).padStart(2, '0') + ':' +
-        String(d.getMinutes()).padStart(2, '0');
-
-    return { data, hora };
-}
-   let user=null,data={finance:[],procedures:[],clients:[],appointments:[]},calendar=null;
-   function obterDuracao(procedure) {
-    const minutos = Number(
-        procedure?.duration_minutes ?? procedure?.duration
-    );
-
-    return Number.isFinite(minutos) && minutos > 0
-        ? minutos
-        : 30;
-}
+let user=null,data={finance:[],procedures:[],clients:[],appointments:[]},calendar=null;
 function msg(t,isError=false){const el=$('authMsg');if(el){el.textContent=t;el.style.color=isError?'#a84d48':'#47765c'}}
-  
-let passwordRecoveryMode = false;
-
-// Alterna entre login e cadastro
-$('toggleAuth').addEventListener('click', () => {
-  const signup = $('authMode').value !== 'signup';
-
-  $('authMode').value = signup ? 'signup' : 'login';
-  $('authSubmit').textContent = signup ? 'Criar conta' : 'Entrar';
-  $('toggleAuth').textContent = signup
-    ? 'Já tenho conta — entrar'
-    : 'Não tenho conta — criar cadastro';
-
-  msg('');
-});
-
-// Cria o botão de recuperação de senha
-const forgotBtn = document.createElement('button');
-forgotBtn.id = 'forgotPasswordBtn';
-forgotBtn.type = 'button';
-forgotBtn.textContent = 'Esqueci minha senha';
-forgotBtn.style.cssText =
-  'grid-column:1/-1;margin-top:8px;border:0;background:none;color:#8A6B3F;text-decoration:underline;cursor:pointer;font-size:14px;';
-
-$('authForm').appendChild(forgotBtn);
-
-// Solicita recuperação de senha
-forgotBtn.addEventListener('click', async () => {
-  const email = $('authEmail').value.trim();
-
-  if (!email) {
-    msg('Digite seu e-mail primeiro.', true);
-    $('authEmail').focus();
-    return;
-  }
-
-  forgotBtn.disabled = true;
-  msg('Enviando solicitação...');
-
-  try {
-    const { error } = await db.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin + window.location.pathname
-    });
-
-    if (error) throw error;
-
-    msg('Se o e-mail estiver cadastrado, você receberá as instruções. Confira também o spam.');
-  } catch (error) {
-    console.error('Erro na recuperação:', error);
-    msg('Não foi possível solicitar a recuperação. Tente novamente.', true);
-  } finally {
-    forgotBtn.disabled = false;
-  }
-});
-
-// Controla a sessão e abre o aplicativo
-async function syncSession() {
-  const { data: sessionData, error } = await db.auth.getSession();
-
-  if (error) {
-    console.error(error);
-    msg('Não foi possível verificar sua sessão.', true);
-    return;
-  }
-
-  user = sessionData.session?.user || null;
-
-  if (passwordRecoveryMode) {
-    $('authScreen').style.display = 'grid';
-    $('appShell').style.display = 'none';
-    $('authForm').style.display = 'none';
-    $('resetPasswordForm').hidden = false;
-    $('resetPasswordForm').style.display = 'grid';
-    return;
-  }
-
-  if (user) {
-    $('authScreen').style.display = 'none';
-    $('appShell').style.display = 'grid';
-    $('authForm').style.display = 'grid';
-    $('resetPasswordForm').hidden = true;
-    $('resetPasswordForm').style.display = 'none';
-    $('userEmail').textContent = user.email || '';
-
-    await loadData();
-  } else {
-    $('authScreen').style.display = 'grid';
-    $('appShell').style.display = 'none';
-    $('authForm').style.display = 'grid';
-    $('resetPasswordForm').hidden = true;
-    $('resetPasswordForm').style.display = 'none';
-    $('userEmail').textContent = '';
-  }
-}
-
-// Login e cadastro
-$('authForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const email = $('authEmail').value.trim();
-  const password = $('authPassword').value;
-  const mode = $('authMode').value;
-
-  $('authSubmit').disabled = true;
-  $('authSubmit').textContent = 'Aguarde...';
-  msg('Verificando seus dados...');
-
-  try {
-    let result;
-
-    if (mode === 'signup') {
-      result = await db.auth.signUp({ email, password });
-    } else {
-      result = await db.auth.signInWithPassword({ email, password });
-    }
-
-    if (result.error) throw result.error;
-
-    if (mode === 'signup' && !result.data.session) {
-      msg('Cadastro iniciado! Confira seu e-mail para confirmar a conta.');
-      return;
-    }
-
-    passwordRecoveryMode = false;
-    await syncSession();
-    msg('Acesso confirmado!');
-  } catch (error) {
-    console.error('Erro de autenticação:', error);
-
-    const erro = (error.message || '').toLowerCase();
-
-    if (erro.includes('invalid login credentials')) {
-      msg('E-mail ou senha incorretos.', true);
-    } else if (erro.includes('email not confirmed')) {
-      msg('Confirme seu e-mail antes de entrar.', true);
-    } else if (erro.includes('too many requests')) {
-      msg('Muitas tentativas. Aguarde alguns minutos.', true);
-    } else {
-      msg('Não foi possível entrar. Verifique os dados e tente novamente.', true);
-    }
-  } finally {
-    $('authSubmit').disabled = false;
-    $('authSubmit').textContent =
-      $('authMode').value === 'signup' ? 'Criar conta' : 'Entrar';
-  }
-});
-
-// Redefinição de senha
-$('resetPasswordForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const password = $('newPassword').value;
-  const confirm = $('confirmPassword').value;
-
-  if (password !== confirm) {
-    msg('As senhas não coincidem.', true);
-    return;
-  }
-
-  try {
-    const { error } = await db.auth.updateUser({ password });
-
-    if (error) throw error;
-
-    passwordRecoveryMode = false;
-    $('resetPasswordForm').reset();
-    $('resetPasswordForm').hidden = true;
-    $('resetPasswordForm').style.display = 'none';
-    $('authForm').style.display = 'grid';
-
-    msg('Senha alterada com sucesso!');
-    await syncSession();
-  } catch (error) {
-    console.error('Erro ao alterar senha:', error);
-    msg('Não foi possível alterar a senha. Tente novamente.', true);
-  }
-});
-
-// Detecta quando o usuário abre o link de recuperação
-db.auth.onAuthStateChange((event) => {
-  if (event === 'PASSWORD_RECOVERY') {
-    passwordRecoveryMode = true;
-    syncSession();
-  } else {
-    setTimeout(() => syncSession(), 0);
-  }
-});
-
-// Sair da conta
-$('logoutBtn').addEventListener('click', async () => {
-  const { error } = await db.auth.signOut();
-
-  if (error) {
-    console.error(error);
-    msg('Não foi possível sair da conta.', true);
-    return;
-  }
-
-  passwordRecoveryMode = false;
-  user = null;
-  await syncSession();
-});
-
-// Verifica a sessão ao abrir a página
-syncSession();
-
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 const titles={inicio:['Seja Benvindo!! ✨','Aqui está um resumo do seu negócio.'],financeiro:['Financeiro','Entradas, despesas e acompanhamento do caixa.'],fichas:['Fichas técnicas','Organize seus procedimentos e calcule custos.'],clientes:['Clientes','Seus cadastros e contatos em um só lugar.'],agenda:['Agenda','Organize os próximos atendimentos.']};
 function go(view) {
@@ -852,28 +623,6 @@ function initCalendar() {
     calendar = new FullCalendar.Calendar(el, {
         locale: 'pt-br',
         initialView: 'timeGridWeek',
-       eventDidMount: function(info) {
-    const props = info.event.extendedProps;
-
-    const inicio = info.event.start;
-    const fim = info.event.end;
-
-    const formatarHora = data =>
-        data.toLocaleTimeString('pt-BR', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-
-    const tooltip =
-        'CLIENTE: ' + props.clientName + '\n' +
-        'PROCEDIMENTO: ' + props.procedureName + '\n' +
-        'HORÁRIO: ' + formatarHora(inicio) +
-        ' às ' + formatarHora(fim) + '\n' +
-        'DURAÇÃO: ' + props.duration + ' minutos\n' +
-        'STATUS: ' + props.statusLabel;
-
-    info.el.title = tooltip;
-},
         height: 'auto',
 contentHeight: 650,
 expandRows: true,
@@ -883,10 +632,7 @@ slotMaxTime: '22:00:00',
 slotDuration: '00:30:00',
 scrollTime: '08:00:00',
 allDaySlot: false,
-selectable: false,
-editable: false,
-navLinks: true,
-dayMaxEvents: true,
+
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
@@ -1013,8 +759,6 @@ events: []
     refreshCalendar();
 }
 
-
-
 function refreshCalendar() {
     if (!calendar) return;
 
@@ -1025,152 +769,44 @@ function refreshCalendar() {
         faltou: '#858585'
     };
 
-    const statusLabels = {
-        agendado: 'Agendado',
-        realizado: 'Realizado',
-        cancelado: 'Cancelado',
-        faltou: 'Faltou'
-    };
-
     const events = data.appointments.map(x => {
         const client = data.clients.find(c =>
-            String(c.id) === String(x.client_id || x.clientId)
+            String(c.id) === String(x.client_id)
         );
 
         const procedure = data.procedures.find(p =>
-            String(p.id) === String(x.procedure_id || x.procedureId)
+            String(p.id) === String(x.procedure_id)
         );
 
         const status = x.status || 'agendado';
-
-        const scheduledAt = x.scheduled_at;
-
-        const start = scheduledAt
-            ? scheduledAt.replace(' ', 'T')
-            : x.date && x.time
-                ? x.date + 'T' + x.time
-                : null;
-
-        if (!start) return null;
-
-        const startDate = new Date(start);
-
-        if (isNaN(startDate.getTime())) return null;
-
-        // Duração automática do procedimento
-        const duration = obterDuracao(procedure);
-
-        const endDate = new Date(
-            startDate.getTime() + duration * 60000
-        );
+        const statusLabels = {
+            agendado: 'Agendado',
+            realizado: 'Realizado',
+            cancelado: 'Cancelado',
+            faltou: 'Faltou'
+        };
 
         return {
             id: String(x.id),
-
-            title:
-                (client?.name || 'Cliente') +
-                ' · ' +
-                (procedure?.name || 'Procedimento'),
-
-            start: startDate,
-            end: endDate,
-
+            title: (client?.name || 'Cliente') +
+                (procedure ? ' · ' + procedure.name : '') +
+                ' · ' + (statusLabels[status] || 'Agendado'),
+            start: x.date + 'T' + x.time + ':00',
             backgroundColor: colors[status] || colors.agendado,
             borderColor: colors[status] || colors.agendado,
-
-            textColor: '#ffffff',
-
             extendedProps: {
-                status: status,
-                statusLabel: statusLabels[status] || 'Agendado',
-
-                clientId: x.client_id || x.clientId,
-                clientName: client?.name || 'Cliente',
-                clientPhone: client?.phone || '',
-
-                procedureId: x.procedure_id || x.procedureId,
-                procedureName: procedure?.name || 'Procedimento',
-
-                duration: duration,
-                scheduledAt: x.scheduled_at,
-                notes: x.notes || x.description || ''
-            }
+                 status: x.status
+},
         };
-    }).filter(Boolean);
+    });
 
     calendar.removeAllEvents();
     calendar.addEventSource(events);
 }
-
-
 document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
 $('finDate').value=today();$('apptDate').value=today();
-
-async function loadData(){
-  if(!user)return;
-
-  try{
-    const [f,p,c,a,pp]=await Promise.all([
-      db.from('financial_transactions').select('*').order('transaction_date',{ascending:false}),
-      db.from('procedures').select('*').order('created_at',{ascending:false}),
-      db.from('clients').select('*').order('created_at',{ascending:false}),
-      db.from('appointments').select('*').order('scheduled_at',{ascending:true}),
-      db.from('procedure_products').select('*').order('created_at',{ascending:true})
-    ]);
-
-    for(const r of [f,p,c,a,pp]){
-      if(r.error)throw r.error;
-    }
-
-    data.finance=f.data.map(x=>({
-      ...x,
-      desc:x.description,
-      date:x.transaction_date
-    }));
-
-    data.procedures=p.data.map(x=>({
-      ...x,
-      duration:x.duration_minutes,
-      products:Number(x.material_cost||0),
-      other:Number(x.other_cost||0),
-      price:Number(x.price||0),
-      materials:x.products_used||'',
-      notes:x.description||'',
-      items:pp.data
-        .filter(item=>item.procedure_id===x.id)
-        .map(item=>({
-          ...item,
-          quantity:Number(item.quantity||0),
-          unit_cost:Number(item.unit_cost||0),
-          total_cost:Number(item.total_cost||0)
-        }))
-    }));
-
-    data.clients=c.data;
-
-data.appointments = a.data.map(x => {
-    const local = x.scheduled_at
-        ? dataHoraLocal(x.scheduled_at)
-        : { data: '', hora: '' };
-
-    return {
-        ...x,
-        date: local.data,
-        time: local.hora,
-        clientId: x.client_id,
-        procedureId: x.procedure_id,
-        status: x.status || 'agendado'
-    };
-});
-
-    render();
-
-  }catch(e){
-    alert('Não foi possível carregar os dados: '+(e.message||e));
-    console.error(e);
-  }
-}
-async function runSave(query) {
+async function loadData(){if(!user)return;try{const [f,p,c,a]=await Promise.all([db.from('financial_transactions').select('*').eq('user_id',user.id).order('transaction_date',{ascending:false}),db.from('procedures').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),db.from('clients').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),db.from('appointments').select('*').eq('user_id',user.id).order('scheduled_at',{ascending:true})]);for(const r of [f,p,c,a])if(r.error)throw r.error;data.finance=f.data.map(x=>({...x,desc:x.description,date:x.transaction_date}));data.procedures=p.data.map(x=>({...x,duration:x.duration_minutes,products:Number(x.material_cost||0),other:Number(x.other_cost||0),price:Number(x.price||0),materials:x.products_used||'',notes:x.description||''}));data.clients=c.data;data.appointments=a.data.map(x=>({...x,date:x.scheduled_at.slice(0,10),time:x.scheduled_at.slice(11,16),clientId:x.client_id,procedureId:x.procedure_id,status:x.status}));render()}catch(e){alert('Não foi possível carregar os dados: '+(e.message||e));console.error(e)}}
+async function runSave(query) { 
 try {
 const { error } = await query;
 if (error) {
@@ -1188,559 +824,60 @@ alert('Ocorreu um erro ao salvar. Verifique sua conexão e tente novamente.');
 return false;
 }
 }
-;
+
 $('financeForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,type:$('finType').value,amount:Number($('finAmount').value),description:$('finDesc').value.trim(),transaction_date:$('finDate').value,payment_status:'pago'};if(await runSave(db.from('financial_transactions').insert(row))){e.target.reset();$('finDate').value=today()}});
-
-
-$('appointmentForm').addEventListener('submit', async e => {
-    e.preventDefault();
-
-    if (!user) {
-        alert('Faça login para agendar um atendimento.');
-        return;
-    }
-
-    const client = $('apptClient').value;
-    const procedureId = $('apptProcedure').value;
-    const date = $('apptDate').value;
-    const time = $('apptTime').value;
-    const status = $('apptStatus').value;
-
-    if (!client || !date || !time) {
-        alert('Preencha o cliente, a data e o horário.');
-        return;
-    }
-
-    // Identificar procedimento e duração
-    const procedure = data.procedures.find(p =>
-        String(p.id) === String(procedureId)
-    );
-
-    const duration = Number(procedure?.duration || 30);
-
-    // Converter horário escolhido
-    const start = new Date(`${date}T${time}:00`);
-
-    if (isNaN(start.getTime())) {
-        alert('Data ou horário inválido.');
-        return;
-    }
-
-    const end = new Date(
-        start.getTime() + duration * 60000
-    );
-
-    // Verificar conflitos com outros agendamentos
-    if (status === 'agendado') {
-
-        const conflito = data.appointments.find(x => {
-
-            if (x.status !== 'agendado') return false;
-
-            const existingStartValue = x.scheduled_at ||
-                (x.date && x.time
-                    ? `${x.date}T${x.time}:00`
-                    : null);
-
-            if (!existingStartValue) return false;
-
-           const existingStart = new Date(existingStartValue);
-
-if (isNaN(existingStart.getTime())) return false;
-            
-
-            const existingProcedure = data.procedures.find(p =>
-                String(p.id) === String(
-                    x.procedure_id || x.procedureId
-                )
-            );
-
-         const existingDuration = obterDuracao(existingProcedure);
-
-            const existingEnd = new Date(
-                existingStart.getTime() +
-                existingDuration * 60000
-            );
-
-            return (
-                start < existingEnd &&
-                end > existingStart
-            );
-        });
-
-        if (conflito) {
-            const conflictClient = data.clients.find(c =>
-                String(c.id) === String(conflito.client_id)
-            );
-
-            const conflictTime = conflito.scheduled_at
-                ? conflito.scheduled_at.slice(11, 16)
-                : conflito.time;
-
-            alert(
-                'Horário indisponível!\n\n' +
-                'Já existe um atendimento agendado para ' +
-                (conflictClient?.name || 'outro cliente') +
-                ' às ' + conflictTime + '.\n\n' +
-                'Escolha outro horário.'
-            );
-
-            return;
-        }
-    }
-
-    const row = {
-        user_id: user.id,
-        client_id: client,
-        procedure_id: procedureId || null,
-        scheduled_at: horarioParaSalvar(date, time),
-        status: status,
-        notes: null
-    };
-
-
-   
-     if (await runSave(
-        db.from('appointments').insert(row)
-    )) {
-        e.target.reset();
-        $('apptDate').value = today();
-    }
-});
-$('clientForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  if (!user) return;
-
-  const form = $('clientForm');
-  const id = form.dataset.editingId;
-
-  const row = {
-    name: $('clientName').value.trim(),
-    phone: $('clientPhone').value.trim() || null,
-    email: $('clientEmail').value.trim() || null,
-    notes: $('clientNotes').value.trim() || null
-  };
-
-  if (!row.name) {
-    alert('Informe o nome do cliente.');
-    return;
-  }
-
-  let query;
-
-  if (id) {
-    query = db.from('clients')
-      .update(row)
-      .eq('id', id)
-      .eq('user_id', user.id);
-  } else {
-    query = db.from('clients').insert({
-      ...row,
-      user_id: user.id
-    });
-  }
-
-  if (await runSave(query)) {
-    form.reset();
-    delete form.dataset.editingId;
-    form.querySelector('button[type="submit"]').textContent =
-      'Cadastrar cliente';
-    $('cancelClientEdit').hidden = true;
-  }
-});
-// EDITAR CLIENTE
-function editClient(id) {
-    const cliente = data.clients.find(
-        x => String(x.id) === String(id)
-    );
-
-    if (!cliente) {
-        alert('Cliente não encontrado.');
-        return;
-    }
-
-    $('clientName').value = cliente.name || '';
-    $('clientPhone').value = cliente.phone || '';
-    $('clientEmail').value = cliente.email || '';
-    $('clientNotes').value = cliente.notes || '';
-
-    $('clientForm').dataset.editingId = cliente.id;
-
-    $('clientForm').querySelector(
-        'button[type="submit"]'
-    ).textContent = 'Salvar alterações';
-
-    $('cancelClientEdit').hidden = false;
-
-    $('clientForm').scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-    });
-
-    $('clientName').focus();
+$('procedureForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('procName').value.trim(),duration_minutes:$('procDuration').value?Number($('procDuration').value):null,material_cost:Number($('procProducts').value||0),other_cost:Number($('procOther').value||0),price:Number($('procPrice').value||0),products_used:$('procMaterials').value.trim()||null,description:$('procNotes').value.trim()||null};if(await runSave(db.from('procedures').insert(row))){e.target.reset();$('procProducts').value='0';$('procOther').value='0'}});
+$('clientForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('clientName').value.trim(),phone:$('clientPhone').value.trim()||null,email:$('clientEmail').value.trim()||null,notes:$('clientNotes').value.trim()||null};if(await runSave(db.from('clients').insert(row)))e.target.reset()});
+$('appointmentForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const client=$('apptClient').value;if(!client){alert('Cadastre e selecione um cliente antes de agendar.');return}const row={user_id:user.id,client_id:client,procedure_id:$('apptProcedure').value||null,scheduled_at:$('apptDate').value+'T'+$('apptTime').value+':00',status:$('apptStatus').value,notes:null};if(await runSave(db.from('appointments').insert(row))){e.target.reset();$('apptDate').value=today()}});
+async function del(type,id){
+  if(!user){alert('Entre na sua conta para excluir registros.');return;}
+  const table={finance:'financial_transactions',procedures:'procedures',clients:'clients',appointments:'appointments'}[type];
+  if(!table){console.error('Tipo de registro inválido:',type);return;}
+  if(!confirm('Deseja excluir este registro?'))return;
+  const {error}=await db.from(table).delete().eq('id',id).eq('user_id',user.id);
+  if(error){alert('Não foi possível excluir. Verifique se há registros vinculados. '+error.message);console.error('Erro ao excluir:',error);return;}
+  await loadData();
 }
-
-// Permite que o botão HTML acione a função
-window.editClient = editClient;
-
-// CANCELAR EDIÇÃO
-$('cancelClientEdit').addEventListener('click', () => {
-    const form = $('clientForm');
-
-    form.reset();
-    delete form.dataset.editingId;
-
-    form.querySelector(
-        'button[type="submit"]'
-    ).textContent = 'Cadastrar cliente';
-
-    $('cancelClientEdit').hidden = true;
-});
-const productItems = $('productItems');
-
-function updateProductTotal() {
-  let total = 0;
-
-  productItems.querySelectorAll('.product-item').forEach(item => {
-    const quantity = Number(item.querySelector('.product-quantity').value || 0);
-    const unitCost = Number(item.querySelector('.product-unit-cost').value || 0);
-
-    const subtotal = quantity * unitCost;
-
-    item.querySelector('.product-subtotal').value = subtotal.toFixed(2);
-
-    item.querySelector('.product-subtotal-display').textContent =
-      subtotal.toLocaleString('pt-BR', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-
-    total += subtotal;
-  });
-
-  $('procProducts').value = total.toFixed(2);
-}
-
-
-function addProductRow() {
-  const item = document.createElement('div');
-  item.className = 'product-item';
-
-  item.innerHTML = `
-    <div class="product-header">
-      <strong>Produto utilizado</strong>
-      <button type="button" class="btn remove-product">
-        Remover
-      </button>
-    </div>
-
-    <div class="field full">
-      <label>Nome do produto</label>
-      <input type="text" class="product-name"
-        placeholder="Ex.: Óleo corporal">
-    </div>
-
-    <div class="product-fields">
-      <div class="field">
-        <label>Quantidade</label>
-        <input type="number" class="product-quantity"
-          min="0" step="0.001" value="1">
-      </div>
-
-      <div class="field">
-        <label>Custo unitário (R$)</label>
-        <input type="number" class="product-unit-cost"
-          min="0" step="0.01" value="0">
-      </div>
-    </div>
-
-    <div class="product-total">
-      <span>Subtotal do produto</span>
-      <strong>R$ <span class="product-subtotal-display">0,00</span></strong>
-      <input type="hidden" class="product-subtotal" value="0.00">
-    </div>
-  `;
-
-  productItems.appendChild(item);
-
-  item.querySelectorAll('input').forEach(input => {
-    input.addEventListener('input', updateProductTotal);
-  });
-
-  item.querySelector('.remove-product').addEventListener('click', () => {
-    item.remove();
-    updateProductTotal();
-  });
-
-  updateProductTotal();
-}
-
-$('addProductBtn').addEventListener('click', addProductRow);
-
-addProductRow();
-
-   
-$('procedureForm').addEventListener('submit', async e => {
-  e.preventDefault();
-  if (!user) return;
-
-  const productRows = [...$('productItems').querySelectorAll('.product-item')];
-
-  const products = productRows.map(item => ({
-    product_name: item.querySelector('.product-name').value.trim(),
-    quantity: Number(item.querySelector('.product-quantity').value || 0),
-    unit_cost: Number(item.querySelector('.product-unit-cost').value || 0)
-  })).filter(item => item.product_name);
-
-  for (const item of products) {
-    if (item.quantity <= 0 || item.unit_cost < 0) {
-      alert('Confira a quantidade e o custo de cada produto.');
-      return;
-    }
-  }
-
-  const totalProducts = products.reduce(
-    (sum, item) => sum + item.quantity * item.unit_cost, 0
-  );
-
-  const row = {
-    user_id: user.id,
-    name: $('procName').value.trim(),
-    duration_minutes: $('procDuration').value
-      ? Number($('procDuration').value) : null,
-    material_cost: totalProducts,
-    other_cost: Number($('procOther').value || 0),
-    price: Number($('procPrice').value || 0),
-    products_used: products.map(item => item.product_name).join(', ') || null,
-    description: $('procNotes').value.trim() || null
-  };
-
-  try {
-    const { data: procedure, error } = await db
-      .from('procedures')
-      .insert(row)
-      .select('id')
-      .single();
-
-    if (error) throw error;
-
-    if (products.length > 0) {
-      const productRecords = products.map(item => ({
-        user_id: user.id,
-        procedure_id: procedure.id,
-        product_name: item.product_name,
-        quantity: item.quantity,
-        unit_cost: item.unit_cost,
-        total_cost: item.quantity * item.unit_cost
-      }));
-
-      const { error: productError } = await db
-        .from('procedure_products')
-        .insert(productRecords);
-
-      if (productError) {
-        alert('A ficha foi criada, mas houve erro ao salvar os produtos: ' + productError.message);
-        await loadData();
-        return;
-      }
-    }
-
-    alert('Ficha técnica e produtos salvos com sucesso!');
-    e.target.reset();
-    $('procProducts').value = '0';
-    $('procOther').value = '0';
-    $('productItems').innerHTML = '';
-    addProductRow();
-
-    await loadData();
-
-  } catch (error) {
-    alert('Não foi possível salvar a ficha: ' + error.message);
-    console.error(error);
-  }
-});
-
-function renderFinancialReport() {
-  const select = $('reportMonth');
-  if (!select) return;
-
-  const previous = select.value;
-
-  const months = [...new Set(
-    data.finance
-      .map(x => (x.date || '').slice(0, 7))
-      .filter(Boolean)
-  )].sort().reverse();
-
-  select.innerHTML =
-    '<option value="all">Todo o período</option>' +
-    months.map(month => {
-      const [year, number] = month.split('-');
-      return `<option value="${month}">${number}/${year}</option>`;
-    }).join('');
-
-  select.value = months.includes(previous) || previous === 'all'
-    ? previous
-    : 'all';
-
-  const selectedMonth = select.value;
-
-  const records = selectedMonth === 'all'
-    ? data.finance
-    : data.finance.filter(x =>
-        (x.date || '').slice(0, 7) === selectedMonth
-      );
-
-  const income = records
-    .filter(x => x.type === 'entrada')
-    .reduce((sum, x) => sum + Number(x.amount || 0), 0);
-
-  const expenses = records
-    .filter(x => x.type === 'despesa')
-    .reduce((sum, x) => sum + Number(x.amount || 0), 0);
-
-  const balance = income - expenses;
-
-  $('reportIncome').textContent = money(income);
-  $('reportExpenses').textContent = money(expenses);
-  $('reportBalance').textContent = money(balance);
-
-  $('reportBalance').style.color =
-    balance >= 0 ? '#4d8061' : '#b65353';
-
-  const maximum = Math.max(income, expenses, 1);
-
-  const incomeHeight = income > 0
-    ? Math.max(6, income / maximum * 110)
-    : 0;
-
-  const expenseHeight = expenses > 0
-    ? Math.max(6, expenses / maximum * 110)
-    : 0;
-
-  $('reportChart').innerHTML = `
-    <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px">
-      <strong style="font-size:12px">${money(income)}</strong>
-      <div style="width:55px;height:${incomeHeight}px;background:#b08d57;border-radius:6px 6px 0 0"></div>
-      <small>Entradas</small>
-    </div>
-
-    <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px">
-      <strong style="font-size:12px">${money(expenses)}</strong>
-      <div style="width:55px;height:${expenseHeight}px;background:#c58b82;border-radius:6px 6px 0 0"></div>
-      <small>Despesas</small>
-    </div>
-  `;
-}
-
 function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=money(ins);$('dashOut').textContent=money(outs);$('dashBalance').textContent=money(ins-outs);$('dashClients').textContent=data.clients.length;
-$('financeRows').innerHTML=data.finance.length?data.finance.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.desc)}</td><td>${x.type==='entrada'?'Entrada':'Despesa'}</td><td class="${x.type==='entrada'?'money-in':'money-out'}">${x.type==='entrada'?'+':'−'} ${money(x.amount)}</td><td><button class="btn" onclick="del('finance','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum lançamento.</td></tr>';
-renderFinancialReport();
-
-$('procedureRows').innerHTML = data.procedures.length
-  ? data.procedures.map(x => {
-      const productsHtml = x.items?.length
-        ? `<div style="margin-top:8px;font-size:12px;color:#76664f">
-            ${x.items.map(item => `
-              <div>
-                • ${esc(item.product_name)} —
-                ${esc(item.quantity)} × ${money(item.unit_cost)}
-                = <strong>${money(item.total_cost)}</strong>
+$('financeRows').innerHTML = data.finance.length
+  ? data.finance.map(x => {
+      const dateLabel = x.date
+        ? new Date(`${x.date}T12:00:00`).toLocaleDateString('pt-BR')
+        : 'Data não informada';
+      const isIncome = x.type === 'entrada';
+      return `
+        <article class="finance-card ${isIncome ? 'finance-card-in' : 'finance-card-out'}">
+          <div class="finance-card-top">
+            <div class="finance-card-info">
+              <div class="finance-card-icon" aria-hidden="true">
+                <span>${isIncome ? '↙' : '↗'}</span>
               </div>
-            `).join('')}
-          </div>`
-        : '<small>Nenhum produto detalhado</small>';
-
-      const totalCost = x.products + x.other;
-      const profit = x.price - totalCost;
-      const margin = x.price > 0
-        ? (profit / x.price * 100).toFixed(1)
-        : '0.0';
-
-      return `<tr>
-        <td>
-          <strong>${esc(x.name)}</strong>
-          ${productsHtml}
-        </td>
-        <td>${x.duration ? esc(x.duration) + ' min' : '—'}</td>
-        <td>${money(totalCost)}</td>
-        <td>${money(x.price)}</td>
-        <td class="${profit >= 0 ? 'money-in' : 'money-out'}">
-          <strong>${money(profit)}</strong>
-          <small style="display:block;margin-top:4px">${margin}% de margem</small>
-        </td>
-        <td>
-          <button class="btn" onclick="del('procedures','${x.id}')">
-            Excluir
-          </button>
-        </td>
-      </tr>`;
+              <div class="finance-card-description">
+                <strong>${esc(x.desc)}</strong>
+                <small class="finance-card-date">${dateLabel}</small>
+              </div>
+            </div>
+            <span class="finance-card-type">${isIncome ? 'Entrada' : 'Despesa'}</span>
+          </div>
+          <div class="finance-card-bottom">
+            <strong class="finance-card-value ${isIncome ? 'money-in' : 'money-out'}">
+              ${isIncome ? '+' : '−'} ${money(x.amount)}
+            </strong>
+            <button class="btn finance-delete" type="button"
+              onclick="del('finance','${esc(x.id)}')" aria-label="Excluir lançamento ${esc(x.desc)}">
+              Excluir
+            </button>
+          </div>
+        </article>`;
     }).join('')
-  : '<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
+  : '<div class="empty">Nenhum lançamento financeiro registrado.</div>';
 
-
-
-const campo = $('clientSearch').value.trim().toLowerCase();
-const clientesFiltrados = data.clients.filter(x =>
-  (x.name || '').toLowerCase().includes(campo) ||
-  (x.phone || '').toLowerCase().includes(campo) ||
-  (x.email || '').toLowerCase().includes(campo)
-);
-
-$('clientRows').innerHTML = clientesFiltrados.length
-  ? clientesFiltrados.map(x => `<tr>
-      <td>${esc(x.name)}</td>
-      <td>${esc(x.phone || '—')}</td>
-      <td>${esc(x.email || '—')}</td>
-      <td>${esc(x.notes || '—')}</td>
-      
-<td>
-  <button class="btn" onclick="editClient('${x.id}')">Editar</button>
-  <button class="btn" onclick="del('clients','${x.id}')">Excluir</button>
-</td>
-
-    </tr>`).join('')
-  : `<tr><td colspan="5">${
-      campo
-        ? 'Nenhum cliente encontrado para essa pesquisa.'
-        : 'Nenhum cliente cadastrado.'
-    }</td></tr>`;
-
-
+$('procedureRows').innerHTML=data.procedures.length?data.procedures.map(x=>`<tr><td><strong>${esc(x.name)}</strong><small>${esc(x.materials||'')}</small></td><td>${x.duration?esc(x.duration)+' min':'—'}</td><td>${money(x.products+x.other)}</td><td>${money(x.price)}</td><td class="${x.price-x.products-x.other>=0?'money-in':'money-out'}">${money(x.price-x.products-x.other)}</td><td><button class="btn" onclick="del('procedures','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
+$('clientRows').innerHTML=data.clients.length?data.clients.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone||'—')}</td><td>${esc(x.email||'—')}</td><td>${esc(x.notes||'—')}</td><td><button class="btn" onclick="del('clients','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="5">Nenhum cliente cadastrado.</td></tr>';
 $('apptClient').innerHTML='<option value="">Selecione um cliente</option>'+data.clients.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');$('apptProcedure').innerHTML='<option value="">Selecione um procedimento (opcional)</option>'+data.procedures.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
 const sorted=[...data.appointments].sort((a,b)=>a.scheduled_at.localeCompare(b.scheduled_at));$('appointmentRows').innerHTML=sorted.length?sorted.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<tr><td>${esc(x.date)} ${esc(x.time)}</td><td>${esc(c?.name||'Cliente')}</td><td>${esc(p?.name||'—')}</td><td><select aria-label="Status" onchange="updateStatus('${x.id}',this.value)"><option value="agendado" ${x.status==='agendado'?'selected':''}>Agendado</option><option value="realizado" ${x.status==='realizado'?'selected':''}>Realizado</option><option value="cancelado" ${x.status==='cancelado'?'selected':''}>Cancelado</option><option value="faltou" ${x.status==='faltou'?'selected':''}>Faltou</option></select></td><td><button class="btn" onclick="del('appointments','${x.id}')">Excluir</button></td></tr>`}).join(''):'<tr><td colspan="5">Nenhum agendamento.</td></tr>';
-  const upcoming = sorted
-    .filter(x => x.date >= today() && x.status === 'agendado')
-    .slice(0, 4);
-
-  $('dashAppointments').innerHTML = upcoming.length
-    ? upcoming.map(x => {
-        const c = data.clients.find(y => y.id === x.client_id);
-        const p = data.procedures.find(y => y.id === x.procedure_id);
-
-        return `<div class="row">
-          <div>
-            <strong>${esc(c?.name || 'Cliente')}</strong>
-            <small>${esc(x.date)} às ${esc(x.time)}${p ? ' • ' + esc(p.name) : ''}</small>
-          </div>
-          <span class="pill">Agendado</span>
-        </div>`;
-      }).join('')
-    : '<div class="empty">Nenhum atendimento futuro cadastrado.</div>';
-
-        if (calendar) refreshCalendar();
-}
-$('reportMonth').addEventListener('change', renderFinancialReport);
-$('clientSearch').addEventListener('input', () => {
-    render();
-});
-
+const upcoming=sorted.filter(x=>x.date>=today()&&x.status==='agendado').slice(0,4);$('dashAppointments').innerHTML=upcoming.length?upcoming.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<div class="row"><div><strong>${esc(c?.name||'Cliente')}</strong><small>${esc(x.date)} às ${esc(x.time)}${p?' • '+esc(p.name):''}</small></div><span class="pill">Agendado</span></div>`}).join(''):'<div class="empty">Nenhum atendimento futuro cadastrado.</div>'}
 async function updateStatus(id, status) {
-    if (!user?.id) {
-        alert('Faça login para continuar.');
-        return;
-    }
-
     return await runSave(
         db.from('appointments')
             .update({ status })
@@ -1748,96 +885,102 @@ async function updateStatus(id, status) {
             .eq('user_id', user.id)
     );
 }
+window.del=del;window.updateStatus=updateStatus;
+$('authForm').addEventListener('submit', async e => {
+e.preventDefault();
 
+const email = $('authEmail').value.trim();
+const password = $('authPassword').value;
+const mode = $('authMode').value;
 
-async function del(table, id) {
-  if (!user?.id) {
-    alert('Faça login para continuar.');
-    return;
-  }
+msg('Aguarde...');
 
-  const nomes = {
-    finance: 'este lançamento financeiro',
-    procedures: 'esta ficha técnica',
-    clients: 'este cliente',
-    appointments: 'este agendamento'
-  };
-
-  let aviso = `Deseja realmente excluir ${nomes[table] || 'este registro'}?`;
-
-  if (table === 'clients') {
-    aviso += '\n\nOs agendamentos vinculados a este cliente também serão excluídos.';
-  }
-
-  if (table === 'procedures') {
-    aviso += '\n\nOs produtos vinculados e os agendamentos deste procedimento também serão excluídos.';
-  }
-
-  if (!confirm(aviso)) return;
-
-  try {
-    // Exclui os agendamentos vinculados antes de excluir cliente ou procedimento.
-    if (table === 'clients') {
-      const { error } = await db
-        .from('appointments')
-        .delete()
-        .eq('client_id', id)
-        .eq('user_id', user.id);
-
-      if (error) throw error;
-    }
-
-    if (table === 'procedures') {
-      const { error: apptError } = await db
-        .from('appointments')
-        .delete()
-        .eq('procedure_id', id)
-        .eq('user_id', user.id);
-
-      if (apptError) throw apptError;
-
-      const { error: productError } = await db
-        .from('procedure_products')
-        .delete()
-        .eq('procedure_id', id)
-        .eq('user_id', user.id);
-
-      if (productError) throw productError;
-    }
-
-    const tabelas = {
-      finance: 'financial_transactions',
-      procedures: 'procedures',
-      clients: 'clients',
-      appointments: 'appointments'
-    };
-
-    const tabelaReal = tabelas[table];
-
-    if (!tabelaReal) {
-      throw new Error('Tipo de registro inválido.');
-    }
-
-    const { error } = await db
-      .from(tabelaReal)
-      .delete()
-      .eq('id', id)
-      .eq('user_id', user.id);
-
-    if (error) throw error;
-
-    alert('Registro excluído com sucesso!');
-    await loadData();
-
-  } catch (error) {
-    console.error('Erro ao excluir:', error);
-    alert('Não foi possível excluir: ' + error.message);
-  }
+try {
+let result;
+if (mode === 'signup') {
+  result = await db.auth.signUp({ email, password });
+} else {
+  result = await db.auth.signInWithPassword({ email, password });
 }
 
-window.del = del;
-window.updateStatus = updateStatus;
+if (result.error) {
+  const erro = result.error.message.toLowerCase();
 
-</script>
-</body>
-</html>
+  if (
+    erro.includes('invalid login credentials') ||
+    erro.includes('invalid_credentials')
+  ) {
+    msg('E-mail ou senha incorretos. Confira seus dados e tente novamente.', true);
+  } else if (erro.includes('email not confirmed')) {
+    msg('Confirme seu e-mail antes de entrar.', true);
+  } else if (erro.includes('too many requests')) {
+    msg('Muitas tentativas. Aguarde alguns minutos e tente novamente.', true);
+  } else {
+    msg(
+      mode === 'signup'
+        ? 'Não foi possível criar sua conta. Verifique os dados e tente novamente.'
+        : 'Não foi possível entrar. Verifique os dados e tente novamente.',
+      true
+    );
+
+    console.error('Erro de autenticação:', result.error);
+  }
+
+  return;
+}
+
+if (mode === 'signup' && !result.data.session) {
+  msg('Cadastro iniciado! Confira seu e-mail para confirmar a conta e depois faça login.');
+  return;
+}
+
+msg('Acesso confirmado!');
+await syncSession();
+} catch (error) {
+console.error('Erro inesperado na autenticação:', error);
+msg('Ocorreu um problema de conexão. Tente novamente.', true);
+}
+});
+
+$('toggleAuth').addEventListener('click',()=>{const signup=$('authMode').value!=='signup';$('authMode').value=signup?'signup':'login';$('authSubmit').textContent=signup?'Criar conta':'Entrar';$('toggleAuth').textContent=signup?'Já tenho conta — entrar':'Não tenho conta — criar cadastro';msg('')});// Recuperação de senha — Minha Estética
+(function () {
+const authForm = document.getElementById('authForm');
+
+if (!authForm || document.getElementById('forgotPasswordBtn')) return;
+
+const forgotBtn = document.createElement('button');
+forgotBtn.id = 'forgotPasswordBtn';
+forgotBtn.type = 'button';
+forgotBtn.textContent = 'Esqueci minha senha';
+forgotBtn.style.cssText =
+'display:block;margin-top:14px;border:0;background:none;color:#8b6b3f;text-decoration:underline;cursor:pointer;font-size:14px;';
+
+authForm.appendChild(forgotBtn);
+
+forgotBtn.addEventListener('click', async () => {
+const email = document.getElementById('authEmail').value.trim();
+if (!email) {
+  msg('Digite seu e-mail primeiro.');
+  document.getElementById('authEmail').focus();
+  return;
+}
+
+forgotBtn.disabled = true;
+msg('Enviando solicitação...');
+
+try {
+  const { error } = await db.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + window.location.pathname  });
+ if (error) {
+    console.error('Erro ao solicitar recuperação:', error);
+    msg('Não foi possível solicitar a recuperação. Tente novamente.', true);
+    return;  }
+  msg('Se o e-mail estiver cadastrado, você receberá as instruções para redefinir sua senha. Confira também o spam.');
+} catch (error) {
+  console.error(error);
+  msg('Erro de conexão. Tente novamente.', true);
+} finally {forgotBtn.disabled = false;}});})();
+$('logoutBtn').addEventListener('click',async()=>{await db.auth.signOut();user=null;$('authScreen').style.display='grid';$('appShell').style.display='none'});
+async function syncSession(){const {data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){$('authScreen').style.display='none';$('appShell').style.display='grid';$('userEmail').textContent=user.email||'';await loadData()}else{$('authScreen').style.display='grid';$('appShell').style.display='none'}}
+db.auth.onAuthStateChange(()=>{setTimeout(syncSession,0)});syncSession();
+</script></body></html>

@@ -614,7 +614,7 @@ const appointmentToISO=(date,time)=>{const d=new Date(`${date}T${time}:00`);if(N
 let user=null,data={finance:[],procedures:[],clients:[],appointments:[]},calendar=null,editingClientId=null,calendarTooltip=null;
 function msg(t,isError=false){const el=$('authMsg');if(el){el.textContent=t;el.style.color=isError?'#a84d48':'#47765c'}}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-const titles={inicio:['Seja Benvindo!! ✨','Aqui está um resumo do seu negócio.'],financeiro:['Financeiro','Entradas, despesas e acompanhamento do caixa.'],fichas:['Fichas técnicas','Organize seus procedimentos e calcule custos.'],clientes:['Clientes','Seus cadastros e contatos em um só lugar.'],agenda:['Agenda','Organize os próximos atendimentos.']};
+const titles={inicio:[ Seu espaço de gestão ✨','Aqui está um resumo do seu negócio.'],financeiro:['Financeiro','Entradas, despesas e acompanhamento do caixa.'],fichas:['Fichas técnicas','Organize seus procedimentos e calcule custos.'],clientes:['Clientes','Seus cadastros e contatos em um só lugar.'],agenda:['Agenda','Organize os próximos atendimentos.']};
 function go(view) {
     document.querySelectorAll('.section').forEach(s =>
         s.classList.remove('active')

@@ -953,15 +953,94 @@ $('clientForm').addEventListener('submit', async e => {
     if (await runSave(query)) resetClientForm();
 });
 $('appointmentForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const client=$('apptClient').value;if(!client){alert('Cadastre e selecione um cliente antes de agendar.');return}const row={user_id:user.id,client_id:client,procedure_id:$('apptProcedure').value||null,scheduled_at:appointmentToISO($('apptDate').value,$('apptTime').value),status:$('apptStatus').value,notes:null};if(await runSave(db.from('appointments').insert(row))){e.target.reset();$('apptDate').value=today()}});
-async function del(type,id){
-  if(!user){alert('Entre na sua conta para excluir registros.');return;}
-  const table={finance:'financial_transactions',procedures:'procedures',clients:'clients',appointments:'appointments'}[type];
-  if(!table){console.error('Tipo de registro inválido:',type);return;}
-  if(!confirm('Deseja excluir este registro?'))return;
-  const {error}=await db.from(table).delete().eq('id',id).eq('user_id',user.id);
-  if(error){alert('Não foi possível excluir. Verifique se há registros vinculados. '+error.message);console.error('Erro ao excluir:',error);return;}
-  await loadData();
+```javascript
+async function del(type, id) {
+
+    if (!user) {
+        alert('Entre na sua conta para excluir registros.');
+        return;
+    }
+
+    const table = {
+        finance: 'financial_transactions',
+        procedures: 'procedures',
+        clients: 'clients',
+        appointments: 'appointments'
+    }[type];
+
+    if (!table) {
+        console.error('Tipo de registro inválido:', type);
+        return;
+    }
+
+    const confirmMessage = type === 'procedures'
+        ? 'Deseja excluir esta ficha técnica? Os agendamentos e produtos vinculados também serão excluídos.'
+        : type === 'clients'
+        ? 'Deseja excluir este cliente? Os agendamentos vinculados também serão excluídos.'
+        : 'Deseja excluir este registro?';
+
+    if (!confirm(confirmMessage)) return;
+
+    try {
+
+        // Exclui primeiro os agendamentos vinculados ao cliente.
+        if (type === 'clients') {
+
+            const { error } = await db
+                .from('appointments')
+                .delete()
+                .eq('client_id', id)
+                .eq('user_id', user.id);
+
+            if (error) throw error;
+        }
+
+        // Exclui primeiro os registros dependentes do procedimento.
+        if (type === 'procedures') {
+
+            // 1. Exclui agendamentos vinculados.
+            const { error: appointmentError } = await db
+                .from('appointments')
+                .delete()
+                .eq('procedure_id', id)
+                .eq('user_id', user.id);
+
+            if (appointmentError) throw appointmentError;
+
+            // 2. Exclui produtos vinculados à ficha técnica.
+            const { error: productsError } = await db
+                .from('procedure_products')
+                .delete()
+                .eq('procedure_id', id)
+                .eq('user_id', user.id);
+
+            if (productsError) throw productsError;
+        }
+
+        // 3. Exclui o registro principal.
+        const { error } = await db
+            .from(table)
+            .delete()
+            .eq('id', id)
+            .eq('user_id', user.id);
+
+        if (error) throw error;
+
+        await loadData();
+
+        alert('Registro excluído com sucesso!');
+
+    } catch (error) {
+
+        console.error('Erro ao excluir registro:', error);
+
+        alert(
+            'Não foi possível excluir o registro.\n\n' +
+            'Detalhes: ' + error.message
+        );
+    }
 }
+
 function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=money(ins);$('dashOut').textContent=money(outs);$('dashBalance').textContent=money(ins-outs);$('dashClients').textContent=data.clients.length;
 $('financeRows').innerHTML = data.finance.length
   ? data.finance.map(x => {

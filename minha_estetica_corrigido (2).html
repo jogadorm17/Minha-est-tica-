@@ -1226,4 +1226,3 @@ $('logoutBtn').addEventListener('click',async()=>{await db.auth.signOut();user=n
 async function syncSession(){const {data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){$('authScreen').style.display='none';$('appShell').style.display='grid';$('userEmail').textContent=user.email||'';await loadData()}else{$('authScreen').style.display='grid';$('appShell').style.display='none'}}
 db.auth.onAuthStateChange(()=>{setTimeout(syncSession,0)});syncSession();
 </script></body></html>
-Indentifica o erro de login após a adição do cod

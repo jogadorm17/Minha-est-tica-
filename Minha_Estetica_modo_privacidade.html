@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Minha Estética | Gestão profissional
+  </title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    #calendar {
+    width: 100%;
+    max-width: 100%;
+    margin: 10px auto;
+    font-size: 13px;
+    --fc-border-color: var(--line);
+    --fc-today-bg-color: #F5EBDD;
+    --fc-page-bg-color: #FFFEFB;
+    --fc-neutral-bg-color: #F5EFE6;
+    --fc-neutral-text-color: var(--muted);
+}
+
+    .fc .fc-button {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #FFFFFF;
+    box-shadow: none;
+    text-transform: capitalize;
+    border-radius: 8px;
+}
+
+    .fc .fc-button:hover,
+.fc .fc-button:focus {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+    color: #FFFFFF;
+}
+
+    .fc .fc-daygrid-day-number {
+        color: #302c27;
+        text-decoration: none;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 20px;
+    }
+
+    @media (max-width: 520px) {
+        .fc .fc-toolbar {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .fc .fc-toolbar-title {
+            font-size: 17px;
+        }
+    }
+
+
+  
+.calendar-panel {
+    padding: 24px;
+    overflow: hidden;
+}
+
+.calendar-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.calendar-heading h2 {
+    font-size: 21px;
+    margin-bottom: 8px;
+}
+
+.calendar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.calendar-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.calendar-legend i {
+    width: 9px;
+    height: 9px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.legend-agendado { background: #b08d57; }
+.legend-realizado { background: #47765c; }
+.legend-cancelado { background: #a84d48; }
+.legend-faltou { background: #858585; }
+
+#calendar {
+    max-width: 100%;
+    margin: 10px auto;
+    font-size: 13px;
+    --fc-border-color: var(--line);
+    --fc-today-bg-color: #f8f0e2;
+    --fc-page-bg-color: #fffdf9;
+}
+
+.fc .fc-toolbar-title {
+    color: var(--ink);
+    font-family: Georgia, serif;
+    font-size: 22px;
+}
+
+.fc .fc-button-primary {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: none;
+    text-transform: capitalize;
+}
+
+.fc .fc-button-primary:hover,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+}
+
+.fc .fc-daygrid-day-number {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.fc .fc-event {
+    border-radius: 5px;
+    padding: 2px 4px;
+    border: 0;
+    cursor: pointer;
+}
+
+
+@media (max-width: 600px) {
+    .calendar-panel {
+        padding: 12px;
+    }
+
+    .fc .fc-toolbar {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 18px;
+    }
+
+    
+   
+ .fc .fc-button {
+    padding: 6px 8px;
+    font-size: 12px;
+}
+}
+
+:root {
+    --bg: #EDE1D0;
+    --card: #FFFEFB;
+    --gold: #C5A46D;
+    --gold-dark: #8A6B3F;
+    --ink: #514538;
+    --muted: #877B6C;
+    --line: #E3D5C2;
+    --green: #47765C;
+    --red: #A84D48;
+}
+
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.sidebar{background:#fffdf9;border-right:1px solid var(--line);padding:26px 17px}.brand{font-family:Georgia,serif;font-size:25px;color:var(--gold-dark);margin:0 10px 4px}.subbrand{font-size:12px;color:var(--muted);margin:0 10px 30px}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;text-align:left;padding:12px 13px;border-radius:12px;color:#5f584e;font-size:14px;cursor:pointer}.nav button.active,.nav button:hover{background:#f1e7d6;color:#6f542c;font-weight:650}.sidebar-note{margin:35px 9px 0;color:var(--muted);font-size:12px}.main{padding:28px;max-width:1450px;width:100%;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.eyebrow{text-transform:uppercase;letter-spacing:.13em;color:var(--gold-dark);font-size:11px;font-weight:750}.top h1{font-size:27px;margin:4px 0;font-weight:650}.top p{color:var(--muted);margin:0}.badge{background:#eee3d1;color:#70552c;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:650}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0}.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:0 5px 20px #5b47200a}.card .label{color:var(--muted);font-size:13px}.card .value{font-size:25px;font-weight:750;margin:8px 0 2px}.card .hint{font-size:12px;color:var(--muted)}.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:15px}.panel h2{font-size:17px;margin:0 0 14px}.panel .desc{color:var(--muted);font-size:13px;margin-top:-7px;margin-bottom:15px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.row small{display:block;color:var(--muted);margin-top:3px}.pill{font-size:11px;padding:5px 8px;border-radius:999px;background:#f0e8db;color:#715a37;white-space:nowrap}.empty{padding:18px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:13px;text-align:center}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:white;color:var(--ink);padding:10px 13px;border-radius:10px;cursor:pointer;font-weight:600}.btn.primary{background:var(--gold);border-color:var(--gold);color:white}.btn:hover{filter:brightness(.97)}.section{display:none}.section.active{display:block}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}.toolbar h2{margin:0;font-size:21px}.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:var(--muted);font-weight:650}.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink);font:inherit}.field textarea{min-height:76px;resize:vertical}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:650}.money-in{color:var(--green);font-weight:700}.money-out{color:var(--red);font-weight:700}.section-intro{color:var(--muted);margin:5px 0 18px;font-size:13px}.notice{padding:13px 15px;background:#f2e8d8;border:1px solid #e5d5ba;border-radius:12px;color:#6f542c;font-size:13px;margin-top:16px}.footer{color:var(--muted);font-size:11px;text-align:center;margin-top:25px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{padding:15px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:22px}.subbrand{margin-bottom:14px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.sidebar-note{display:none}.main{padding:18px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}}
+@media(max-width:520px){.top{align-items:flex-start;flex-direction:column}.top h1{font-size:23px}.cards{gap:9px}.card{padding:14px}.card .value{font-size:21px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.toolbar{align-items:flex-start;flex-direction:column}}
+.auth-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:var(--bg)}.auth-card{width:min(100%,430px);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 10px 35px #5b472012}.auth-card h1{font-family:Georgia,serif;color:var(--gold-dark);margin:0 0 6px}.auth-card p{color:var(--muted);font-size:13px}.auth-card .form{margin-top:20px}.auth-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.auth-small{font-size:12px;color:var(--muted);margin-top:15px}.top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.user-email{font-size:12px;color:var(--muted)}
+.privacy-toggle{white-space:nowrap;border-color:var(--gold);color:var(--gold-dark);font-size:12px}
+.privacy-toggle[aria-pressed="true"]{background:#F2E8D8;color:var(--gold-dark)}
+@media(max-width:600px){.top-right{gap:7px}.privacy-toggle{font-size:11px;padding:8px 10px}}
+
+
+/* Ajustes visuais — paleta nude e dourado */
+
+.sidebar {
+    background: var(--card);
+    border-right-color: var(--line);
+    color: var(--ink);
+}
+
+.nav button {
+    color: var(--ink);
+}
+
+
+.nav button.active,
+.nav button:hover {
+    background: #EDE1D0;
+    color: var(--gold-dark);
+}
+
+.badge,
+.pill {
+    background: #F2E8D8;
+    color: var(--gold-dark);
+}
+
+.btn {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.btn.primary {
+    background: var(--gold);
+    color: #FFFFFF;
+    border-color: var(--gold);
+}
+
+.field input,
+.field select,
+.field textarea,
+select[aria-label="Status"] {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.notice {
+    background: #F5EBDD;
+    color: var(--gold-dark);
+    border-color: var(--line);
+}
+
+
+#calendar {
+    --fc-page-bg-color: #FFFEFB;
+    --fc-neutral-bg-color: #F5EFE6;
+    --fc-neutral-text-color: #877B6C;
+    --fc-border-color: var(--line);
+    --fc-today-bg-color: #F5EBDD;
+    color: var(--ink);
+}
+
+.fc .fc-col-header-cell-cushion,
+.fc .fc-daygrid-day-number,
+.fc .fc-list-day-text,
+.fc .fc-list-day-side-text {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.fc .fc-button-primary {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #FFFFFF;
+}
+
+.fc .fc-button-primary:hover,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+    color: #FFFFFF;
+}
+
+body {
+    background: var(--bg);
+    color: var(--ink);
+}
+
+
+
+
+.nav button.active,
+.nav button:hover {
+    background: #EDE1D0;
+    color: var(--gold-dark);
+}
+
+.badge,
+.pill {
+    background: #F2E8D8;
+    color: var(--gold-dark);
+}
+
+.btn {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.btn.primary {
+    background: var(--gold);
+    color: #FFFFFF;
+    border-color: var(--gold);
+}
+
+
+
+#calendar {
+    --fc-page-bg-color: #FFFEFB;
+    --fc-neutral-bg-color: #F5EFE6;
+    --fc-neutral-text-color: #877B6C;
+    --fc-border-color: #E3D5C2;
+    --fc-today-bg-color: #F5EBDD;
+    color: var(--ink);
+}
+
+
+.fc .fc-col-header-cell-cushion,
+.fc .fc-daygrid-day-number,
+.fc .fc-list-day-text,
+.fc .fc-list-day-side-text {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.fc .fc-button-primary {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #17130c;
+}
+
+.fc .fc-button-primary:hover,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+    color: #17130c;
+}
+
+.auth-screen {
+    background: var(--bg);
+}
+
+.footer {
+    color: var(--muted);
+}
+
+/* HISTÓRICO FINANCEIRO - CARTÕES INDIVIDUAIS */
+
+#financeRows.finance-list {
+    display: grid;
+    gap: 12px;
+}
+.finance-card-date { color: var(--muted); font-size: 12px; }
+.finance-card { min-width: 0; }
+
+.finance-card {
+    width: 100%;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--card);
+    box-shadow: 0 3px 12px rgba(81, 69, 56, .04);
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.finance-card:hover {
+    box-shadow: 0 6px 18px rgba(81, 69, 56, .08);
+    transform: translateY(-1px);
+}
+
+.finance-card-top,
+.finance-card-bottom,
+.finance-card-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.finance-card-info {
+    justify-content: flex-start;
+    min-width: 0;
+}
+
+.finance-card-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 23px;
+}
+
+.finance-card-in .finance-card-icon {
+    background: #EAF2E9;
+    color: var(--green);
+}
+
+.finance-card-out .finance-card-icon {
+    background: #F8EEEE;
+    color: var(--red);
+}
+
+.finance-card-description {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.finance-card-description strong {
+    color: var(--ink);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.finance-card-description small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.finance-card-type {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.finance-card-in .finance-card-type {
+    background: #EAF2E9;
+    color: var(--green);
+}
+
+.finance-card-out .finance-card-type {
+    background: #F8EEEE;
+    color: var(--red);
+}
+
+.finance-card-bottom {
+    margin-top: 17px;
+    padding-top: 13px;
+    border-top: 1px solid var(--line);
+}
+
+.finance-card-value {
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.finance-delete {
+    font-size: 12px;
+    padding: 7px 12px;
+}
+
+@media (max-width: 600px) {
+    .finance-card {
+        padding: 15px;
+    }
+
+    .finance-card-value {
+        font-size: 17px;
+    }
+}
+
+/* Dica flutuante ao passar o mouse sobre um agendamento */
+.calendar-event-tooltip {
+    position: fixed;
+    z-index: 100000;
+    display: none;
+    max-width: 280px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 8px 28px rgba(40, 30, 20, .18);
+    font-size: 13px;
+    line-height: 1.55;
+    white-space: pre-line;
+    pointer-events: none;
+}
+.fc-event { cursor: pointer; }
+
+</style>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/locales-all.global.min.js"></script>
+ </head>
+ <body>
+  <section class="auth-screen" id="authScreen">
+   <div class="auth-card">
+    <h1>
+     Minha Estética
+    </h1>
+    <p>
+     Gestão profissional • entre na sua conta para acessar seus dados com segurança.
+    </p>
+    <form class="form" id="authForm">
+     <div class="field full">
+      <label>
+       E-mail
+      </label>
+      <input autocomplete="email" id="authEmail" placeholder="voce@email.com" required="" type="email"/>
+     </div>
+     <div class="field full">
+      <label>
+       Senha (mínimo 6 caracteres)
+      </label>
+      <input autocomplete="current-password" id="authPassword" minlength="6" placeholder="Sua senha" required="" type="password"/>
+     </div>
+     <input id="authMode" type="hidden" value="login"/>
+     <div class="field full auth-actions">
+      <button class="btn primary" id="authSubmit" type="submit">
+       Entrar
+      </button>
+      <button class="btn" id="toggleAuth" type="button">
+       Não tenho conta — criar cadastro
+      </button>
+     </div>
+    </form>
+    <form class="form" id="resetPasswordForm" style="display:none;">
+     <div class="field full">
+      <label for="newPassword">Nova senha</label>
+      <input autocomplete="new-password" id="newPassword" minlength="6" placeholder="Digite a nova senha" required type="password"/>
+     </div>
+     <div class="field full">
+      <label for="confirmPassword">Confirme a nova senha</label>
+      <input autocomplete="new-password" id="confirmPassword" minlength="6" placeholder="Repita a nova senha" required type="password"/>
+     </div>
+     <div class="field full">
+      <button class="btn primary" id="saveNewPassword" type="submit">Salvar nova senha</button>
+      <button class="btn" id="cancelPasswordReset" type="button">Voltar ao login</button>
+     </div>
+    </form>
+    <p id="authMsg" role="status">
+    </p>
+    <div class="auth-small">
+     Se o cadastro exigir confirmação, confira sua caixa de entrada. Use uma senha forte e não a compartilhe.
+    </div>
+   </div>
+  </section>
+  <div class="app" id="appShell" style="display:none">
+   <aside class="sidebar">
+    <h2 class="brand">
+     Minha Estética
+    </h2>
+    <p class="subbrand">
+     GESTÃO PROFISSIONAL
+    </p>
+    <nav aria-label="Menu principal" class="nav">
+     <button class="active" data-view="inicio">
+      ⌂   Início
+     </button>
+     <button data-view="financeiro">
+      ▤   Financeiro
+     </button>
+     <button data-view="fichas">
+      ✧   Fichas técnicas
+     </button>
+     <button data-view="clientes">
+      ♙   Clientes
+     </button>
+     <button data-view="agenda">
+      ▦   Agenda
+     </button>
+     <button data-view="comunicacao">
+      💬   Comunicação
+     </button>
+    </nav>
+    <p class="sidebar-note">
+     Organização, cuidado e resultados em um só lugar.
+    </p>
+   </aside>
+   <main class="main">
+    <header class="top">
+     <div>
+      <div class="eyebrow">
+       Seu espaço de gestão
+      </div>
+      <h1 id="pageTitle">
+       Bom dia! ✨
+      </h1>
+      <p id="pageSubtitle">
+       Aqui está um resumo do seu negócio.
+      </p>
+     </div>
+     <div class="top-right">
+      <span class="user-email" id="userEmail">
+      </span>
+      <button class="btn privacy-toggle" id="privacyToggleBtn" type="button" aria-pressed="false" aria-label="Ocultar valores financeiros" title="Ocultar valores financeiros">
+       👁️ Ocultar valores
+      </button>
+      <button class="btn" id="logoutBtn" type="button">
+       Sair
+      </button>
+      <span class="badge">
+       Sincronizado com a nuvem
+      </span>
+     </div>
+    </header>
+    <section class="section active" id="view-inicio">
+     <div class="cards">
+      <div class="card">
+       <div class="label">
+        Entradas registradas
+       </div>
+       <div class="value" id="dashIn">
+        R$ 0,00
+       </div>
+       <div class="hint">
+        Total dos lançamentos
+       </div>
+      </div>
+      <div class="card">
+       <div class="label">
+        Despesas registradas
+       </div>
+       <div class="value" id="dashOut">
+        R$ 0,00
+       </div>
+       <div class="hint">
+        Total dos lançamentos
+       </div>
+      </div>
+      <div class="card">
+       <div class="label">
+        Saldo estimado
+       </div>
+       <div class="value" id="dashBalance">
+        R$ 0,00
+       </div>
+       <div class="hint">
+        Entradas menos despesas
+       </div>
+      </div>
+      <div class="card">
+       <div class="label">
+        Clientes cadastrados
+       </div>
+       <div class="value" id="dashClients">
+        0
+       </div>
+       <div class="hint">
+        Na sua lista
+       </div>
+      </div>
+     </div>
+     <div class="grid2">
+      <div class="panel">
+       <h2>
+        Atalhos rápidos
+       </h2>
+       <p class="desc">
+        Acesse as tarefas mais comuns.
+       </p>
+       <div class="actions">
+        <button class="btn primary" data-go="clientes">
+         ＋ Cadastrar cliente
+        </button>
+        <button class="btn" data-go="financeiro">
+         ＋ Lançamento financeiro
+        </button>
+        <button class="btn" data-go="fichas">
+         ＋ Nova ficha técnica
+        </button>
+        <button class="btn" data-go="agenda">
+         ＋ Agendar atendimento
+        </button>
+       </div>
+       <div class="notice">
+        Dica: cadastre seus procedimentos e custos para entender melhor a rentabilidade de cada serviço.
+       </div>
+      </div>
+      <div class="panel">
+       <h2>
+        Próximos atendimentos
+       </h2>
+       <p class="desc">
+        Seus compromissos registrados.
+       </p>
+       <div class="empty" id="dashAppointments">
+        Nenhum atendimento cadastrado ainda.
+       </div>
+      </div>
+     </div>
+    </section>
+    <!-- DERMAVIE | COMUNICAÇÃO -->
+    <section class="section" id="view-comunicacao">
+     <div class="toolbar">
+      <h2>
+       Comunicação com clientes
+      </h2>
+     </div>
+     <p class="section-intro">
+      Configure os lembretes e acompanhe as mensagens relacionadas aos atendimentos.
+     </p>
+     <div class="cards">
+      <div class="card">
+       <div class="label">
+        Integração WhatsApp
+       </div>
+       <div class="value" id="whatsappStatus">
+        Desconectado
+       </div>
+       <div class="hint">
+        Conexão com a conta comercial
+       </div>
+      </div>
+      <div class="card">
+       <div class="label">
+        Mensagens registradas
+       </div>
+       <div class="value" id="whatsappTotal">
+        0
+       </div>
+       <div class="hint">
+        Histórico de comunicação
+       </div>
+      </div>
+      <div class="card">
+       <div class="label">
+        Mensagens enviadas
+       </div>
+       <div class="value" id="whatsappSent">
+        0
+       </div>
+       <div class="hint">
+        Envios confirmados
+       </div>
+      </div>
+      <div class="card">
+       <div class="label">
+        Mensagens pendentes
+       </div>
+       <div class="value" id="whatsappPending">
+        0
+       </div>
+       <div class="hint">
+        Aguardando processamento
+       </div>
+      </div>
+     </div>
+     <div class="panel">
+      <h2>
+       Configurações dos lembretes
+      </h2>
+      <p class="desc">
+       Escolha quando os clientes deverão receber os lembretes.
+      </p>
+      <form class="form" id="whatsappSettingsForm">
+       <div class="field full">
+        <label>
+         Número comercial do WhatsApp
+        </label>
+        <input id="whatsappPhone" placeholder="Ex.: 5533999999999" type="tel"/>
+       </div>
+       <div class="field full">
+        <label>
+         <input id="reminderDayBefore" type="checkbox"/>
+         Ativar lembrete 24 horas antes
+        </label>
+       </div>
+       <div class="field full">
+        <label>
+         <input id="reminderDayOf" type="checkbox"/>
+         Ativar lembrete no dia do procedimento
+        </label>
+       </div>
+       <div class="field">
+        <label>
+         Horário de referência
+        </label>
+        <input id="whatsappSendTime" type="time" value="09:00"/>
+       </div>
+       <div class="field full">
+        <button class="btn primary" type="submit">
+         Salvar configurações
+        </button>
+       </div>
+      </form>
+      <div class="notice">
+       O envio automático permanecerá desativado até a configuração
+      e validação da integração oficial com o WhatsApp.
+      </div>
+     </div>
+     <div class="panel" style="margin-top:20px">
+      <h2>
+       Autorização dos clientes
+      </h2>
+      <p class="desc">
+       Registre a autorização individual antes de qualquer lembrete. A autorização pode ser revogada a qualquer momento.
+      </p>
+      <div class="table-wrap">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Cliente
+          </th>
+          <th>
+           Telefone
+          </th>
+          <th>
+           Autorização
+          </th>
+          <th>
+           Ação
+          </th>
+         </tr>
+        </thead>
+        <tbody id="whatsappConsentRows">
+         <tr>
+          <td colspan="4">
+           Nenhum cliente cadastrado.
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+     <div class="panel" style="margin-top:20px">
+      <h2>
+       Histórico de mensagens
+      </h2>
+      <div class="table-wrap">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Data
+          </th>
+          <th>
+           Tipo
+          </th>
+          <th>
+           Status
+          </th>
+          <th>
+           Mensagem
+          </th>
+         </tr>
+        </thead>
+        <tbody id="whatsappHistory">
+         <tr>
+          <td colspan="4">
+           Nenhuma mensagem registrada.
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+    </section>
+    <section class="section" id="view-financeiro">
+     <div class="toolbar">
+      <h2>
+       Controle financeiro
+      </h2>
+     </div>
+     <p class="section-intro">
+      Registre entradas e despesas para acompanhar seu caixa.
+     </p>
+     <div class="panel">
+      <form class="form" id="financeForm">
+       <div class="field">
+        <label>
+         Tipo de lançamento
+        </label>
+        <select id="finType">
+         <option value="entrada">
+          Entrada
+         </option>
+         <option value="despesa">
+          Despesa
+         </option>
+        </select>
+       </div>
+       <div class="field">
+        <label>
+         Valor (R$)
+        </label>
+        <input id="finAmount" min="0.01" placeholder="0,00" required="" step="0.01" type="number"/>
+       </div>
+       <div class="field">
+        <label>
+         Descrição
+        </label>
+        <input id="finDesc" placeholder="Ex.: Massagem relaxante" required=""/>
+       </div>
+       <div class="field">
+        <label>
+         Data
+        </label>
+        <input id="finDate" required="" type="date"/>
+       </div>
+       <div class="field full">
+        <button class="btn primary" type="submit">
+         Salvar lançamento
+        </button>
+       </div>
+      </form>
+     </div>
+     <div class="panel finance-history-panel" style="margin-top:15px">
+      <h2>
+       Histórico de lançamentos
+      </h2>
+      <div class="finance-list" id="financeRows">
+       <div class="empty">
+        Nenhum lançamento.
+       </div>
+      </div>
+     </div>
+    </section>
+    <section class="section" id="view-fichas">
+     <div class="toolbar">
+      <h2>
+       Fichas técnicas
+      </h2>
+     </div>
+     <p class="section-intro">
+      Cadastre serviços, custos e preço sugerido. O cálculo abaixo não substitui a avaliação de todos os custos do negócio.
+     </p>
+     <div class="panel">
+      <form class="form" id="procedureForm">
+       <div class="field">
+        <label>
+         Nome do procedimento
+        </label>
+        <input id="procName" placeholder="Ex.: Massagem relaxante" required=""/>
+       </div>
+       <div class="field">
+        <label>
+         Duração (minutos)
+        </label>
+        <input id="procDuration" min="1" placeholder="60" type="number"/>
+       </div>
+       <div class="field">
+        <label>
+         Custo dos produtos (R$)
+        </label>
+        <input id="procProducts" min="0" required="" step="0.01" type="number" value="0"/>
+       </div>
+       <div class="field">
+        <label>
+         Outros custos variáveis (R$)
+        </label>
+        <input id="procOther" min="0" required="" step="0.01" type="number" value="0"/>
+       </div>
+       <div class="field">
+        <label>
+         Preço cobrado (R$)
+        </label>
+        <input id="procPrice" min="0" required="" step="0.01" type="number"/>
+       </div>
+       <div class="field">
+        <label>
+         Produtos / materiais
+        </label>
+        <input id="procMaterials" placeholder="Óleo, creme, toalhas..."/>
+       </div>
+       <div class="field full">
+        <label>
+         Etapas e observações
+        </label>
+        <textarea id="procNotes" placeholder="Descreva o protocolo, cuidados e observações profissionais."></textarea>
+       </div>
+       <div class="field full">
+        <button class="btn primary" type="submit">
+         Salvar ficha técnica
+        </button>
+       </div>
+      </form>
+     </div>
+     <div class="panel" style="margin-top:15px">
+      <h2>
+       Procedimentos cadastrados
+      </h2>
+      <div class="table-wrap">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Procedimento
+          </th>
+          <th>
+           Duração
+          </th>
+          <th>
+           Custo variável
+          </th>
+          <th>
+           Preço
+          </th>
+          <th>
+           Resultado estimado
+          </th>
+          <th>
+          </th>
+         </tr>
+        </thead>
+        <tbody id="procedureRows">
+         <tr>
+          <td colspan="6">
+           Nenhuma ficha técnica.
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+    </section>
+    <section class="section" id="view-clientes">
+     <div class="toolbar">
+      <h2>
+       Cadastro de clientes
+      </h2>
+     </div>
+     <p class="section-intro">
+      Guarde apenas as informações necessárias para o atendimento e proteja os dados dos seus clientes.
+     </p>
+     <div class="panel">
+      <form class="form" id="clientForm">
+       <input id="clientEditId" type="hidden" value=""/>
+       <div class="field">
+        <label>
+         Nome completo
+        </label>
+        <input id="clientName" placeholder="Nome do cliente" required=""/>
+       </div>
+       <div class="field">
+        <label>
+         Telefone
+        </label>
+        <input id="clientPhone" placeholder="(00) 00000-0000"/>
+       </div>
+       <div class="field">
+        <label>
+         E-mail (opcional)
+        </label>
+        <input id="clientEmail" placeholder="cliente@email.com" type="email"/>
+       </div>
+       <div class="field">
+        <label>
+         Observação não sensível
+        </label>
+        <input id="clientNotes" placeholder="Preferência de horário, por exemplo"/>
+       </div>
+       <div class="field full actions">
+        <button class="btn primary" id="clientSubmitBtn" type="submit">
+         Cadastrar cliente
+        </button>
+        <button class="btn" id="cancelClientEdit" style="display:none" type="button">
+         Cancelar edição
+        </button>
+       </div>
+      </form>
+     </div>
+     <div class="panel" style="margin-top:15px">
+      <h2>
+       Clientes cadastrados
+      </h2>
+      <div class="table-wrap">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Nome
+          </th>
+          <th>
+           Telefone
+          </th>
+          <th>
+           E-mail
+          </th>
+          <th>
+           Observação
+          </th>
+          <th>
+           WhatsApp
+          </th>
+          <th>
+          </th>
+         </tr>
+        </thead>
+        <tbody id="clientRows">
+         <tr>
+          <td colspan="5">
+           Nenhum cliente cadastrado.
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+    </section>
+    <section class="section" id="view-agenda">
+     <div class="toolbar">
+      <h2>
+       Agenda de atendimentos
+      </h2>
+     </div>
+     <p class="section-intro">
+      Organize seus horários, acompanhe os compromissos e gerencie seus atendimentos.
+     </p>
+     <div class="panel">
+      <h2>
+       Novo agendamento
+      </h2>
+      <form class="form" id="appointmentForm">
+       <div class="field">
+        <label>
+         Cliente
+        </label>
+        <select id="apptClient" required="">
+         <option value="">
+          Selecione um cliente
+         </option>
+        </select>
+       </div>
+       <div class="field">
+        <label>
+         Procedimento
+        </label>
+        <select id="apptProcedure">
+         <option value="">
+          Selecione um procedimento (opcional)
+         </option>
+        </select>
+       </div>
+       <div class="field">
+        <label>
+         Data
+        </label>
+        <input id="apptDate" required="" type="date"/>
+       </div>
+       <div class="field">
+        <label>
+         Horário
+        </label>
+        <input id="apptTime" required="" type="time"/>
+       </div>
+       <div class="field">
+        <label>
+         Status do atendimento
+        </label>
+        <select id="apptStatus" required="">
+         <option value="agendado">
+          Agendado
+         </option>
+         <option value="realizado">
+          Realizado
+         </option>
+         <option value="cancelado">
+          Cancelado
+         </option>
+         <option value="faltou">
+          Faltou
+         </option>
+        </select>
+       </div>
+       <div class="field full">
+        <button class="btn primary" type="submit">
+         + Salvar agendamento
+        </button>
+       </div>
+      </form>
+     </div>
+     <div class="panel calendar-panel" style="margin-top:20px">
+      <div class="calendar-heading">
+       <div>
+        <h2>
+         Calendário de atendimentos
+        </h2>
+        <p class="section-intro">
+         Visualize seus compromissos por mês, semana, dia ou lista.
+        </p>
+       </div>
+       <div class="calendar-legend">
+        <span>
+         <i class="legend-agendado">
+         </i>
+         Agendado
+        </span>
+        <span>
+         <i class="legend-realizado">
+         </i>
+         Realizado
+        </span>
+        <span>
+         <i class="legend-cancelado">
+         </i>
+         Cancelado
+        </span>
+        <span>
+         <i class="legend-faltou">
+         </i>
+         Faltou
+        </span>
+       </div>
+      </div>
+      <div id="calendar">
+      </div>
+     </div>
+     <div class="panel" style="margin-top:20px">
+      <h2>
+       Agendamentos registrados
+      </h2>
+      <div class="table-wrap">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Data e hora
+          </th>
+          <th>
+           Cliente
+          </th>
+          <th>
+           Procedimento
+          </th>
+          <th>
+           Status
+          </th>
+          <th>
+           Ações
+          </th>
+         </tr>
+        </thead>
+        <tbody id="appointmentRows">
+         <tr>
+          <td colspan="5">
+           Nenhum agendamento.
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+    </section>
+    <div class="footer">
+     Minha Estética • Seus registros são salvos na sua conta.
+    </div>
+   </main>
+  </div>
+  <script>
+const SUPABASE_URL='https://bfxgthcsmxrxgsmcwcvn.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_CIHwVMpZjtIP6ewP7rVL8w_U2ry9uI1';
+if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+  document.getElementById('authMsg').textContent = 'Não foi possível carregar o serviço de autenticação. Atualize a página e tente novamente.';
+  throw new Error('Biblioteca Supabase JS não carregada.');
+}
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id);const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(n)||0);const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+// Converte datas do Supabase para o horário local do navegador e vice-versa.
+const appointmentLocalParts=value=>{const d=new Date(value);if(Number.isNaN(d.getTime()))throw new Error('Data ou horário do agendamento inválido.');return {date:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`,time:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};};
+const appointmentToISO=(date,time)=>{const d=new Date(`${date}T${time}:00`);if(Number.isNaN(d.getTime()))throw new Error('Data ou horário do agendamento inválido.');return d.toISOString();};
+let user=null,data={finance:[],procedures:[],clients:[],appointments:[]},calendar=null,editingClientId=null,calendarTooltip=null;
+// Modo Privacidade: oculta apenas a exibição dos valores; os dados permanecem intactos.
+let privacyMode = false;
+const displayMoney = value => privacyMode ? '••••••' : money(value);
+function updatePrivacyButton() {
+    const button = $('privacyToggleBtn');
+    if (!button) return;
+    button.textContent = privacyMode ? '🙈 Mostrar valores' : '👁️ Ocultar valores';
+    button.setAttribute('aria-pressed', String(privacyMode));
+    button.setAttribute('aria-label', privacyMode ? 'Mostrar valores financeiros' : 'Ocultar valores financeiros');
+    button.title = privacyMode ? 'Mostrar valores financeiros' : 'Ocultar valores financeiros';
+}
+function togglePrivacyMode() {
+    privacyMode = !privacyMode;
+    updatePrivacyButton();
+    render();
+}
+$('privacyToggleBtn')?.addEventListener('click', togglePrivacyMode);
+updatePrivacyButton();
+function msg(t,isError=false){const el=$('authMsg');if(el){el.textContent=t;el.style.color=isError?'#a84d48':'#47765c'}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+const titles={inicio:['Seja bem-vindo! ✨','Aqui está um resumo do seu negócio.'],financeiro:['Financeiro','Entradas, despesas e acompanhamento do caixa.'],fichas:['Fichas técnicas','Organize seus procedimentos e calcule custos.'],clientes:['Clientes','Seus cadastros e contatos em um só lugar.'],agenda:['Agenda','Organize os próximos atendimentos.'],comunicacao:['Comunicação','Relacionamento e lembretes para seus clientes.']};
+function go(view) {
+    document.querySelectorAll('.section').forEach(s =>
+        s.classList.remove('active')
+    );
+
+    $('view-' + view).classList.add('active');
+
+    document.querySelectorAll('.nav button').forEach(b =>
+        b.classList.toggle('active', b.dataset.view === view)
+    );
+
+    $('pageTitle').textContent = titles[view][0];
+    $('pageSubtitle').textContent = titles[view][1];
+
+    if (view === 'comunicacao') loadCommunication();
+
+    if (view === 'agenda') {
+        if (!calendar) initCalendar();
+
+        requestAnimationFrame(() => {
+            if (calendar) calendar.updateSize();
+        });
+    }
+}
+
+function initCalendar() {
+    const el = $('calendar');
+
+    if (!el || !window.FullCalendar) {
+        console.error('Biblioteca do calendário não carregada.');
+        return;
+    }
+
+    calendar = new FullCalendar.Calendar(el, {
+        locale: 'pt-br',
+        initialView: 'timeGridWeek',
+        height: 'auto',
+contentHeight: 650,
+expandRows: true,
+nowIndicator: true,
+slotMinTime: '07:00:00',
+slotMaxTime: '22:00:00',
+slotDuration: '00:30:00',
+scrollTime: '08:00:00',
+allDaySlot: false,
+
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+
+        buttonText: {
+            today: 'Hoje',
+            month: 'Mês',
+            week: 'Semana',
+            day: 'Dia',
+            list: 'Lista'
+        },
+
+        
+
+        eventClick: function(info) {
+    info.jsEvent.preventDefault();
+
+    const evento = info.event;
+    const statusAtual = evento.extendedProps.status || 'agendado';
+
+    const janela = document.createElement('div');
+
+    janela.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(40, 30, 20, 0.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        padding: 20px;
+    `;
+
+    janela.innerHTML = `
+        <div style="
+            background: #FFFEFB;
+            color: #514538;
+            width: 100%;
+            max-width: 380px;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0,0,0,.2);
+        ">
+            <h3 style="margin:0 0 8px;">Atendimento</h3>
+
+            <p style="margin:0 0 18px;color:#877B6C;">
+                ${evento.title.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+            </p>
+
+            <label for="novoStatus" style="display:block;margin-bottom:8px;">
+                Status do atendimento
+            </label>
+
+            <select id="novoStatus" style="
+                width:100%;
+                padding:12px;
+                border:1px solid #E3D5C2;
+                border-radius:8px;
+                background:#FFFEFB;
+                color:#514538;
+                margin-bottom:20px;
+            ">
+                <option value="agendado">Agendado</option>
+                <option value="realizado">Realizado</option>
+                <option value="cancelado">Cancelado</option>
+                <option value="faltou">Faltou</option>
+            </select>
+
+            <div style="display:flex;gap:10px;justify-content:flex-end;">
+                <button id="cancelarStatus" class="btn">Cancelar</button>
+                <button id="salvarStatus" class="btn primary">Salvar status</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(janela);
+
+    janela.querySelector('#novoStatus').value = statusAtual;
+
+    janela.querySelector('#cancelarStatus').onclick = () => {
+        janela.remove();
+    };
+
+    janela.onclick = (e) => {
+        if (e.target === janela) janela.remove();
+    };
+
+    janela.querySelector('#salvarStatus').onclick = async () => {
+        const novoStatus = janela.querySelector('#novoStatus').value;
+
+        if (novoStatus === statusAtual) {
+            janela.remove();
+            return;
+        }
+
+        const botao = janela.querySelector('#salvarStatus');
+        botao.disabled = true;
+              botao.textContent = 'Salvando...';
+
+        try {
+            const salvo = await updateStatus(evento.id, novoStatus);
+
+            if (salvo) {
+                janela.remove();
+            } else {
+                botao.disabled = false;
+                botao.textContent = 'Salvar status';
+            }
+        } catch (erro) {
+            botao.disabled = false;
+            botao.textContent = 'Salvar status';
+            console.error(erro);
+            alert('Não foi possível atualizar o status.');
+        }
+    };
+},
+
+        eventDidMount: function(info) {
+            if (!calendarTooltip) {
+                calendarTooltip = document.createElement('div');
+                calendarTooltip.className = 'calendar-event-tooltip';
+                calendarTooltip.setAttribute('role', 'tooltip');
+                document.body.appendChild(calendarTooltip);
+            }
+
+            const details = info.event.extendedProps;
+            const dateLabel = details.date
+                ? new Date(details.date + 'T12:00:00').toLocaleDateString('pt-BR')
+                : '';
+
+            info.el.addEventListener('mouseenter', () => {
+                calendarTooltip.textContent =
+                    'Cliente: ' + (details.clientName || 'Não informado') +
+                    '\nHorário: ' + (details.time || 'Não informado') +
+                    (dateLabel ? '\nData: ' + dateLabel : '') +
+                    '\nProcedimento: ' + (details.procedureName || 'Não informado');
+                calendarTooltip.style.display = 'block';
+            });
+
+            info.el.addEventListener('mousemove', (event) => {
+                const gap = 14;
+                const width = calendarTooltip.offsetWidth || 280;
+                const height = calendarTooltip.offsetHeight || 100;
+                let left = event.clientX + gap;
+                let top = event.clientY + gap;
+
+                if (left + width > window.innerWidth - 8) {
+                    left = event.clientX - width - gap;
+                }
+                if (top + height > window.innerHeight - 8) {
+                    top = event.clientY - height - gap;
+                }
+
+                calendarTooltip.style.left = Math.max(8, left) + 'px';
+                calendarTooltip.style.top = Math.max(8, top) + 'px';
+            });
+
+            info.el.addEventListener('mouseleave', () => {
+                if (calendarTooltip) calendarTooltip.style.display = 'none';
+            });
+        },
+
+        events: []
+    });
+
+    calendar.render();
+    refreshCalendar();
+}
+
+function refreshCalendar() {
+    if (!calendar) return;
+
+    const colors = {
+        agendado: '#b08d57',
+        realizado: '#47765c',
+        cancelado: '#a84d48',
+        faltou: '#858585'
+    };
+
+    const events = data.appointments.map(x => {
+        const client = data.clients.find(c =>
+            String(c.id) === String(x.client_id)
+        );
+
+        const procedure = data.procedures.find(p =>
+            String(p.id) === String(x.procedure_id)
+        );
+
+        const status = x.status || 'agendado';
+        const statusLabels = {
+            agendado: 'Agendado',
+            realizado: 'Realizado',
+            cancelado: 'Cancelado',
+            faltou: 'Faltou'
+        };
+
+        return {
+            id: String(x.id),
+            title: (client?.name || 'Cliente') +
+                (procedure ? ' · ' + procedure.name : '') +
+                ' · ' + (statusLabels[status] || 'Agendado'),
+            start: x.date + 'T' + x.time + ':00',
+            backgroundColor: colors[status] || colors.agendado,
+            borderColor: colors[status] || colors.agendado,
+            extendedProps: {
+                status: x.status,
+                clientName: client?.name || 'Cliente',
+                procedureName: procedure?.name || 'Não informado',
+                date: x.date,
+                time: x.time
+            }
+        };
+    });
+
+    calendar.removeAllEvents();
+    calendar.addEventSource(events);
+}
+
+// COMUNICAÇÃO — configurações, consentimentos e histórico.
+// O navegador apenas registra preferências. O envio real exige Edge Function,
+// agendamento seguro e credenciais da API oficial armazenadas como secrets.
+let whatsappSettings = null;
+let whatsappConsents = [];
+
+function whatsappStatusLabel(status) {
+  return status === 'connected' ? 'Conectado' : 'Desconectado';
+}
+
+function renderWhatsappConsent() {
+  const target = $('whatsappConsentRows');
+  if (!target) return;
+
+  if (!data.clients.length) {
+    target.innerHTML = '<tr><td colspan="4">Nenhum cliente cadastrado.</td></tr>';
+    return;
+  }
+
+  target.innerHTML = data.clients.map(client => {
+    const consent = whatsappConsents.find(item => String(item.client_id) === String(client.id));
+    const authorized = !!consent?.authorized && !consent?.revoked_at;
+    return `<tr>
+      <td>${esc(client.name)}</td>
+      <td>${esc(client.phone || '—')}</td>
+      <td>${authorized ? '<span class="pill">Autorizado</span>' : '<span class="pill">Não autorizado</span>'}</td>
+      <td><button class="btn" type="button" onclick="setWhatsappConsent('${esc(client.id)}',${authorized ? 'false' : 'true'})">${authorized ? 'Revogar' : 'Registrar autorização'}</button></td>
+    </tr>`;
+  }).join('');
+}
+
+async function loadCommunication() {
+  if (!user) return;
+
+  const [settingsResult, logsResult, consentsResult] = await Promise.all([
+    db.from('whatsapp_settings').select('*').eq('user_id', user.id).maybeSingle(),
+    db.from('whatsapp_message_logs').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(100),
+    db.from('whatsapp_consents').select('*').eq('user_id', user.id)
+  ]);
+
+  if (settingsResult.error) {
+    console.error('Erro ao carregar configurações do WhatsApp:', settingsResult.error);
+  }
+  if (logsResult.error) {
+    console.error('Erro ao carregar histórico do WhatsApp:', logsResult.error);
+  }
+  if (consentsResult.error) {
+    console.error('Erro ao carregar autorizações do WhatsApp:', consentsResult.error);
+  }
+
+  whatsappSettings = settingsResult.data || null;
+  whatsappConsents = consentsResult.data || [];
+
+  $('whatsappPhone').value = whatsappSettings?.phone_number || '';
+  $('reminderDayBefore').checked = whatsappSettings?.reminder_day_before ?? true;
+  $('reminderDayOf').checked = whatsappSettings?.reminder_day_of ?? true;
+  $('whatsappSendTime').value = whatsappSettings?.send_at_time || '09:00';
+  $('whatsappStatus').textContent = whatsappStatusLabel(whatsappSettings?.integration_status);
+
+  const logs = logsResult.data || [];
+  $('whatsappTotal').textContent = logs.length;
+  $('whatsappSent').textContent = logs.filter(x => x.status === 'sent').length;
+  $('whatsappPending').textContent = logs.filter(x => x.status === 'pending').length;
+
+  $('whatsappHistory').innerHTML = logs.length ? logs.map(item => {
+    const date = item.scheduled_for || item.sent_at || item.created_at;
+    const dateLabel = date ? new Date(date).toLocaleString('pt-BR') : '—';
+    const typeLabel = item.message_type === 'day_before' ? '24 horas antes' : 'No dia';
+    const statusLabel = { pending: 'Pendente', sent: 'Enviada', failed: 'Falhou', cancelled: 'Cancelada' }[item.status] || item.status;
+    return `<tr>
+      <td>${esc(dateLabel)}</td>
+      <td>${esc(typeLabel)}</td>
+      <td>${esc(statusLabel)}</td>
+      <td>${esc(item.message_content || '—')}</td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="4">Nenhuma mensagem registrada.</td></tr>';
+
+  renderWhatsappConsent();
+}
+
+async function setWhatsappConsent(clientId, authorized) {
+  if (!user) return;
+  const client = data.clients.find(item => String(item.id) === String(clientId));
+  if (!client) return;
+
+  const now = new Date().toISOString();
+  const existing = whatsappConsents.find(item => String(item.client_id) === String(clientId));
+  const row = {
+    user_id: user.id,
+    client_id: clientId,
+    authorized,
+    authorized_at: authorized ? now : (existing?.authorized_at || null),
+    revoked_at: authorized ? null : now
+  };
+
+  const { error } = await db.from('whatsapp_consents').upsert(row, { onConflict: 'user_id,client_id' });
+  if (error) {
+    console.error('Erro ao salvar autorização:', error);
+    alert('Não foi possível salvar a autorização: ' + error.message);
+    return;
+  }
+
+  await loadCommunication();
+  alert(authorized
+    ? 'Autorização registrada. Confirme que o cliente realmente consentiu.'
+    : 'Autorização revogada. O cliente não deve receber lembretes.');
+}
+window.setWhatsappConsent = setWhatsappConsent;
+
+$('whatsappSettingsForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!user) return;
+
+  const row = {
+    user_id: user.id,
+    phone_number: $('whatsappPhone').value.trim() || null,
+    reminder_day_before: $('reminderDayBefore').checked,
+    reminder_day_of: $('reminderDayOf').checked,
+    send_at_time: $('whatsappSendTime').value || '09:00',
+    integration_status: whatsappSettings?.integration_status || 'disconnected',
+    updated_at: new Date().toISOString()
+  };
+
+  const { error } = await db.from('whatsapp_settings').upsert(row, { onConflict: 'user_id' });
+  if (error) {
+    console.error('Erro ao salvar configurações:', error);
+    alert('Não foi possível salvar as configurações: ' + error.message);
+    return;
+  }
+
+  alert('Configurações salvas. O envio automático continua desativado até a integração oficial ser configurada.');
+  await loadCommunication();
+});
+
+
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+$('finDate').value=today();$('apptDate').value=today();
+async function loadData(){if(!user)return;try{const [f,p,c,a]=await Promise.all([db.from('financial_transactions').select('*').eq('user_id',user.id).order('transaction_date',{ascending:false}),db.from('procedures').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),db.from('clients').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),db.from('appointments').select('*').eq('user_id',user.id).order('scheduled_at',{ascending:true})]);for(const r of [f,p,c,a])if(r.error)throw r.error;data.finance=f.data.map(x=>({...x,desc:x.description,date:x.transaction_date}));data.procedures=p.data.map(x=>({...x,duration:x.duration_minutes,products:Number(x.material_cost||0),other:Number(x.other_cost||0),price:Number(x.price||0),materials:x.products_used||'',notes:x.description||''}));data.clients=c.data;data.appointments=a.data.map(x=>({...x,...appointmentLocalParts(x.scheduled_at),clientId:x.client_id,procedureId:x.procedure_id,status:x.status}));render()}catch(e){alert('Não foi possível carregar os dados: '+(e.message||e));console.error(e)}}
+async function runSave(query) { 
+try {
+const { error } = await query;
+if (error) {
+  alert('Não foi possível salvar: ' + error.message);
+  console.error('Erro ao salvar:', error);
+  return false;
+}
+
+await loadData();
+alert('Dados salvos com sucesso!');
+return true;
+} catch (error) {
+console.error('Erro inesperado ao salvar:', error);
+alert('Ocorreu um erro ao salvar. Verifique sua conexão e tente novamente.');
+return false;
+}
+}
+
+$('financeForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,type:$('finType').value,amount:Number($('finAmount').value),description:$('finDesc').value.trim(),transaction_date:$('finDate').value,payment_status:'pago'};if(await runSave(db.from('financial_transactions').insert(row))){e.target.reset();$('finDate').value=today()}});
+$('procedureForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('procName').value.trim(),duration_minutes:$('procDuration').value?Number($('procDuration').value):null,material_cost:Number($('procProducts').value||0),other_cost:Number($('procOther').value||0),price:Number($('procPrice').value||0),products_used:$('procMaterials').value.trim()||null,description:$('procNotes').value.trim()||null};if(await runSave(db.from('procedures').insert(row))){e.target.reset();$('procProducts').value='0';$('procOther').value='0'}});
+function resetClientForm() {
+    editingClientId = null;
+    $('clientForm').reset();
+    $('clientEditId').value = '';
+    $('clientSubmitBtn').textContent = 'Cadastrar cliente';
+    $('cancelClientEdit').style.display = 'none';
+}
+
+function editClient(id) {
+    const client = data.clients.find(item => String(item.id) === String(id));
+    if (!client) {
+        alert('Não foi possível localizar esse cliente.');
+        return;
+    }
+
+    editingClientId = String(client.id);
+    $('clientEditId').value = String(client.id);
+    $('clientName').value = client.name || '';
+    $('clientPhone').value = client.phone || '';
+    $('clientEmail').value = client.email || '';
+    $('clientNotes').value = client.notes || '';
+    $('clientSubmitBtn').textContent = 'Salvar alterações';
+    $('cancelClientEdit').style.display = 'inline-flex';
+    $('clientForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('clientName').focus();
+}
+
+$('cancelClientEdit').addEventListener('click', resetClientForm);
+
+$('clientForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!user) return;
+
+    const row = {
+        user_id: user.id,
+        name: $('clientName').value.trim(),
+        phone: $('clientPhone').value.trim() || null,
+        email: $('clientEmail').value.trim() || null,
+        notes: $('clientNotes').value.trim() || null
+    };
+
+    let query;
+    if (editingClientId) {
+        query = db.from('clients')
+            .update(row)
+            .eq('id', editingClientId)
+            .eq('user_id', user.id);
+    } else {
+        query = db.from('clients').insert(row);
+    }
+
+    if (await runSave(query)) resetClientForm();
+});
+$('appointmentForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const client=$('apptClient').value;if(!client){alert('Cadastre e selecione um cliente antes de agendar.');return}const row={user_id:user.id,client_id:client,procedure_id:$('apptProcedure').value||null,scheduled_at:appointmentToISO($('apptDate').value,$('apptTime').value),status:$('apptStatus').value,notes:null};if(await runSave(db.from('appointments').insert(row))){e.target.reset();$('apptDate').value=today()}});
+async function del(type, id) {
+
+    if (!user) {
+        alert('Entre na sua conta para excluir registros.');
+        return;
+    }
+
+    const table = {
+        finance: 'financial_transactions',
+        procedures: 'procedures',
+        clients: 'clients',
+        appointments: 'appointments'
+    }[type];
+
+    if (!table) {
+        console.error('Tipo de registro inválido:', type);
+        return;
+    }
+
+    const confirmMessage = type === 'procedures'
+        ? 'Deseja excluir esta ficha técnica? Os agendamentos e produtos vinculados também serão excluídos.'
+        : type === 'clients'
+        ? 'Deseja excluir este cliente? Os agendamentos vinculados também serão excluídos.'
+        : 'Deseja excluir este registro?';
+
+    if (!confirm(confirmMessage)) return;
+
+    try {
+
+        // Exclui primeiro os agendamentos vinculados ao cliente.
+        if (type === 'clients') {
+
+            const { error } = await db
+                .from('appointments')
+                .delete()
+                .eq('client_id', id)
+                .eq('user_id', user.id);
+
+            if (error) throw error;
+        }
+
+        // Exclui primeiro os registros dependentes do procedimento.
+        if (type === 'procedures') {
+
+            // 1. Exclui agendamentos vinculados.
+            const { error: appointmentError } = await db
+                .from('appointments')
+                .delete()
+                .eq('procedure_id', id)
+                .eq('user_id', user.id);
+
+            if (appointmentError) throw appointmentError;
+
+            // 2. Exclui produtos vinculados à ficha técnica.
+            const { error: productsError } = await db
+                .from('procedure_products')
+                .delete()
+                .eq('procedure_id', id)
+                .eq('user_id', user.id);
+
+            if (productsError) throw productsError;
+        }
+
+        // 3. Exclui o registro principal.
+        const { error } = await db
+            .from(table)
+            .delete()
+            .eq('id', id)
+            .eq('user_id', user.id);
+
+        if (error) throw error;
+
+        await loadData();
+
+        alert('Registro excluído com sucesso!');
+
+    } catch (error) {
+
+        console.error('Erro ao excluir registro:', error);
+
+        alert(
+            'Não foi possível excluir o registro.\n\n' +
+            'Detalhes: ' + error.message
+        );
+    }
+}
+
+function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=displayMoney(ins);$('dashOut').textContent=displayMoney(outs);$('dashBalance').textContent=displayMoney(ins-outs);$('dashClients').textContent=data.clients.length;
+$('financeRows').innerHTML = data.finance.length
+  ? data.finance.map(x => {
+      const dateLabel = x.date
+        ? new Date(`${x.date}T12:00:00`).toLocaleDateString('pt-BR')
+        : 'Data não informada';
+      const isIncome = x.type === 'entrada';
+      return `
+        <article class="finance-card ${isIncome ? 'finance-card-in' : 'finance-card-out'}">
+          <div class="finance-card-top">
+            <div class="finance-card-info">
+              <div class="finance-card-icon" aria-hidden="true">
+                <span>${isIncome ? '↙' : '↗'}</span>
+              </div>
+              <div class="finance-card-description">
+                <strong>${esc(x.desc)}</strong>
+                <small class="finance-card-date">${dateLabel}</small>
+              </div>
+            </div>
+            <span class="finance-card-type">${isIncome ? 'Entrada' : 'Despesa'}</span>
+          </div>
+          <div class="finance-card-bottom">
+            <strong class="finance-card-value ${isIncome ? 'money-in' : 'money-out'}">
+              ${isIncome ? '+' : '−'} ${displayMoney(x.amount)}
+            </strong>
+            <button class="btn finance-delete" type="button"
+              onclick="del('finance','${esc(x.id)}')" aria-label="Excluir lançamento ${esc(x.desc)}">
+              Excluir
+            </button>
+          </div>
+        </article>`;
+    }).join('')
+  : '<div class="empty">Nenhum lançamento financeiro registrado.</div>';
+
+$('procedureRows').innerHTML=data.procedures.length?data.procedures.map(x=>`<tr><td><strong>${esc(x.name)}</strong><small>${esc(x.materials||'')}</small></td><td>${x.duration?esc(x.duration)+' min':'—'}</td><td>${displayMoney(x.products+x.other)}</td><td>${displayMoney(x.price)}</td><td class="${x.price-x.products-x.other>=0?'money-in':'money-out'}">${displayMoney(x.price-x.products-x.other)}</td><td><button class="btn" onclick="del('procedures','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
+$('clientRows').innerHTML=data.clients.length?data.clients.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone||'—')}</td><td>${esc(x.email||'—')}</td><td>${esc(x.notes||'—')}</td><td>${(whatsappConsents.find(c=>String(c.client_id)===String(x.id))?.authorized && !whatsappConsents.find(c=>String(c.client_id)===String(x.id))?.revoked_at)?'Autorizado':'Não autorizado'}</td><td><div class="actions"><button class="btn" type="button" onclick="editClient('${esc(x.id)}')">Editar</button><button class="btn" type="button" onclick="del('clients','${esc(x.id)}')">Excluir</button></div></td></tr>`).join(''):'<tr><td colspan="6">Nenhum cliente cadastrado.</td></tr>';
+$('apptClient').innerHTML='<option value="">Selecione um cliente</option>'+data.clients.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');$('apptProcedure').innerHTML='<option value="">Selecione um procedimento (opcional)</option>'+data.procedures.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
+const sorted=[...data.appointments].sort((a,b)=>a.scheduled_at.localeCompare(b.scheduled_at));$('appointmentRows').innerHTML=sorted.length?sorted.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<tr><td>${esc(x.date)} ${esc(x.time)}</td><td>${esc(c?.name||'Cliente')}</td><td>${esc(p?.name||'—')}</td><td><select aria-label="Status" onchange="updateStatus('${x.id}',this.value)"><option value="agendado" ${x.status==='agendado'?'selected':''}>Agendado</option><option value="realizado" ${x.status==='realizado'?'selected':''}>Realizado</option><option value="cancelado" ${x.status==='cancelado'?'selected':''}>Cancelado</option><option value="faltou" ${x.status==='faltou'?'selected':''}>Faltou</option></select></td><td><button class="btn" onclick="del('appointments','${x.id}')">Excluir</button></td></tr>`}).join(''):'<tr><td colspan="5">Nenhum agendamento.</td></tr>';
+const upcoming=sorted.filter(x=>x.date>=today()&&x.status==='agendado').slice(0,4);$('dashAppointments').innerHTML=upcoming.length?upcoming.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<div class="row"><div><strong>${esc(c?.name||'Cliente')}</strong><small>${esc(x.date)} às ${esc(x.time)}${p?' • '+esc(p.name):''}</small></div><span class="pill">Agendado</span></div>`}).join(''):'<div class="empty">Nenhum atendimento futuro cadastrado.</div>'}
+async function updateStatus(id, status) {
+    return await runSave(
+        db.from('appointments')
+            .update({ status })
+            .eq('id', id)
+            .eq('user_id', user.id)
+    );
+}
+window.del=del;window.updateStatus=updateStatus;window.editClient=editClient;
+// AUTENTICAÇÃO — fluxo único de login, cadastro e recuperação de senha.
+const authForm = $('authForm');
+const authSubmit = $('authSubmit');
+const toggleAuth = $('toggleAuth');
+const resetPasswordForm = $('resetPasswordForm');
+const saveNewPassword = $('saveNewPassword');
+const forgotPasswordBtn = document.createElement('button');
+forgotPasswordBtn.id = 'forgotPasswordBtn';
+forgotPasswordBtn.type = 'button';
+forgotPasswordBtn.className = 'btn';
+forgotPasswordBtn.textContent = 'Esqueci minha senha';
+forgotPasswordBtn.style.cssText = 'width:100%;margin-top:10px;';
+authForm.appendChild(forgotPasswordBtn);
+
+let authBusy = false;
+let passwordRecoveryMode = false;
+let sessionSyncPromise = null;
+
+function setAuthBusy(busy, label) {
+  authBusy = busy;
+  [authSubmit, toggleAuth, forgotPasswordBtn, saveNewPassword].forEach(button => {
+    if (button) button.disabled = busy;
+  });
+  if (authSubmit) {
+    authSubmit.textContent = busy
+      ? label
+      : ($('authMode').value === 'signup' ? 'Criar conta' : 'Entrar');
+  }
+  if (saveNewPassword) saveNewPassword.textContent = busy ? label : 'Salvar nova senha';
+}
+
+function authErrorMessage(error, mode) {
+  const message = String(error?.message || error || '').toLowerCase();
+  if (message.includes('invalid login credentials') || message.includes('invalid_credentials')) {
+    return 'E-mail ou senha incorretos. Confira seus dados e tente novamente.';
+  }
+  if (message.includes('email not confirmed')) {
+    return 'Seu e-mail ainda não foi confirmado. Confira sua caixa de entrada.';
+  }
+  if (message.includes('too many requests') || message.includes('rate limit')) {
+    return 'Muitas tentativas. Aguarde alguns minutos antes de tentar novamente.';
+  }
+  if (message.includes('network') || message.includes('fetch') || message.includes('failed to fetch')) {
+    return 'Falha de conexão. Verifique sua internet e tente novamente.';
+  }
+  if (message.includes('redirect') || message.includes('not allowed')) {
+    return 'O endereço de retorno não está autorizado no Supabase. Confira Authentication > URL Configuration.';
+  }
+  return mode === 'signup'
+    ? 'Não foi possível criar a conta. Verifique os dados e tente novamente.'
+    : 'Não foi possível entrar. Verifique os dados e tente novamente.';
+}
+
+function showLoginForm(message = '') {
+  passwordRecoveryMode = false;
+  resetPasswordForm.style.display = 'none';
+  authForm.style.display = '';
+  $('appShell').style.display = 'none';
+  $('authScreen').style.display = 'grid';
+  if (message) msg(message);
+}
+
+function showPasswordResetForm() {
+  passwordRecoveryMode = true;
+  $('appShell').style.display = 'none';
+  $('authScreen').style.display = 'grid';
+  authForm.style.display = 'none';
+  resetPasswordForm.style.display = 'grid';
+  $('newPassword').value = '';
+  $('confirmPassword').value = '';
+  msg('Acesse sua nova senha abaixo e confirme para concluir a recuperação.');
+}
+
+authForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (authBusy || passwordRecoveryMode) return;
+
+  const email = $('authEmail').value.trim();
+  const password = $('authPassword').value;
+  const mode = $('authMode').value;
+
+  if (!email || !password) return msg('Informe seu e-mail e sua senha.', true);
+  if (password.length < 6) return msg('A senha deve ter pelo menos 6 caracteres.', true);
+
+  setAuthBusy(true, mode === 'signup' ? 'Criando conta...' : 'Entrando...');
+  msg(mode === 'signup' ? 'Criando sua conta...' : 'Verificando seus dados...');
+
+  try {
+    const { data: authData, error } = mode === 'signup'
+      ? await db.auth.signUp({ email, password })
+      : await db.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      console.error('Erro de autenticação:', error);
+      msg(authErrorMessage(error, mode), true);
+      return;
+    }
+
+    if (mode === 'signup' && !authData.session) {
+      msg('Cadastro iniciado! Confirme seu e-mail pelo link enviado e depois entre na sua conta.');
+      return;
+    }
+
+    if (!authData.session) {
+      msg('A autenticação não retornou uma sessão. Confira a confirmação do e-mail e tente novamente.', true);
+      return;
+    }
+
+    msg('Login realizado. Carregando seus dados...');
+    await syncSession();
+  } catch (error) {
+    console.error('Falha inesperada no login/cadastro:', error);
+    msg(authErrorMessage(error, mode), true);
+  } finally {
+    setAuthBusy(false);
+  }
+});
+
+toggleAuth.addEventListener('click', () => {
+  if (authBusy) return;
+  const signup = $('authMode').value !== 'signup';
+  $('authMode').value = signup ? 'signup' : 'login';
+  $('authPassword').value = '';
+  $('authPassword').autocomplete = signup ? 'new-password' : 'current-password';
+  authSubmit.textContent = signup ? 'Criar conta' : 'Entrar';
+  toggleAuth.textContent = signup ? 'Já tenho conta — entrar' : 'Não tenho conta — criar cadastro';
+  msg('');
+});
+
+forgotPasswordBtn.addEventListener('click', async () => {
+  if (authBusy) return;
+  const email = $('authEmail').value.trim();
+  if (!email) {
+    msg('Digite seu e-mail antes de solicitar a recuperação.', true);
+    $('authEmail').focus();
+    return;
+  }
+  if (window.location.protocol === 'file:') {
+    msg('Abra o endereço publicado na Vercel para solicitar a recuperação de senha.', true);
+    return;
+  }
+
+  setAuthBusy(true, 'Enviando...');
+  msg('Solicitando recuperação de senha...');
+  try {
+    const redirectTo = window.location.origin + window.location.pathname;
+    const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo });
+    if (error) {
+      console.error('Erro ao solicitar recuperação:', error);
+      msg(authErrorMessage(error, 'login'), true);
+      return;
+    }
+    msg('Solicitação enviada. Confira sua caixa de entrada e a pasta de spam para criar uma nova senha.');
+  } catch (error) {
+    console.error('Falha na recuperação de senha:', error);
+    msg(authErrorMessage(error, 'login'), true);
+  } finally {
+    setAuthBusy(false);
+  }
+});
+
+resetPasswordForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (authBusy) return;
+  const password = $('newPassword').value;
+  const confirmation = $('confirmPassword').value;
+  if (password.length < 6) return msg('A nova senha deve ter pelo menos 6 caracteres.', true);
+  if (password !== confirmation) return msg('As senhas não coincidem. Digite novamente.', true);
+
+  setAuthBusy(true, 'Salvando...');
+  msg('Atualizando sua senha...');
+  try {
+    const { error } = await db.auth.updateUser({ password });
+    if (error) {
+      console.error('Erro ao atualizar senha:', error);
+      msg(authErrorMessage(error, 'login'), true);
+      return;
+    }
+    await db.auth.signOut();
+    user = null;
+    showLoginForm('Senha alterada com sucesso. Entre usando sua nova senha.');
+    $('authPassword').value = '';
+  } catch (error) {
+    console.error('Falha ao atualizar senha:', error);
+    msg(authErrorMessage(error, 'login'), true);
+  } finally {
+    setAuthBusy(false);
+  }
+});
+
+$('cancelPasswordReset').addEventListener('click', async () => {
+  if (authBusy) return;
+  try { await db.auth.signOut(); } catch (error) { console.warn('Não foi possível encerrar a sessão de recuperação:', error); }
+  user = null;
+  showLoginForm('Recuperação cancelada. Você pode entrar normalmente.');
+});
+
+async function syncSession() {
+  if (sessionSyncPromise) return sessionSyncPromise;
+  sessionSyncPromise = (async () => {
+    const { data: sessionData, error } = await db.auth.getSession();
+    if (error) {
+      console.error('Erro ao consultar sessão:', error);
+      msg('Não foi possível verificar sua sessão. Atualize a página e tente novamente.', true);
+      return;
+    }
+    const session = sessionData?.session || null;
+    user = session?.user || null;
+
+    if (passwordRecoveryMode) {
+      showPasswordResetForm();
+      return;
+    }
+    if (user) {
+      $('authScreen').style.display = 'none';
+      $('appShell').style.display = 'grid';
+      $('userEmail').textContent = user.email || '';
+      await loadData();
+    } else {
+      $('authScreen').style.display = 'grid';
+      $('appShell').style.display = 'none';
+    }
+  })().finally(() => { sessionSyncPromise = null; });
+  return sessionSyncPromise;
+}
+
+db.auth.onAuthStateChange((event) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    passwordRecoveryMode = true;
+    setTimeout(showPasswordResetForm, 0);
+    return;
+  }
+  setTimeout(() => { syncSession(); }, 0);
+});
+
+// Inicializa a interface com a sessão já existente, se houver.
+syncSession().catch(error => {
+  console.error('Erro ao inicializar autenticação:', error);
+  msg('Não foi possível iniciar a autenticação. Atualize a página.', true);
+});
+
+$('logoutBtn').addEventListener('click', async () => {
+  const { error } = await db.auth.signOut();
+  if (error) { console.error('Erro ao sair:', error); alert('Não foi possível encerrar a sessão.'); return; }
+  user = null;
+  showLoginForm('Você saiu da sua conta.');
+});
+async function syncSession(){const {data:{session}}=await db.auth.getSession();user=session?.user||null;if(user){$('authScreen').style.display='none';$('appShell').style.display='grid';$('userEmail').textContent=user.email||'';await loadData()}else{$('authScreen').style.display='grid';$('appShell').style.display='none'}}
+db.auth.onAuthStateChange(()=>{setTimeout(syncSession,0)});syncSession();
+</script>
+ </body>
+</html>

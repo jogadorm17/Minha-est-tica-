@@ -183,6 +183,9 @@
 @media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{padding:15px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:22px}.subbrand{margin-bottom:14px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.sidebar-note{display:none}.main{padding:18px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}}
 @media(max-width:520px){.top{align-items:flex-start;flex-direction:column}.top h1{font-size:23px}.cards{gap:9px}.card{padding:14px}.card .value{font-size:21px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.toolbar{align-items:flex-start;flex-direction:column}}
 .auth-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:var(--bg)}.auth-card{width:min(100%,430px);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 10px 35px #5b472012}.auth-card h1{font-family:Georgia,serif;color:var(--gold-dark);margin:0 0 6px}.auth-card p{color:var(--muted);font-size:13px}.auth-card .form{margin-top:20px}.auth-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.auth-small{font-size:12px;color:var(--muted);margin-top:15px}.top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.user-email{font-size:12px;color:var(--muted)}
+.privacy-toggle{white-space:nowrap;border-color:var(--gold);color:var(--gold-dark);font-size:12px}
+.privacy-toggle[aria-pressed="true"]{background:#F2E8D8;color:var(--gold-dark)}
+@media(max-width:600px){.top-right{gap:7px}.privacy-toggle{font-size:11px;padding:8px 10px}}
 
 
 /* Ajustes visuais — paleta nude e dourado */
@@ -586,6 +589,9 @@ body {
      <div class="top-right">
       <span class="user-email" id="userEmail">
       </span>
+      <button class="btn privacy-toggle" id="privacyToggleBtn" type="button" aria-pressed="false" aria-label="Ocultar valores financeiros" title="Ocultar valores financeiros">
+       👁️ Ocultar valores
+      </button>
       <button class="btn" id="logoutBtn" type="button">
        Sair
       </button>
@@ -1251,6 +1257,24 @@ const $=id=>document.getElementById(id);const money=n=>new Intl.NumberFormat('pt
 const appointmentLocalParts=value=>{const d=new Date(value);if(Number.isNaN(d.getTime()))throw new Error('Data ou horário do agendamento inválido.');return {date:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`,time:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};};
 const appointmentToISO=(date,time)=>{const d=new Date(`${date}T${time}:00`);if(Number.isNaN(d.getTime()))throw new Error('Data ou horário do agendamento inválido.');return d.toISOString();};
 let user=null,data={finance:[],procedures:[],clients:[],appointments:[]},calendar=null,editingClientId=null,calendarTooltip=null;
+// Modo Privacidade: oculta apenas a exibição dos valores; os dados permanecem intactos.
+let privacyMode = false;
+const displayMoney = value => privacyMode ? '••••••' : money(value);
+function updatePrivacyButton() {
+    const button = $('privacyToggleBtn');
+    if (!button) return;
+    button.textContent = privacyMode ? '🙈 Mostrar valores' : '👁️ Ocultar valores';
+    button.setAttribute('aria-pressed', String(privacyMode));
+    button.setAttribute('aria-label', privacyMode ? 'Mostrar valores financeiros' : 'Ocultar valores financeiros');
+    button.title = privacyMode ? 'Mostrar valores financeiros' : 'Ocultar valores financeiros';
+}
+function togglePrivacyMode() {
+    privacyMode = !privacyMode;
+    updatePrivacyButton();
+    render();
+}
+$('privacyToggleBtn')?.addEventListener('click', togglePrivacyMode);
+updatePrivacyButton();
 function msg(t,isError=false){const el=$('authMsg');if(el){el.textContent=t;el.style.color=isError?'#a84d48':'#47765c'}}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 const titles={inicio:['Seja bem-vindo! ✨','Aqui está um resumo do seu negócio.'],financeiro:['Financeiro','Entradas, despesas e acompanhamento do caixa.'],fichas:['Fichas técnicas','Organize seus procedimentos e calcule custos.'],clientes:['Clientes','Seus cadastros e contatos em um só lugar.'],agenda:['Agenda','Organize os próximos atendimentos.'],comunicacao:['Comunicação','Relacionamento e lembretes para seus clientes.']};
@@ -1820,7 +1844,7 @@ async function del(type, id) {
     }
 }
 
-function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=money(ins);$('dashOut').textContent=money(outs);$('dashBalance').textContent=money(ins-outs);$('dashClients').textContent=data.clients.length;
+function render(){const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=displayMoney(ins);$('dashOut').textContent=displayMoney(outs);$('dashBalance').textContent=displayMoney(ins-outs);$('dashClients').textContent=data.clients.length;
 $('financeRows').innerHTML = data.finance.length
   ? data.finance.map(x => {
       const dateLabel = x.date
@@ -1843,7 +1867,7 @@ $('financeRows').innerHTML = data.finance.length
           </div>
           <div class="finance-card-bottom">
             <strong class="finance-card-value ${isIncome ? 'money-in' : 'money-out'}">
-              ${isIncome ? '+' : '−'} ${money(x.amount)}
+              ${isIncome ? '+' : '−'} ${displayMoney(x.amount)}
             </strong>
             <button class="btn finance-delete" type="button"
               onclick="del('finance','${esc(x.id)}')" aria-label="Excluir lançamento ${esc(x.desc)}">
@@ -1854,7 +1878,7 @@ $('financeRows').innerHTML = data.finance.length
     }).join('')
   : '<div class="empty">Nenhum lançamento financeiro registrado.</div>';
 
-$('procedureRows').innerHTML=data.procedures.length?data.procedures.map(x=>`<tr><td><strong>${esc(x.name)}</strong><small>${esc(x.materials||'')}</small></td><td>${x.duration?esc(x.duration)+' min':'—'}</td><td>${money(x.products+x.other)}</td><td>${money(x.price)}</td><td class="${x.price-x.products-x.other>=0?'money-in':'money-out'}">${money(x.price-x.products-x.other)}</td><td><button class="btn" onclick="del('procedures','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
+$('procedureRows').innerHTML=data.procedures.length?data.procedures.map(x=>`<tr><td><strong>${esc(x.name)}</strong><small>${esc(x.materials||'')}</small></td><td>${x.duration?esc(x.duration)+' min':'—'}</td><td>${displayMoney(x.products+x.other)}</td><td>${displayMoney(x.price)}</td><td class="${x.price-x.products-x.other>=0?'money-in':'money-out'}">${displayMoney(x.price-x.products-x.other)}</td><td><button class="btn" onclick="del('procedures','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
 $('clientRows').innerHTML=data.clients.length?data.clients.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone||'—')}</td><td>${esc(x.email||'—')}</td><td>${esc(x.notes||'—')}</td><td>${(whatsappConsents.find(c=>String(c.client_id)===String(x.id))?.authorized && !whatsappConsents.find(c=>String(c.client_id)===String(x.id))?.revoked_at)?'Autorizado':'Não autorizado'}</td><td><div class="actions"><button class="btn" type="button" onclick="editClient('${esc(x.id)}')">Editar</button><button class="btn" type="button" onclick="del('clients','${esc(x.id)}')">Excluir</button></div></td></tr>`).join(''):'<tr><td colspan="6">Nenhum cliente cadastrado.</td></tr>';
 $('apptClient').innerHTML='<option value="">Selecione um cliente</option>'+data.clients.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');$('apptProcedure').innerHTML='<option value="">Selecione um procedimento (opcional)</option>'+data.procedures.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
 const sorted=[...data.appointments].sort((a,b)=>a.scheduled_at.localeCompare(b.scheduled_at));$('appointmentRows').innerHTML=sorted.length?sorted.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<tr><td>${esc(x.date)} ${esc(x.time)}</td><td>${esc(c?.name||'Cliente')}</td><td>${esc(p?.name||'—')}</td><td><select aria-label="Status" onchange="updateStatus('${x.id}',this.value)"><option value="agendado" ${x.status==='agendado'?'selected':''}>Agendado</option><option value="realizado" ${x.status==='realizado'?'selected':''}>Realizado</option><option value="cancelado" ${x.status==='cancelado'?'selected':''}>Cancelado</option><option value="faltou" ${x.status==='faltou'?'selected':''}>Faltou</option></select></td><td><button class="btn" onclick="del('appointments','${x.id}')">Excluir</button></td></tr>`}).join(''):'<tr><td colspan="5">Nenhum agendamento.</td></tr>';
@@ -2119,4 +2143,4 @@ async function syncSession(){const {data:{session}}=await db.auth.getSession();u
 db.auth.onAuthStateChange(()=>{setTimeout(syncSession,0)});syncSession();
 </script>
  </body>
-</html>
+ </html>

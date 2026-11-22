@@ -1300,7 +1300,7 @@ let user=null,data={finance:[],procedures:[],clients:[],appointments:[]},calenda
 let appointmentCenterView='overview', appointmentPage=1, selectedAppointmentId=null;
 const APPOINTMENTS_PAGE_SIZE=8;
 // Modo Privacidade: oculta apenas a exibição dos valores; os dados permanecem intactos.
-let privacyMode = false;
+let privacyMode = localStorage.getItem('minhaEstetica_privacidade') === 'true';
 const displayMoney = value => privacyMode ? '••••••' : money(value);
 function updatePrivacyButton() {
     const button = $('privacyToggleBtn');

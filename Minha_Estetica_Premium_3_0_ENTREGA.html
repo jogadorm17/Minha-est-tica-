@@ -1,0 +1,2863 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Minha Estética | Gestão profissional
+  </title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    #calendar {
+    width: 100%;
+    max-width: 100%;
+    margin: 10px auto;
+    font-size: 13px;
+    --fc-border-color: var(--line);
+    --fc-today-bg-color: #F5EBDD;
+    --fc-page-bg-color: #FFFEFB;
+    --fc-neutral-bg-color: #F5EFE6;
+    --fc-neutral-text-color: var(--muted);
+}
+
+    .fc .fc-button {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #FFFFFF;
+    box-shadow: none;
+    text-transform: capitalize;
+    border-radius: 8px;
+}
+
+    .fc .fc-button:hover,
+.fc .fc-button:focus {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+    color: #FFFFFF;
+}
+
+    .fc .fc-daygrid-day-number {
+        color: #302c27;
+        text-decoration: none;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 20px;
+    }
+
+    @media (max-width: 520px) {
+        .fc .fc-toolbar {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .fc .fc-toolbar-title {
+            font-size: 17px;
+        }
+    }
+
+
+  
+.calendar-panel {
+    padding: 24px;
+    overflow: hidden;
+}
+
+.calendar-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.calendar-heading h2 {
+    font-size: 21px;
+    margin-bottom: 8px;
+}
+
+.calendar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.calendar-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.calendar-legend i {
+    width: 9px;
+    height: 9px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.legend-agendado { background: #b08d57; }
+.legend-realizado { background: #47765c; }
+.legend-cancelado { background: #a84d48; }
+.legend-faltou { background: #858585; }
+
+#calendar {
+    max-width: 100%;
+    margin: 10px auto;
+    font-size: 13px;
+    --fc-border-color: var(--line);
+    --fc-today-bg-color: #f8f0e2;
+    --fc-page-bg-color: #fffdf9;
+}
+
+.fc .fc-toolbar-title {
+    color: var(--ink);
+    font-family: Georgia, serif;
+    font-size: 22px;
+}
+
+.fc .fc-button-primary {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: none;
+    text-transform: capitalize;
+}
+
+.fc .fc-button-primary:hover,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+}
+
+.fc .fc-daygrid-day-number {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.fc .fc-event {
+    border-radius: 5px;
+    padding: 2px 4px;
+    border: 0;
+    cursor: pointer;
+}
+
+
+@media (max-width: 600px) {
+    .calendar-panel {
+        padding: 12px;
+    }
+
+    .fc .fc-toolbar {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 18px;
+    }
+
+    
+   
+ .fc .fc-button {
+    padding: 6px 8px;
+    font-size: 12px;
+}
+}
+
+:root {
+    --bg: #EDE1D0;
+    --card: #FFFEFB;
+    --gold: #C5A46D;
+    --gold-dark: #8A6B3F;
+    --ink: #514538;
+    --muted: #877B6C;
+    --line: #E3D5C2;
+    --green: #47765C;
+    --red: #A84D48;
+}
+
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.sidebar{background:#fffdf9;border-right:1px solid var(--line);padding:26px 17px}.brand{font-family:Georgia,serif;font-size:25px;color:var(--gold-dark);margin:0 10px 4px}.subbrand{font-size:12px;color:var(--muted);margin:0 10px 30px}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;text-align:left;padding:12px 13px;border-radius:12px;color:#5f584e;font-size:14px;cursor:pointer}.nav button.active,.nav button:hover{background:#f1e7d6;color:#6f542c;font-weight:650}.sidebar-note{margin:35px 9px 0;color:var(--muted);font-size:12px}.main{padding:28px;max-width:none;width:100%;min-width:0;margin:0}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.eyebrow{text-transform:uppercase;letter-spacing:.13em;color:var(--gold-dark);font-size:11px;font-weight:750}.top h1{font-size:27px;margin:4px 0;font-weight:650}.top p{color:var(--muted);margin:0}.badge{background:#eee3d1;color:#70552c;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:650}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0}.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:19px;box-shadow:0 5px 20px #5b47200a}.card .label{color:var(--muted);font-size:13px}.card .value{font-size:25px;font-weight:750;margin:8px 0 2px}.card .hint{font-size:12px;color:var(--muted)}.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:15px}.panel h2{font-size:17px;margin:0 0 14px}.panel .desc{color:var(--muted);font-size:13px;margin-top:-7px;margin-bottom:15px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.row small{display:block;color:var(--muted);margin-top:3px}.pill{font-size:11px;padding:5px 8px;border-radius:999px;background:#f0e8db;color:#715a37;white-space:nowrap}.empty{padding:18px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:13px;text-align:center}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:white;color:var(--ink);padding:10px 13px;border-radius:10px;cursor:pointer;font-weight:600}.btn.primary{background:var(--gold);border-color:var(--gold);color:white}.btn:hover{filter:brightness(.97)}.section{display:none}.section.active{display:block}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}.toolbar h2{margin:0;font-size:21px}.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;color:var(--muted);font-weight:650}.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:white;color:var(--ink);font:inherit}.field textarea{min-height:76px;resize:vertical}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:650}.money-in{color:var(--green);font-weight:700}.money-out{color:var(--red);font-weight:700}.section-intro{color:var(--muted);margin:5px 0 18px;font-size:13px}.notice{padding:13px 15px;background:#f2e8d8;border:1px solid #e5d5ba;border-radius:12px;color:#6f542c;font-size:13px;margin-top:16px}.footer{color:var(--muted);font-size:11px;text-align:center;margin-top:25px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{padding:15px;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:22px}.subbrand{margin-bottom:14px}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap}.sidebar-note{display:none}.main{padding:18px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}}
+@media(max-width:520px){.top{align-items:flex-start;flex-direction:column}.top h1{font-size:23px}.cards{gap:9px}.card{padding:14px}.card .value{font-size:21px}.form{grid-template-columns:1fr}.field.full{grid-column:auto}.toolbar{align-items:flex-start;flex-direction:column}}
+.auth-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:var(--bg)}.auth-card{width:min(100%,430px);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 10px 35px #5b472012}.auth-card h1{font-family:Georgia,serif;color:var(--gold-dark);margin:0 0 6px}.auth-card p{color:var(--muted);font-size:13px}.auth-card .form{margin-top:20px}.auth-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.auth-small{font-size:12px;color:var(--muted);margin-top:15px}.top-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.user-email{font-size:12px;color:var(--muted)}
+.privacy-toggle{white-space:nowrap;border-color:var(--gold);color:var(--gold-dark);font-size:12px}
+.privacy-toggle[aria-pressed="true"]{background:#F2E8D8;color:var(--gold-dark)}
+@media(max-width:600px){.top-right{gap:7px}.privacy-toggle{font-size:11px;padding:8px 10px}}
+
+
+/* Ajustes visuais — paleta nude e dourado */
+
+.sidebar {
+    background: var(--card);
+    border-right-color: var(--line);
+    color: var(--ink);
+}
+
+.nav button {
+    color: var(--ink);
+}
+
+
+.nav button.active,
+.nav button:hover {
+    background: #EDE1D0;
+    color: var(--gold-dark);
+}
+
+.badge,
+.pill {
+    background: #F2E8D8;
+    color: var(--gold-dark);
+}
+
+.btn {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.btn.primary {
+    background: var(--gold);
+    color: #FFFFFF;
+    border-color: var(--gold);
+}
+
+.field input,
+.field select,
+.field textarea,
+select[aria-label="Status"] {
+    background: var(--card);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+.notice {
+    background: #F5EBDD;
+    color: var(--gold-dark);
+    border-color: var(--line);
+}
+
+
+#calendar {
+    --fc-page-bg-color: #FFFEFB;
+    --fc-neutral-bg-color: #F5EFE6;
+    --fc-neutral-text-color: #877B6C;
+    --fc-border-color: var(--line);
+    --fc-today-bg-color: #F5EBDD;
+    color: var(--ink);
+}
+
+.fc .fc-col-header-cell-cushion,
+.fc .fc-daygrid-day-number,
+.fc .fc-list-day-text,
+.fc .fc-list-day-side-text {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.fc .fc-button-primary {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #FFFFFF;
+}
+
+.fc .fc-button-primary:hover,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+    color: #FFFFFF;
+}
+
+body {
+    background: var(--bg);
+    color: var(--ink);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#calendar {
+    --fc-page-bg-color: #FFFEFB;
+    --fc-neutral-bg-color: #F5EFE6;
+    --fc-neutral-text-color: #877B6C;
+    --fc-border-color: #E3D5C2;
+    --fc-today-bg-color: #F5EBDD;
+    color: var(--ink);
+}
+
+
+
+
+.fc .fc-button-primary {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #17130c;
+}
+
+.fc .fc-button-primary:hover,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+    color: #17130c;
+}
+
+.auth-screen {
+    background: var(--bg);
+}
+
+.footer {
+    color: var(--muted);
+}
+
+/* HISTÓRICO FINANCEIRO - CARTÕES INDIVIDUAIS */
+
+#financeRows.finance-list {
+    display: grid;
+    gap: 12px;
+}
+.finance-card-date { color: var(--muted); font-size: 12px; }
+.finance-card { min-width: 0; }
+
+.finance-card {
+    width: 100%;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--card);
+    box-shadow: 0 3px 12px rgba(81, 69, 56, .04);
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.finance-card:hover {
+    box-shadow: 0 6px 18px rgba(81, 69, 56, .08);
+    transform: translateY(-1px);
+}
+
+.finance-card-top,
+.finance-card-bottom,
+.finance-card-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.finance-card-info {
+    justify-content: flex-start;
+    min-width: 0;
+}
+
+.finance-card-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    font-size: 23px;
+}
+
+.finance-card-in .finance-card-icon {
+    background: #EAF2E9;
+    color: var(--green);
+}
+
+.finance-card-out .finance-card-icon {
+    background: #F8EEEE;
+    color: var(--red);
+}
+
+.finance-card-description {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.finance-card-description strong {
+    color: var(--ink);
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.finance-card-description small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.finance-card-type {
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.finance-card-in .finance-card-type {
+    background: #EAF2E9;
+    color: var(--green);
+}
+
+.finance-card-out .finance-card-type {
+    background: #F8EEEE;
+    color: var(--red);
+}
+
+.finance-card-bottom {
+    margin-top: 17px;
+    padding-top: 13px;
+    border-top: 1px solid var(--line);
+}
+
+.finance-card-value {
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.finance-delete {
+    font-size: 12px;
+    padding: 7px 12px;
+}
+
+@media (max-width: 600px) {
+    .finance-card {
+        padding: 15px;
+    }
+
+    .finance-card-value {
+        font-size: 17px;
+    }
+}
+
+/* Dica flutuante ao passar o mouse sobre um agendamento */
+.calendar-event-tooltip {
+    position: fixed;
+    z-index: 100000;
+    display: none;
+    max-width: 280px;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 8px 28px rgba(40, 30, 20, .18);
+    font-size: 13px;
+    line-height: 1.55;
+    white-space: pre-line;
+    pointer-events: none;
+}
+.fc-event { cursor: pointer; }
+
+
+
+/* SISTEMA VISUAL PREMIUM — paleta clara, champagne e taupe suave */
+:root {
+  --bg: #F7F3ED;
+  --card: #FFFFFF;
+  --gold: #C7A875;
+  --gold-dark: #9A8058;
+  --ink: #6B6258;
+  --muted: #958A7D;
+  --line: #EAE2D8;
+  --green: #56816A;
+  --red: #B66C66;
+  --soft-gold: #F5EFE5;
+  --soft-taupe: #F2EEE8;
+  --shadow-premium: 0 12px 34px rgba(105, 88, 66, .075);
+}
+body { background: var(--bg); color: var(--ink); }
+.app { min-height: 100vh; grid-template-columns:245px minmax(0,1fr); width:100%; }
+.sidebar { background: linear-gradient(180deg,#fff 0%,#FBF9F5 100%); border-right: 1px solid var(--line); box-shadow: 5px 0 24px rgba(105,88,66,.035); }
+.brand { color: var(--gold-dark); letter-spacing: -.04em; }
+.subbrand { letter-spacing: .16em; font-weight: 700; }
+.nav { gap: 8px; }
+.nav button { color: var(--ink); border: 1px solid transparent; transition: .2s ease; }
+.nav button.active,.nav button:hover { background: var(--soft-gold); color: var(--gold-dark); border-color: #E9DDCA; box-shadow: inset 3px 0 0 var(--gold); }
+.main { padding: clamp(18px,3vw,34px); max-width:none; width:100%; min-width:0; margin:0; }
+.top { padding: 5px 0 18px; border-bottom: 1px solid var(--line); }
+.top h1 { letter-spacing: -.035em; color: #655B50; }
+.eyebrow { color: var(--gold-dark); }
+.card,.panel { border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow-premium); }
+.card { position: relative; overflow: hidden; background: linear-gradient(145deg,#fff 0%,#FCFAF7 100%); transition: transform .22s ease, box-shadow .22s ease; }
+.card:before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:linear-gradient(180deg,#D8C29D,#B89A6B); opacity:.8; }
+.card:hover,.panel:hover { box-shadow: 0 16px 38px rgba(105,88,66,.10); }
+.card .value { color: #6A5F52; letter-spacing: -.035em; }
+.panel { padding: clamp(17px,2.2vw,24px); }
+.panel h2,.toolbar h2 { color: #6A5F52; letter-spacing: -.02em; }
+.btn { border-radius: 11px; transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+.btn:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(105,88,66,.09); filter: none; }
+.btn.primary { background: linear-gradient(135deg,#CDB486,#B99A68); border-color: #B99A68; color:#fff; }
+.btn.primary:hover { background: linear-gradient(135deg,#BDA274,#A88B5D); }
+.btn.danger { color: #A65E59; border-color: #EBD7D4; background: #FFF9F8; }
+.btn.danger:hover { background: #FBEFED; }
+.field input,.field select,.field textarea { border-radius: 11px; border-color: #E6DED4; background:#FFFEFC; transition: border-color .18s,box-shadow .18s; }
+.field input:focus,.field select:focus,.field textarea:focus { outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(199,168,117,.16); }
+.field label { color:#7D7266; }
+.badge,.pill { background:var(--soft-gold); color:var(--gold-dark); border:1px solid #EDE2D1; }
+.notice { background:linear-gradient(120deg,#F8F3EA,#F4EEE4); color:#837052; border:1px solid #EDE3D5; }
+.empty { background:#FCFAF7; border-color:#E7DED2; }
+th { background:#FAF7F2; color:#81766A; }
+td { color:#6E6459; }
+.table-wrap { border-radius:12px; }
+.finance-card { border-radius:17px; box-shadow:0 5px 18px rgba(105,88,66,.045); }
+.finance-card:hover { box-shadow:0 10px 24px rgba(105,88,66,.09); }
+.finance-card-in .finance-card-icon,.finance-card-in .finance-card-type { background:#EDF4EF; }
+.finance-card-out .finance-card-icon,.finance-card-out .finance-card-type { background:#F9EFEE; }
+.privacy-toggle { background:var(--soft-gold); border-color:#E5D6BE; color:var(--gold-dark); }
+.privacy-toggle[aria-pressed="true"] { background:#EEE8DE; color:#7C6B53; }
+.calendar-panel { border-radius:20px; background:#fff; box-shadow:var(--shadow-premium); }
+#calendar { --fc-page-bg-color:#fff; --fc-neutral-bg-color:#F8F5F0; --fc-neutral-text-color:#8C8175; --fc-border-color:#EAE2D8; --fc-today-bg-color:#F8F1E6; }
+.fc .fc-button-primary,.fc .fc-button { background:linear-gradient(135deg,#CDB486,#B99A68); border-color:#B99A68; color:#fff; border-radius:9px; box-shadow:none; }
+.fc .fc-button-primary:hover,.fc .fc-button-primary:not(:disabled).fc-button-active { background:#9A8058; border-color:#9A8058; color:#fff; }
+.fc .fc-toolbar-title { color:#6A5F52; }
+.fc .fc-col-header-cell-cushion,.fc .fc-daygrid-day-number,.fc .fc-list-day-text,.fc .fc-list-day-side-text { color:#6B6258; }
+.auth-card { border-radius:24px; box-shadow:0 18px 50px rgba(105,88,66,.11); }
+.auth-card h1 { color:var(--gold-dark); }
+.panel-heading-row { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+.premium-tag { display:inline-flex; align-items:center; padding:7px 11px; border-radius:999px; background:var(--soft-gold); border:1px solid #E9DDCA; color:var(--gold-dark); font-size:10px; font-weight:800; letter-spacing:.08em; white-space:nowrap; }
+.message-template-list { display:grid; gap:11px; margin-top:14px; }
+.message-template-card { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; padding:16px; border:1px solid var(--line); border-radius:15px; background:linear-gradient(145deg,#fff,#FCFAF7); }
+.message-template-copy { min-width:0; flex:1; }
+.message-template-copy strong { display:block; color:#6A5F52; margin-bottom:6px; }
+.message-template-copy p { margin:0; color:var(--muted); font-size:13px; white-space:pre-wrap; overflow-wrap:anywhere; }
+.message-content-cell { min-width:220px; max-width:420px; white-space:pre-wrap; overflow-wrap:anywhere; }
+@media(max-width:700px) { .message-template-card { flex-direction:column; } .message-template-card .actions { width:100%; } .message-template-card .actions .btn { flex:1; } .top { border-bottom:0; } }
+@media(max-width:520px) { .main { padding:14px; } .card,.panel { border-radius:16px; } .cards { gap:10px; } .card .value { font-size:21px; } .premium-tag { font-size:9px; } }
+
+
+/* IDENTIDADE VISUAL — nude profundo, café, bronze e símbolos delicados */
+:root{
+ --bg:#D2C0AA;
+ --card:#F1E7DA;
+ --gold:#A77B43;
+ --gold-dark:#68492D;
+ --ink:#403126;
+ --muted:#766353;
+ --line:#C4AD91;
+ --green:#47735A;
+ --red:#A6534B;
+ --soft-gold:#E5D4BC;
+ --soft-taupe:#E8DCCF;
+ --shadow-premium:0 12px 30px rgba(65,43,25,.12);
+}
+body{background:var(--bg);color:var(--ink)}
+.sidebar{background:linear-gradient(180deg,#EDE1D2 0%,#E1D0BC 100%);border-right-color:#BDA58A}
+.brand{color:var(--gold-dark)}
+.subbrand{color:#80664D}
+.nav button{color:#514031}
+.nav button.active,.nav button:hover{background:#D8C3A8;color:#56391F;border-color:#C4A987;box-shadow:inset 3px 0 0 #9A6D39}
+.top h1,.panel h2,.toolbar h2,.card .value{color:#493629}
+.eyebrow{color:#704C2C}
+.card,.panel{background:linear-gradient(145deg,#F5ECE1 0%,#EDE0D1 100%);border-color:#C8B297;box-shadow:var(--shadow-premium)}
+.card:before{background:linear-gradient(180deg,#B68A55,#79532F)}
+.btn{background:#F4EADF;color:#493629;border-color:#C7AF93}
+.btn.primary{background:linear-gradient(135deg,#AD814B,#80582F);border-color:#80582F;color:#fff}
+.btn.primary:hover{background:linear-gradient(135deg,#986D3C,#694522)}
+.field input,.field select,.field textarea{background:#F8F1E9;color:#403126;border-color:#C6AD91}
+.field label{color:#705B47}
+.badge,.pill,.premium-tag{background:#E3D0B7;color:#674727;border-color:#C8AD8C}
+.notice{background:#E7D6C1;color:#63472B;border-color:#C8AD8C}
+.empty{background:#EDE1D3;border-color:#C7B196;color:#766353}
+th{background:#E7D7C5;color:#705B47}
+td{color:#49392C}
+.calendar-panel{background:transparent;box-shadow:none;border:0;padding:0;min-width:0}
+#calendar{--fc-page-bg-color:#F3E8DC;--fc-neutral-bg-color:#E8D9C8;--fc-neutral-text-color:#725B46;--fc-border-color:#CBB69C;--fc-today-bg-color:#E4CFB4;color:#403126}
+.fc .fc-toolbar-title{color:#493629}
+.fc .fc-col-header-cell-cushion,.fc .fc-daygrid-day-number,.fc .fc-list-day-text,.fc .fc-list-day-side-text{color:#493629}
+.fc .fc-button-primary,.fc .fc-button{background:#A77B43;border-color:#A77B43;color:#fff}
+.fc .fc-button-primary:hover,.fc .fc-button-primary:not(:disabled).fc-button-active{background:#68492D;border-color:#68492D;color:#fff}
+.fc .fc-daygrid-day.fc-day-today{background:#E4CFB4}
+.fc .fc-timegrid-slot{height:2.2em}
+.appointment-workspace{display:grid;grid-template-columns:minmax(270px,.78fr) minmax(0,1.45fr);gap:26px;align-items:start}
+.appointment-form-column{min-width:0}
+.appointment-form-column .form{grid-template-columns:1fr;gap:11px;margin-top:18px}
+.appointment-form-column .field.full{grid-column:auto}
+.appointment-section-title{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.appointment-section-title h2{margin:0 0 4px}
+.appointment-section-title p{margin:0;color:var(--muted);font-size:12px}
+.aesthetic-mark{width:43px;height:43px;display:grid;place-items:center;flex:none;border-radius:14px;background:#DCC5A7;color:#704A28;font-size:25px}
+.calendar-heading h2{margin:0 0 6px}
+.calendar-heading .section-intro{margin:0 0 12px}
+.calendar-heading{margin-bottom:12px}
+.appointments-list-panel{margin-top:20px}
+.finance-card{background:#F2E7DA;border-color:#C8B297}
+.auth-screen{background:linear-gradient(135deg,#D2C0AA,#E7D8C7)}
+.auth-card{background:#F1E7DA;border-color:#C4AD91}
+@media(max-width:950px){.appointment-workspace{grid-template-columns:1fr}.appointment-form-column .form{grid-template-columns:repeat(2,minmax(0,1fr))}.appointment-form-column .field.full{grid-column:1/-1}}
+@media(max-width:600px){.appointment-workspace{gap:22px}.appointment-form-column .form{grid-template-columns:1fr}.appointment-form-column .field.full{grid-column:auto}.calendar-panel{overflow:hidden}.fc .fc-toolbar{gap:8px}.fc .fc-toolbar-title{font-size:17px}}
+
+
+/* Ajustes finais: largura integral e ações claras no histórico */
+html, body { width:100%; min-width:0; }
+.app { width:100%; grid-template-columns:245px minmax(0,1fr); }
+.main { max-width:none !important; width:100%; min-width:0; margin:0 !important; }
+#view-comunicacao .table-wrap { width:100%; }
+#whatsappHistory .actions { min-width:150px; gap:7px; }
+#whatsappHistory .btn { white-space:nowrap; padding:8px 10px; font-size:12px; }
+#whatsappHistory .btn.danger { color:#8E3934; border-color:#C98E85; background:#F4DDD8; font-weight:750; }
+#whatsappHistory .btn.danger:hover { background:#EBCBC4; }
+@media(max-width:900px) { .app { grid-template-columns:minmax(0,1fr); } }
+
+
+/* Arte lateral decorativa — estética, autocuidado e beleza */
+.aesthetic-side-art{
+  position:fixed; right:10px; top:50%; transform:translateY(-50%);
+  width:66px; height:min(620px,78vh); z-index:0; pointer-events:none;
+  display:flex; flex-direction:column; align-items:center; justify-content:space-around;
+  opacity:.72;
+}
+.aesthetic-side-art svg{width:58px;height:auto;overflow:visible;filter:drop-shadow(0 2px 2px rgba(75,48,25,.06))}
+.aesthetic-side-art .art-stroke{fill:none;stroke:#8A6540;stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round}
+.aesthetic-side-art .art-fill{fill:#B58C61;fill-opacity:.13;stroke:#8A6540;stroke-width:1.35;stroke-linejoin:round}
+.sidebar{position:relative;overflow:hidden}
+.sidebar-art{
+  position:absolute;left:50%;bottom:18px;transform:translateX(-50%);
+  width:150px;height:155px;opacity:.22;pointer-events:none;
+}
+.sidebar-art svg{width:100%;height:100%}
+.sidebar-art .art-stroke{fill:none;stroke:#765333;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.sidebar-art .art-fill{fill:#A77B43;fill-opacity:.10;stroke:#765333;stroke-width:1.35;stroke-linejoin:round}
+.main{padding-right:clamp(86px,7vw,112px)!important;position:relative;z-index:1}
+.top,.section{position:relative}
+@media(max-width:900px){
+ .aesthetic-side-art,.sidebar-art{display:none}
+ .main{padding-right:18px!important}
+}
+@media(max-width:520px){.main{padding-right:14px!important}}
+
+
+/* Logotipo principal: flor de lótus acima do nome */
+.brand-lockup{display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;margin:0 0 24px;padding:8px 6px 13px}
+.brand-lotus-logo{width:76px;height:68px;display:block;filter:drop-shadow(0 2px 3px rgba(104,73,45,.10))}
+.brand-lotus-logo path{fill:none;stroke:#A77B43;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.brand-lockup .brand{margin:0;font-size:25px;line-height:1.15;letter-spacing:.01em}
+.brand-lockup .subbrand{margin:4px 0 0;letter-spacing:.16em;font-size:10px}
+.sidebar-art{display:none!important}
+@media(max-width:900px){.brand-lockup{margin-bottom:13px;padding:3px 4px 8px;gap:2px}.brand-lotus-logo{width:58px;height:52px}.brand-lockup .brand{font-size:22px}.brand-lockup .subbrand{margin-top:2px}}
+
+
+/* REFINAMENTO PREMIUM — identidade, prontuário visual e calendário responsivo */
+:root{--bg:#CFC0AE;--card:#F3E9DD;--gold:#A77B43;--gold-dark:#68492D;--ink:#403126;--muted:#766353;--line:#C4AD91;--soft-gold:#E5D4BC;--shadow-premium:0 14px 34px rgba(65,43,25,.13)}
+.brand-lotus-logo{width:92px;height:76px;overflow:visible;filter:drop-shadow(0 5px 7px rgba(83,53,27,.16))}
+.brand-lotus-logo .lotus-lines{stroke:url(#lotusGold);stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;fill:rgba(183,143,88,.09)}
+.brand-lotus-logo .lotus-petal{fill:rgba(197,158,104,.12)}.brand-lotus-logo .lotus-center{fill:rgba(207,174,125,.22);stroke-width:2}.brand-lotus-logo .lotus-outer{fill:rgba(183,143,88,.07)}
+.brand-lotus-logo .lotus-detail{fill:none;stroke:#8E6639;stroke-width:1;opacity:.72}.brand-lotus-logo .lotus-base{fill:none;stroke:#8E6639;stroke-width:1.7}.brand-lotus-logo .lotus-spark{fill:#C19A61;stroke:none;opacity:.8}
+.brand-lockup{gap:7px;padding-top:12px}.brand-lockup .brand{font-size:26px;letter-spacing:.015em}.brand-lockup .subbrand{font-size:9px;letter-spacing:.22em}
+#calendar,.calendar-panel{width:100%;min-width:0;overflow:hidden}
+.fc .fc-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.fc .fc-toolbar-chunk{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.fc .fc-toolbar-title{font-family:Georgia,serif;font-size:clamp(17px,2vw,22px);line-height:1.25;white-space:normal;text-align:center}
+.fc .fc-button{font-size:12px;font-weight:650;padding:7px 10px;line-height:1.25}.fc .fc-button-group{display:inline-flex;gap:3px}.fc .fc-button-group>.fc-button{border-radius:8px!important;margin:0!important}
+.fc .fc-col-header-cell-cushion{padding:9px 3px;font-size:12px;white-space:nowrap}.fc .fc-timegrid-axis-cushion,.fc .fc-timegrid-slot-label-cushion{font-size:11px}
+.fc .fc-daygrid-day-number{padding:6px;font-size:12px}.fc .fc-event{font-size:11px;line-height:1.3;white-space:normal}.fc .fc-daygrid-event{margin:2px 3px}.fc .fc-timegrid-event .fc-event-main{padding:2px 4px;overflow-wrap:anywhere}.fc .fc-list-event-title{white-space:normal}.fc .fc-list-event-time{white-space:nowrap}
+.fc .fc-day-today{background:rgba(228,207,180,.45)!important}
+.patient-progress-panel{overflow:hidden}.patient-progress-panel .panel-heading-row{align-items:center}
+.consent-field{padding:12px 14px;border:1px solid #D7C3A9;border-radius:12px;background:#EDE1D3}.consent-field label{display:flex;align-items:flex-start;gap:9px;line-height:1.45}.consent-field input{width:17px;height:17px;flex:none;margin-top:2px;accent-color:#8A6339}
+.progress-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:13px;margin-top:18px}.progress-photo-card{overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#F8F1E9;box-shadow:0 5px 15px rgba(65,43,25,.07)}
+.progress-photo-card img{display:block;width:100%;height:170px;object-fit:cover;background:#E8DCCF}.progress-photo-card div{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 11px}.progress-photo-card strong{font-size:12px;color:var(--ink);text-transform:capitalize}.progress-photo-card small{font-size:11px;color:var(--muted)}
+#progressPhotoForm .field input[type=file]{padding:9px;font-size:12px}#progressPdfBtn:disabled,#progressUploadBtn:disabled{opacity:.65;cursor:wait}
+@media(max-width:700px){
+ .brand-lotus-logo{width:66px;height:58px}.brand-lockup .brand{font-size:22px}
+ .calendar-panel{padding:0!important}#calendar{font-size:11px}
+ .fc .fc-header-toolbar{display:grid;grid-template-columns:1fr auto;grid-template-areas:"nav today" "title title";gap:8px;margin-bottom:10px}
+ .fc .fc-header-toolbar .fc-toolbar-chunk:nth-child(1){grid-area:nav;justify-content:flex-start}.fc .fc-header-toolbar .fc-toolbar-chunk:nth-child(2){grid-area:title;justify-content:center}.fc .fc-header-toolbar .fc-toolbar-chunk:nth-child(3){grid-area:today;justify-content:flex-end}
+ .fc .fc-footer-toolbar{display:flex;justify-content:center;margin-top:10px;gap:4px}.fc .fc-footer-toolbar .fc-toolbar-chunk{display:flex;justify-content:center;flex-wrap:wrap;gap:4px}
+ .fc .fc-footer-toolbar .fc-button{font-size:10px;padding:7px 8px}.fc .fc-toolbar-title{font-size:17px}.fc .fc-col-header-cell-cushion{font-size:10px;padding:7px 1px}
+ .fc .fc-timegrid-axis-cushion,.fc .fc-timegrid-slot-label-cushion{font-size:10px}.fc .fc-timegrid-slot{height:2.6em}.fc .fc-timegrid-event{font-size:10px}
+ .fc .fc-daygrid-day-number{font-size:11px;padding:4px}.fc .fc-daygrid-event{font-size:9px}.fc .fc-list-event-time,.fc .fc-list-event-title{font-size:11px}
+ .progress-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.progress-photo-card img{height:145px}
+}
+@media(max-width:380px){.fc .fc-footer-toolbar .fc-button{font-size:9px;padding:6px}.fc .fc-button{font-size:11px;padding:6px 7px}.progress-photo-card img{height:125px}}
+
+  
+/* ===== MINHA ESTÉTICA | INTERFACE PREMIUM 3.0 ===== */
+:root{
+ --coffee-950:#302116;--coffee-900:#3D2A1C;--coffee-800:#513923;
+ --bronze:#A87943;--champagne:#D7BD91;--cream:#F6EEE4;
+ --panel-glow:0 18px 48px rgba(57,38,22,.14);
+}
+body{background:radial-gradient(ellipse at 8% 0%,#E6D4BF 0,transparent 34%),linear-gradient(145deg,#CBB9A5 0%,#D9C9B7 48%,#C8B49D 100%);}
+.sidebar{background:linear-gradient(180deg,#F1E6D9 0%,#E3D2BF 58%,#D9C5AE 100%);box-shadow:10px 0 36px rgba(53,34,18,.08)}
+.brand-lockup{position:relative}
+.brand-lockup:after{content:"";width:74px;height:1px;background:linear-gradient(90deg,transparent,#A77B43,transparent);margin-top:7px}
+.brand-lotus-logo{width:104px;height:86px;filter:drop-shadow(0 7px 10px rgba(82,53,27,.2))}
+.brand-lotus-logo .lotus-lines{stroke:url(#lotusGold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.brand-lotus-logo .lotus-petal{fill:url(#lotusPetal)}
+.brand-lotus-logo .lotus-center{fill:url(#lotusCenter);stroke-width:2.2}
+.brand-lotus-logo .lotus-outer{fill:rgba(179,137,82,.15)}
+.brand-lotus-logo .lotus-detail{fill:none;stroke:#80582F;stroke-width:1.05;opacity:.88}
+.brand-lotus-logo .lotus-base{fill:none;stroke:#80582F;stroke-width:1.8}
+.brand-lotus-logo .lotus-spark{fill:#C69C5E;stroke:none;filter:drop-shadow(0 0 3px rgba(198,156,94,.4))}
+.main{padding-top:clamp(20px,3vw,38px)}
+.top{align-items:center;padding:12px 0 22px}
+.top h1{font-family:Georgia,serif;font-size:clamp(25px,3vw,34px);letter-spacing:-.045em}
+.top-right .badge{background:rgba(239,226,208,.82);border-color:#CDB99D}
+.card,.panel{backdrop-filter:blur(8px);border:1px solid rgba(177,146,108,.58);box-shadow:0 12px 34px rgba(57,38,22,.10),inset 0 1px 0 rgba(255,255,255,.58)}
+.card{border-radius:21px}
+.panel{border-radius:22px}
+.card:before{width:4px;background:linear-gradient(180deg,#D6B77F,#8B6035)}
+.btn{transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+.btn:focus-visible,.nav button:focus-visible{outline:3px solid rgba(167,123,67,.38);outline-offset:2px}
+.btn.primary{background:linear-gradient(135deg,#B58A55,#79532F);box-shadow:0 7px 18px rgba(105,70,34,.18)}
+.btn.primary:hover{filter:brightness(1.06);transform:translateY(-2px);box-shadow:0 10px 22px rgba(105,70,34,.23)}
+.field input,.field select,.field textarea{box-shadow:inset 0 1px 2px rgba(64,42,22,.035)}
+.auth-card{position:relative;overflow:hidden;background:linear-gradient(150deg,#F6EEE5,#E9D9C7);border-color:#C4A987;box-shadow:0 24px 70px rgba(55,35,18,.2)}
+.auth-card:before{content:"";position:absolute;inset:0 0 auto;height:5px;background:linear-gradient(90deg,#6D4829,#D6B77F,#8B6035)}
+.auth-brand-mark{display:grid;place-items:center;margin:0 auto 8px}
+.auth-brand-mark svg{width:96px;height:76px;filter:drop-shadow(0 5px 8px rgba(83,53,27,.17))}
+.auth-card h1{text-align:center;font-size:30px}
+.auth-card>p{text-align:center}
+.auth-actions{display:grid;grid-template-columns:1fr}
+#authMsg{min-height:22px;font-size:13px;line-height:1.45}
+.auth-card .auth-small{text-align:center}
+.smart-dashboard{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:15px;margin:18px 0 20px}
+.smart-panel{position:relative;min-width:0;padding:20px;border:1px solid rgba(177,146,108,.58);border-radius:21px;background:linear-gradient(145deg,rgba(248,241,232,.97),rgba(231,216,198,.96));box-shadow:0 12px 30px rgba(57,38,22,.09);overflow:hidden}
+.smart-panel:after{content:"";position:absolute;width:140px;height:140px;border-radius:50%;right:-65px;top:-75px;background:radial-gradient(circle,rgba(191,153,98,.16),transparent 70%);pointer-events:none}
+.smart-panel.today-panel{grid-column:span 4}
+.smart-panel.month-panel{grid-column:span 4}
+.smart-panel.insight-panel{grid-column:span 4}
+.smart-panel.trend-panel{grid-column:span 12}
+.smart-panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.smart-panel-head h3{margin:0;font:600 17px Georgia,serif;color:#493629}
+.smart-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:12px;background:#DCC6A8;color:#6C492B;font-size:18px}
+.smart-kpi{font-size:27px;line-height:1.15;font-weight:800;letter-spacing:-.04em;color:#4B3524}
+.smart-caption{font-size:12px;color:#806B56;margin-top:5px}
+.smart-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}
+.smart-mini{padding:10px 11px;border-radius:13px;background:rgba(255,251,246,.62);border:1px solid rgba(195,171,140,.48)}
+.smart-mini small{display:block;font-size:11px;color:#806B56}
+.smart-mini strong{display:block;margin-top:4px;font-size:15px;color:#4C392A}
+.smart-insights{display:grid;gap:9px;margin:0;padding:0;list-style:none}
+.smart-insights li{display:flex;gap:9px;align-items:flex-start;padding:10px 11px;border-radius:12px;background:rgba(255,251,246,.6);font-size:12px;line-height:1.45;color:#69533D}
+.smart-insights li:before{content:"✦";color:#A87943;font-size:14px;flex:none}
+.smart-insights li.alert:before{content:"!";display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:#F0D8CC;color:#9A5145;font-size:11px;font-weight:800}
+.smart-trend{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;align-items:end;min-height:122px}
+.trend-month{display:grid;gap:6px;text-align:center;min-width:0}
+.trend-bars{height:78px;display:flex;align-items:flex-end;justify-content:center;gap:4px;border-bottom:1px solid #CDB99D}
+.trend-bar{width:min(20px,35%);min-height:3px;border-radius:5px 5px 0 0;background:linear-gradient(180deg,#C5A06C,#81582F)}
+.trend-bar.expense{background:linear-gradient(180deg,#C98D82,#9B554B)}
+.trend-month small{font-size:10px;color:#806B56}
+.trend-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:#806B56}
+.trend-legend span{display:inline-flex;align-items:center;gap:6px}
+.trend-dot{width:8px;height:8px;border-radius:50%;background:#A87943}
+.trend-dot.expense{background:#B96F65}
+.smart-panel .empty{background:rgba(255,251,246,.55)}
+.floating-dock{position:fixed;right:24px;bottom:22px;z-index:10050;display:grid;justify-items:end;gap:11px}
+.floating-launcher{width:60px;height:60px;border:1px solid rgba(255,255,255,.35);border-radius:20px;background:linear-gradient(145deg,#B58A55,#68472A);color:#fff;font-size:25px;box-shadow:0 14px 34px rgba(52,34,18,.3);cursor:pointer;transition:.2s}
+.floating-launcher:hover{transform:translateY(-3px) rotate(3deg)}
+.floating-panel{display:none;width:min(340px,calc(100vw - 30px));padding:18px;border:1px solid #C7AE8D;border-radius:21px;background:rgba(246,238,228,.97);backdrop-filter:blur(16px);box-shadow:0 20px 60px rgba(42,27,14,.25)}
+.floating-panel.open{display:block;animation:floatIn .22s ease-out}
+@keyframes floatIn{from{opacity:0;transform:translateY(9px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.floating-panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.floating-panel-head strong{font:600 18px Georgia,serif;color:#493629}
+.floating-panel-close{border:0;background:transparent;color:#76583B;font-size:22px;cursor:pointer}
+.floating-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.floating-actions button{min-height:62px;text-align:left;padding:11px;border:1px solid #D5C0A4;border-radius:13px;background:#FBF6EF;color:#59432E;font-weight:700;cursor:pointer}
+.floating-actions button span{display:block;font-size:11px;font-weight:500;color:#8A755E;margin-top:4px}
+.floating-panel-note{margin:12px 2px 0;color:#806B56;font-size:11px;line-height:1.45}
+.toast-region{position:fixed;top:18px;right:18px;z-index:11000;display:grid;gap:9px;width:min(360px,calc(100vw - 36px));pointer-events:none}
+.app-toast{padding:13px 15px;border-radius:13px;background:#3E2C1E;color:#FFF8EF;box-shadow:0 12px 30px rgba(40,25,12,.24);font-size:13px;line-height:1.45;animation:toastIn .2s ease-out}
+.app-toast.error{background:#793F37}.app-toast.success{background:#42634C}
+@keyframes toastIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:1050px){.smart-panel.today-panel,.smart-panel.month-panel,.smart-panel.insight-panel{grid-column:span 6}.smart-panel.insight-panel{grid-column:span 12}}
+@media(max-width:700px){
+ .brand-lotus-logo{width:78px;height:66px}
+ .smart-dashboard{gap:10px}
+ .smart-panel.today-panel,.smart-panel.month-panel,.smart-panel.insight-panel,.smart-panel.trend-panel{grid-column:span 12}
+ .smart-panel{padding:16px;border-radius:17px}
+ .smart-trend{gap:7px}
+ .floating-dock{right:14px;bottom:14px}
+ .floating-launcher{width:55px;height:55px;border-radius:18px}
+ .top-right{width:100%}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/locales-all.global.min.js"></script>
+ </head>
+ <body>
+  <section class="auth-screen" id="authScreen">
+   <div class="auth-card">
+    <div class="auth-brand-mark" aria-hidden="true">
+     <svg viewBox="0 0 180 142"><defs><linearGradient id="authLotusGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E7CF9D"/><stop offset=".5" stop-color="#B58A55"/><stop offset="1" stop-color="#68492D"/></linearGradient></defs><g fill="rgba(181,138,85,.15)" stroke="url(#authLotusGold)" stroke-width="2" stroke-linejoin="round"><path d="M90 104C67 78 65 45 90 12C115 45 113 78 90 104Z"/><path d="M83 103C48 89 31 61 37 30C67 43 82 67 88 99Z"/><path d="M97 103C132 89 149 61 143 30C113 43 98 67 92 99Z"/><path d="M76 106C42 104 17 84 10 54C42 58 65 76 82 104Z"/><path d="M104 106C138 104 163 84 170 54C138 58 115 76 98 104Z"/><path d="M22 111C43 103 65 104 90 113C115 104 137 103 158 111M43 120C59 116 74 117 90 123C106 117 121 116 137 120M90 112V132M75 132H105" fill="none"/></g></svg>
+    </div>
+    <h1>
+     Minha Estética
+    </h1>
+    <p>
+     Gestão profissional • entre na sua conta para acessar seus dados com segurança.
+    </p>
+    <form class="form" id="authForm">
+     <div class="field full">
+      <label>
+       E-mail
+      </label>
+      <input autocomplete="email" id="authEmail" placeholder="voce@email.com" required="" type="email"/>
+     </div>
+     <div class="field full">
+      <label>
+       Senha (mínimo 6 caracteres)
+      </label>
+      <input autocomplete="current-password" id="authPassword" minlength="6" placeholder="Sua senha" required="" type="password"/>
+     </div>
+     <input id="authMode" type="hidden" value="login"/>
+     <div class="field full auth-actions">
+      <button class="btn primary" id="authSubmit" type="submit">
+       Entrar
+      </button>
+      <button class="btn" id="toggleAuth" type="button">
+       Não tenho conta — criar cadastro
+      </button>
+     </div>
+    </form>
+    <form class="form" id="resetPasswordForm" style="display:none;">
+     <div class="field full">
+      <label for="newPassword">Nova senha</label>
+      <input autocomplete="new-password" id="newPassword" minlength="6" placeholder="Digite a nova senha" required type="password"/>
+     </div>
+     <div class="field full">
+      <label for="confirmPassword">Confirme a nova senha</label>
+      <input autocomplete="new-password" id="confirmPassword" minlength="6" placeholder="Repita a nova senha" required type="password"/>
+     </div>
+     <div class="field full">
+      <button class="btn primary" id="saveNewPassword" type="submit">Salvar nova senha</button>
+      <button class="btn" id="cancelPasswordReset" type="button">Voltar ao login</button>
+     </div>
+    </form>
+    <p id="authMsg" role="status">
+    </p>
+    <div class="auth-small">
+     Se o cadastro exigir confirmação, confira sua caixa de entrada. Use uma senha forte e não a compartilhe.
+    </div>
+   </div>
+  </section>
+  <div class="app" id="appShell" style="display:none">
+   <aside class="sidebar">
+    <div class="brand-lockup">
+     <svg class="brand-lotus-logo" viewBox="0 0 180 142" role="img" aria-label="Flor de lótus ornamental">
+       <defs><linearGradient id="lotusGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E7CF9D"/><stop offset=".48" stop-color="#B58A55"/><stop offset="1" stop-color="#68492D"/></linearGradient><linearGradient id="lotusPetal" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#F3E2C5" stop-opacity=".85"/><stop offset="1" stop-color="#B58A55" stop-opacity=".22"/></linearGradient><linearGradient id="lotusCenter" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F8E8C9"/><stop offset="1" stop-color="#C39A62" stop-opacity=".55"/></linearGradient></defs>
+       <g class="lotus-lines">
+        <path class="lotus-petal lotus-center" d="M90 104C67 78 65 45 90 12C115 45 113 78 90 104Z"/>
+        <path class="lotus-petal" d="M83 103C48 89 31 61 37 30C67 43 82 67 88 99Z"/>
+        <path class="lotus-petal" d="M97 103C132 89 149 61 143 30C113 43 98 67 92 99Z"/>
+        <path class="lotus-petal lotus-outer" d="M76 106C42 104 17 84 10 54C42 58 65 76 82 104Z"/>
+        <path class="lotus-petal lotus-outer" d="M104 106C138 104 163 84 170 54C138 58 115 76 98 104Z"/>
+        <path class="lotus-detail" d="M90 24C82 48 83 72 90 96M90 24C98 48 97 72 90 96M43 39C59 57 70 76 82 98M137 39C121 57 110 76 98 98"/>
+        <path class="lotus-base" d="M22 111C43 103 65 104 90 113C115 104 137 103 158 111M43 120C59 116 74 117 90 123C106 117 121 116 137 120M90 112V132M75 132H105"/>
+        <path class="lotus-spark" d="M20 30l4-8 4 8 8 4-8 4-4 8-4-8-8-4zM148 17l3-6 3 6 6 3-6 3-3 6-3-6-6-3z"/>
+       </g></svg>
+     <h2 class="brand">Minha Estética</h2>
+     <p class="subbrand">GESTÃO PROFISSIONAL</p>
+    </div>
+    <nav aria-label="Menu principal" class="nav">
+     <button class="active" data-view="inicio">
+      ⌂   Início
+     </button>
+     <button data-view="financeiro">
+      ◇   Financeiro
+     </button>
+     <button data-view="fichas">
+      ✧   Fichas técnicas
+     </button>
+     <button data-view="clientes">
+      ♧   Clientes
+     </button>
+     <button data-view="agenda">
+      ▦   Agenda
+     </button>
+     <button data-view="comunicacao">
+      ✉   Comunicação
+     </button>
+    </nav>
+    <div class="sidebar-art" aria-hidden="true">
+      <svg viewBox="0 0 150 155" role="img" aria-label="Flor de lótus decorativa">
+        <g class="art-stroke">
+          <path d="M75 118C56 102 43 84 43 62c16 7 27 20 32 39 5-19 16-32 32-39 0 22-13 40-32 56Z"/>
+          <path d="M75 101C59 82 58 61 75 39c17 22 16 43 0 62Z"/>
+          <path d="M67 100C43 93 29 77 27 54c21 5 35 20 40 43M83 100c24-7 38-23 40-46-21 5-35 20-40 43"/>
+          <path d="M22 119c18-8 35-9 53-2 18-7 35-6 53 2M75 118v17M48 135h54"/>
+          <path d="M75 24v-9m-27 19-7-7m61 7 7-7"/>
+        </g>
+        <path class="art-fill" d="M75 39c-17 22-16 43 0 62 16-19 17-40 0-62Z"/>
+        <path class="art-fill" d="M43 62c16 7 27 20 32 39-24-8-37-22-32-39Zm64 0c-16 7-27 20-32 39 24-8 37-22 32-39Z"/>
+      </svg>
+    </div>
+    <p class="sidebar-note">
+     ✦ Beleza, cuidado e organização em um só lugar.
+    </p>
+   </aside>
+   <div class="aesthetic-side-art" aria-hidden="true">
+    <svg viewBox="0 0 64 120" role="img" aria-label="Flor de lótus">
+      <g class="art-stroke">
+        <path d="M32 76C17 63 12 47 18 29c10 7 14 19 14 34 0-15 4-27 14-34 6 18 1 34-14 47Z"/>
+        <path d="M32 63C20 47 22 29 32 13c10 16 12 34 0 50Z"/>
+        <path d="M29 67C15 62 7 52 5 37c14 4 22 14 25 30m5 0c3-16 11-26 25-30-2 15-10 25-24 30"/>
+        <path d="M7 82c17-7 33-7 50 0M32 76v19m-14 0h28"/>
+      </g>
+      <path class="art-fill" d="M32 13c-10 16-12 34 0 50 12-16 10-34 0-50Z"/>
+    </svg>
+    <svg viewBox="0 0 64 120" role="img" aria-label="Flor de lótus">
+      <g class="art-stroke">
+        <path d="M32 76C17 63 12 47 18 29c10 7 14 19 14 34 0-15 4-27 14-34 6 18 1 34-14 47Z"/>
+        <path d="M32 63C20 47 22 29 32 13c10 16 12 34 0 50Z"/>
+        <path d="M29 67C15 62 7 52 5 37c14 4 22 14 25 30m5 0c3-16 11-26 25-30-2 15-10 25-24 30"/>
+        <path d="M7 82c17-7 33-7 50 0M32 76v19m-14 0h28"/>
+      </g>
+      <path class="art-fill" d="M32 13c-10 16-12 34 0 50 12-16 10-34 0-50Z"/>
+    </svg>
+   </div>
+   <main class="main">
+    <header class="top">
+     <div>
+      <div class="eyebrow">
+       Seu espaço de gestão
+      </div>
+      <h1 id="pageTitle">
+       Bom dia! ✨
+      </h1>
+      <p id="pageSubtitle">
+       Aqui está um resumo do seu negócio.
+      </p>
+     </div>
+     <div class="top-right">
+      <span class="user-email" id="userEmail">
+      </span>
+      <button class="btn privacy-toggle" id="privacyToggleBtn" type="button" aria-pressed="false" aria-label="Ocultar valores financeiros" title="Ocultar valores financeiros">
+       👁️ Ocultar valores
+      </button>
+      <button class="btn" id="logoutBtn" type="button">
+       Sair
+      </button>
+      <span class="badge">
+       Sincronizado com a nuvem
+      </span>
+     </div>
+    </header>
+    <section class="section active" id="view-inicio">
+     <div class="cards">
+      <div class="card">
+       <div class="label">
+        Entradas registradas
+       </div>
+       <div class="value" id="dashIn">
+        R$ 0,00
+       </div>
+       <div class="hint">
+        Total dos lançamentos
+       </div>
+      </div>
+      <div class="card">
+       <div class="label">
+        Despesas registradas
+       </div>
+       <div class="value" id="dashOut">
+        R$ 0,00
+       </div>
+       <div class="hint">
+        Total dos lançamentos
+       </div>
+      </div>
+      <div class="card">
+       <div class="label">
+        Saldo estimado
+       </div>
+       <div class="value" id="dashBalance">
+        R$ 0,00
+       </div>
+       <div class="hint">
+        Entradas menos despesas
+       </div>
+      </div>
+      <div class="card">
+       <div class="label">
+        Clientes cadastrados
+       </div>
+       <div class="value" id="dashClients">
+        0
+       </div>
+       <div class="hint">
+        Na sua lista
+       </div>
+      </div>
+     </div>
+
+      <div class="smart-dashboard" id="smartDashboard" aria-label="Painéis inteligentes do negócio">
+       <article class="smart-panel today-panel">
+        <div class="smart-panel-head"><h3>Movimento de hoje</h3><span class="smart-icon">◷</span></div>
+        <div class="smart-kpi" id="smartTodayCount">0</div>
+        <div class="smart-caption" id="smartTodayMeta">Atendimentos agendados para hoje</div>
+        <div class="smart-mini-grid">
+         <div class="smart-mini"><small>Próximo horário</small><strong id="smartNextTime">—</strong></div>
+         <div class="smart-mini"><small>Concluídos hoje</small><strong id="smartDoneToday">0</strong></div>
+        </div>
+       </article>
+       <article class="smart-panel month-panel">
+        <div class="smart-panel-head"><h3>Resultado do mês</h3><span class="smart-icon">◇</span></div>
+        <div class="smart-kpi" id="smartMonthBalance">R$ 0,00</div>
+        <div class="smart-caption">Saldo calculado pelos lançamentos registrados</div>
+        <div class="smart-mini-grid">
+         <div class="smart-mini"><small>Entradas</small><strong id="smartMonthIn">R$ 0,00</strong></div>
+         <div class="smart-mini"><small>Despesas</small><strong id="smartMonthOut">R$ 0,00</strong></div>
+        </div>
+       </article>
+       <article class="smart-panel insight-panel">
+        <div class="smart-panel-head"><h3>Leitura inteligente</h3><span class="smart-icon">✧</span></div>
+        <ul class="smart-insights" id="smartRecommendations"><li>Os indicadores aparecerão quando os dados forem carregados.</li></ul>
+       </article>
+       <article class="smart-panel trend-panel">
+        <div class="smart-panel-head"><h3>Fluxo financeiro · últimos 6 meses</h3><span class="premium-tag">VISÃO GERAL</span></div>
+        <div class="smart-trend" id="smartTrend"></div>
+        <div class="trend-legend"><span><i class="trend-dot"></i> Entradas</span><span><i class="trend-dot expense"></i> Despesas</span></div>
+       </article>
+      </div>
+     <div class="grid2">
+      <div class="panel">
+       <h2>
+        Atalhos rápidos
+       </h2>
+       <p class="desc">
+        Acesse as tarefas mais comuns.
+       </p>
+       <div class="actions">
+        <button class="btn primary" data-go="clientes">
+         ＋ Cadastrar cliente
+        </button>
+        <button class="btn" data-go="financeiro">
+         ＋ Lançamento financeiro
+        </button>
+        <button class="btn" data-go="fichas">
+         ＋ Nova ficha técnica
+        </button>
+        <button class="btn" data-go="agenda">
+         ＋ Agendar atendimento
+        </button>
+       </div>
+       <div class="notice">
+        Dica: cadastre seus procedimentos e custos para entender melhor a rentabilidade de cada serviço.
+       </div>
+      </div>
+      <div class="panel">
+       <h2>
+        Próximos atendimentos
+       </h2>
+       <p class="desc">
+        Seus compromissos registrados.
+       </p>
+       <div class="empty" id="dashAppointments">
+        Nenhum atendimento cadastrado ainda.
+       </div>
+      </div>
+     </div>
+    </section>
+    <!-- MINHA ESTÉTICA | COMUNICAÇÃO -->
+    <section class="section" id="view-comunicacao">
+     <div class="toolbar">
+      <h2>
+       Comunicação com clientes
+      </h2>
+     </div>
+     <p class="section-intro">
+      Configure os lembretes e acompanhe as mensagens relacionadas aos atendimentos.
+     </p>
+     <div class="cards">
+      <div class="card">
+       <div class="label">
+        Integração WhatsApp
+       </div>
+       <div class="value" id="whatsappStatus">
+        Desconectado
+       </div>
+       <div class="hint">
+        Conexão com a conta comercial
+       </div>
+      </div>
+      <div class="card">
+       <div class="label">
+        Mensagens registradas
+       </div>
+       <div class="value" id="whatsappTotal">
+        0
+       </div>
+       <div class="hint">
+        Histórico de comunicação
+       </div>
+      </div>
+      <div class="card">
+       <div class="label">
+        Mensagens enviadas
+       </div>
+       <div class="value" id="whatsappSent">
+        0
+       </div>
+       <div class="hint">
+        Envios confirmados
+       </div>
+      </div>
+      <div class="card">
+       <div class="label">
+        Mensagens pendentes
+       </div>
+       <div class="value" id="whatsappPending">
+        0
+       </div>
+       <div class="hint">
+        Aguardando processamento
+       </div>
+      </div>
+     </div>
+     <div class="panel">
+      <h2>
+       Configurações dos lembretes
+      </h2>
+      <p class="desc">
+       Escolha quando os clientes deverão receber os lembretes.
+      </p>
+      <form class="form" id="whatsappSettingsForm">
+       <div class="field full">
+        <label>
+         Número comercial do WhatsApp
+        </label>
+        <input id="whatsappPhone" placeholder="Ex.: 5533999999999" type="tel"/>
+       </div>
+       <div class="field full">
+        <label>
+         <input id="reminderDayBefore" type="checkbox"/>
+         Ativar lembrete 24 horas antes
+        </label>
+       </div>
+       <div class="field full">
+        <label>
+         <input id="reminderDayOf" type="checkbox"/>
+         Ativar lembrete no dia do procedimento
+        </label>
+       </div>
+       <div class="field">
+        <label>
+         Horário de referência
+        </label>
+        <input id="whatsappSendTime" type="time" value="09:00"/>
+       </div>
+       <div class="field full">
+        <button class="btn primary" type="submit">
+         Salvar configurações
+        </button>
+       </div>
+      </form>
+      <div class="notice">
+       O envio automático permanecerá desativado até a configuração
+      e validação da integração oficial com o WhatsApp.
+      </div>
+     </div>
+     <div class="panel message-templates-panel" style="margin-top:20px">
+      <div class="panel-heading-row">
+       <div>
+        <h2>Modelos de mensagens</h2>
+        <p class="desc">Crie, reutilize, copie ou exclua textos prontos para atendimento. Os modelos ficam salvos neste navegador.</p>
+       </div>
+       <span class="premium-tag">✦ PERSONALIZÁVEL</span>
+      </div>
+      <form class="form" id="messageTemplateForm">
+       <div class="field">
+        <label for="messageTemplateTitle">Nome do modelo</label>
+        <input id="messageTemplateTitle" maxlength="60" placeholder="Ex.: Confirmação de horário" required>
+       </div>
+       <div class="field full">
+        <label for="messageTemplateBody">Texto da mensagem</label>
+        <textarea id="messageTemplateBody" maxlength="1200" placeholder="Olá, [nome]! Passando para confirmar seu atendimento..." required></textarea>
+       </div>
+       <div class="field full">
+        <button class="btn primary" type="submit">＋ Salvar modelo</button>
+       </div>
+      </form>
+      <div id="messageTemplateList" class="message-template-list">
+       <div class="empty">Nenhum modelo salvo. Crie seu primeiro texto acima.</div>
+      </div>
+     </div>
+     <div class="panel" style="margin-top:20px">
+      <h2>
+       Autorização dos clientes
+      </h2>
+      <p class="desc">
+       Registre a autorização individual antes de qualquer lembrete. A autorização pode ser revogada a qualquer momento.
+      </p>
+      <div class="table-wrap">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Cliente
+          </th>
+          <th>
+           Telefone
+          </th>
+          <th>
+           Autorização
+          </th>
+          <th>
+           Ação
+          </th>
+         </tr>
+        </thead>
+        <tbody id="whatsappConsentRows">
+         <tr>
+          <td colspan="4">
+           Nenhum cliente cadastrado.
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+     <div class="panel" style="margin-top:20px">
+      <h2>
+       Histórico de mensagens
+      </h2>
+      <div class="table-wrap">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Data
+          </th>
+          <th>
+           Tipo
+          </th>
+          <th>
+           Status
+          </th>
+          <th>
+           Mensagem
+          </th>
+          <th>Ações</th>
+         </tr>
+        </thead>
+        <tbody id="whatsappHistory">
+         <tr>
+          <td colspan="5">
+           Nenhuma mensagem registrada.
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+    </section>
+    <section class="section" id="view-financeiro">
+     <div class="toolbar">
+      <h2>
+       Controle financeiro
+      </h2>
+     </div>
+     <p class="section-intro">
+      Registre entradas e despesas para acompanhar seu caixa.
+     </p>
+     <div class="panel">
+      <form class="form" id="financeForm">
+       <div class="field">
+        <label>
+         Tipo de lançamento
+        </label>
+        <select id="finType">
+         <option value="entrada">
+          Entrada
+         </option>
+         <option value="despesa">
+          Despesa
+         </option>
+        </select>
+       </div>
+       <div class="field">
+        <label>
+         Valor (R$)
+        </label>
+        <input id="finAmount" min="0.01" placeholder="0,00" required="" step="0.01" type="number"/>
+       </div>
+       <div class="field">
+        <label>
+         Descrição
+        </label>
+        <input id="finDesc" placeholder="Ex.: Massagem relaxante" required=""/>
+       </div>
+       <div class="field">
+        <label>
+         Data
+        </label>
+        <input id="finDate" required="" type="date"/>
+       </div>
+       <div class="field full">
+        <button class="btn primary" type="submit">
+         Salvar lançamento
+        </button>
+       </div>
+      </form>
+     </div>
+     <div class="panel finance-history-panel" style="margin-top:15px">
+      <h2>
+       Histórico de lançamentos
+      </h2>
+      <div class="finance-list" id="financeRows">
+       <div class="empty">
+        Nenhum lançamento.
+       </div>
+      </div>
+     </div>
+    </section>
+    <section class="section" id="view-fichas">
+     <div class="toolbar">
+      <h2>
+       Fichas técnicas
+      </h2>
+     </div>
+     <p class="section-intro">
+      Cadastre serviços, custos e preço sugerido. O cálculo abaixo não substitui a avaliação de todos os custos do negócio.
+     </p>
+     <div class="panel">
+      <form class="form" id="procedureForm">
+       <div class="field">
+        <label>
+         Nome do procedimento
+        </label>
+        <input id="procName" placeholder="Ex.: Massagem relaxante" required=""/>
+       </div>
+       <div class="field">
+        <label>
+         Duração (minutos)
+        </label>
+        <input id="procDuration" min="1" placeholder="60" type="number"/>
+       </div>
+       <div class="field">
+        <label>
+         Custo dos produtos (R$)
+        </label>
+        <input id="procProducts" min="0" required="" step="0.01" type="number" value="0"/>
+       </div>
+       <div class="field">
+        <label>
+         Outros custos variáveis (R$)
+        </label>
+        <input id="procOther" min="0" required="" step="0.01" type="number" value="0"/>
+       </div>
+       <div class="field">
+        <label>
+         Preço cobrado (R$)
+        </label>
+        <input id="procPrice" min="0" required="" step="0.01" type="number"/>
+       </div>
+       <div class="field">
+        <label>
+         Produtos / materiais
+        </label>
+        <input id="procMaterials" placeholder="Óleo, creme, toalhas..."/>
+       </div>
+       <div class="field full">
+        <label>
+         Etapas e observações
+        </label>
+        <textarea id="procNotes" placeholder="Descreva o protocolo, cuidados e observações profissionais."></textarea>
+       </div>
+       <div class="field full">
+        <button class="btn primary" type="submit">
+         Salvar ficha técnica
+        </button>
+       </div>
+      </form>
+     </div>
+     <div class="panel" style="margin-top:15px">
+      <h2>
+       Procedimentos cadastrados
+      </h2>
+      <div class="table-wrap">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Procedimento
+          </th>
+          <th>
+           Duração
+          </th>
+          <th>
+           Custo variável
+          </th>
+          <th>
+           Preço
+          </th>
+          <th>
+           Resultado estimado
+          </th>
+          <th>
+          </th>
+         </tr>
+        </thead>
+        <tbody id="procedureRows">
+         <tr>
+          <td colspan="6">
+           Nenhuma ficha técnica.
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+    </section>
+    <section class="section" id="view-clientes">
+     <div class="toolbar">
+      <h2>
+       Cadastro de clientes
+      </h2>
+     </div>
+     <p class="section-intro">
+      Guarde apenas as informações necessárias para o atendimento e proteja os dados dos seus clientes.
+     </p>
+     <div class="panel">
+      <form class="form" id="clientForm">
+       <input id="clientEditId" type="hidden" value=""/>
+       <div class="field">
+        <label>
+         Nome completo
+        </label>
+        <input id="clientName" placeholder="Nome do cliente" required=""/>
+       </div>
+       <div class="field">
+        <label>
+         Telefone
+        </label>
+        <input id="clientPhone" placeholder="(00) 00000-0000"/>
+       </div>
+       <div class="field">
+        <label>
+         E-mail (opcional)
+        </label>
+        <input id="clientEmail" placeholder="cliente@email.com" type="email"/>
+       </div>
+       <div class="field">
+        <label>
+         Observação não sensível
+        </label>
+        <input id="clientNotes" placeholder="Preferência de horário, por exemplo"/>
+       </div>
+       <div class="field full actions">
+        <button class="btn primary" id="clientSubmitBtn" type="submit">
+         Cadastrar cliente
+        </button>
+        <button class="btn" id="cancelClientEdit" style="display:none" type="button">
+         Cancelar edição
+        </button>
+       </div>
+      </form>
+     </div>
+     <div class="panel" style="margin-top:15px">
+      <h2>
+       Clientes cadastrados
+      </h2>
+      <div class="table-wrap">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Nome
+          </th>
+          <th>
+           Telefone
+          </th>
+          <th>
+           E-mail
+          </th>
+          <th>
+           Observação
+          </th>
+          <th>
+           WhatsApp
+          </th>
+          <th>
+          </th>
+         </tr>
+        </thead>
+        <tbody id="clientRows">
+         <tr>
+          <td colspan="5">
+           Nenhum cliente cadastrado.
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+     <div class="panel patient-progress-panel" style="margin-top:18px">
+      <div class="panel-heading-row"><div><h2>✨ Evolução do cliente · Antes e depois</h2><p class="desc">Armazene imagens privadas por cliente e gere um relatório em PDF. Use somente com autorização expressa do cliente.</p></div><span class="premium-tag">PRONTUÁRIO VISUAL</span></div>
+      <form id="progressPhotoForm" class="form">
+       <div class="field"><label for="progressClient">Cliente</label><select id="progressClient" required><option value="">Selecione um cliente</option></select></div>
+       <div class="field"><label for="progressType">Tipo de registro</label><select id="progressType" required><option value="antes">Antes</option><option value="depois">Depois</option><option value="evolucao">Evolução</option></select></div>
+       <div class="field"><label for="progressDate">Data do registro</label><input id="progressDate" type="date" required></div>
+       <div class="field"><label for="progressPhoto">Fotografia (JPG, PNG ou WebP · até 6 MB)</label><input id="progressPhoto" type="file" accept="image/jpeg,image/png,image/webp" required></div>
+       <div class="field full"><label for="progressNotes">Observações para o relatório PDF (opcional)</label><textarea id="progressNotes" maxlength="600" placeholder="Estas observações serão incluídas no PDF gerado nesta sessão."></textarea></div>
+       <div class="field full consent-field"><label><input id="progressConsent" type="checkbox" required> Confirmo que obtive autorização expressa do cliente para registrar e armazenar esta imagem.</label></div>
+       <div class="field full actions"><button class="btn primary" id="progressUploadBtn" type="submit">＋ Salvar fotografia</button><button class="btn" id="progressPdfBtn" type="button">⇩ Gerar PDF do cliente</button></div>
+      </form>
+      <div class="notice">As imagens ficam em um bucket privado do Supabase e são exibidas por links temporários. Configure as políticas de acesso descritas nas instruções antes de usar com dados reais.</div>
+      <div id="progressGallery" class="progress-gallery"><div class="empty">Selecione um cliente para visualizar os registros.</div></div>
+     </div>
+    </section>
+    <section class="section" id="view-agenda">
+     <div class="toolbar">
+      <h2>
+       Agenda de atendimentos
+      </h2>
+     </div>
+     <p class="section-intro">
+      Organize seus horários, acompanhe os compromissos e gerencie seus atendimentos.
+     </p>
+     <div class="panel appointment-workspace">
+      <div class="appointment-form-column">
+       <div class="appointment-section-title"><span class="aesthetic-mark">✧</span><div><h2> Novo agendamento</h2><p>Reserve um momento de cuidado.</p></div></div>
+      <form class="form" id="appointmentForm">
+       <div class="field">
+        <label>
+         Cliente
+        </label>
+        <select id="apptClient" required="">
+         <option value="">
+          Selecione um cliente
+         </option>
+        </select>
+       </div>
+       <div class="field">
+        <label>
+         Procedimento
+        </label>
+        <select id="apptProcedure">
+         <option value="">
+          Selecione um procedimento (opcional)
+         </option>
+        </select>
+       </div>
+       <div class="field">
+        <label>
+         Data
+        </label>
+        <input id="apptDate" required="" type="date"/>
+       </div>
+       <div class="field">
+        <label>
+         Horário
+        </label>
+        <input id="apptTime" required="" type="time"/>
+       </div>
+       <div class="field">
+        <label>
+         Status do atendimento
+        </label>
+        <select id="apptStatus" required="">
+         <option value="agendado">
+          Agendado
+         </option>
+         <option value="realizado">
+          Realizado
+         </option>
+         <option value="cancelado">
+          Cancelado
+         </option>
+         <option value="faltou">
+          Faltou
+         </option>
+        </select>
+       </div>
+       <div class="field full">
+        <button class="btn primary" type="submit">
+         + Salvar agendamento
+        </button>
+       </div>
+      </form>
+      </div>
+      <div class="calendar-panel">
+      <div class="calendar-heading">
+       <div>
+        <h2>
+         Calendário de atendimentos
+        </h2>
+        <p class="section-intro">
+         Visualize seus compromissos por mês, semana, dia ou lista.
+        </p>
+       </div>
+       <div class="calendar-legend">
+        <span>
+         <i class="legend-agendado">
+         </i>
+         Agendado
+        </span>
+        <span>
+         <i class="legend-realizado">
+         </i>
+         Realizado
+        </span>
+        <span>
+         <i class="legend-cancelado">
+         </i>
+         Cancelado
+        </span>
+        <span>
+         <i class="legend-faltou">
+         </i>
+         Faltou
+        </span>
+       </div>
+      </div>
+      <div id="calendar">
+      </div>
+      </div>
+     </div>
+     <div class="panel appointments-list-panel" style="margin-top:20px">
+      <h2>
+       Agendamentos registrados
+      </h2>
+      <div class="table-wrap">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Data e hora
+          </th>
+          <th>
+           Cliente
+          </th>
+          <th>
+           Procedimento
+          </th>
+          <th>
+           Status
+          </th>
+          <th>
+           Ações
+          </th>
+         </tr>
+        </thead>
+        <tbody id="appointmentRows">
+         <tr>
+          <td colspan="5">
+           Nenhum agendamento.
+          </td>
+         </tr>
+        </tbody>
+       </table>
+      </div>
+     </div>
+    </section>
+
+    <div class="floating-dock" id="floatingDock">
+     <section class="floating-panel" id="floatingPanel" aria-label="Ações rápidas" aria-hidden="true">
+      <div class="floating-panel-head"><strong>Central de ações</strong><button class="floating-panel-close" id="floatingClose" type="button" aria-label="Fechar">×</button></div>
+      <div class="floating-actions">
+       <button type="button" data-float-go="clientes">＋ Cliente<span>Novo cadastro</span></button>
+       <button type="button" data-float-go="agenda">▦ Agenda<span>Novo atendimento</span></button>
+       <button type="button" data-float-go="financeiro">◇ Financeiro<span>Novo lançamento</span></button>
+       <button type="button" data-float-go="fichas">✧ Procedimento<span>Nova ficha técnica</span></button>
+      </div>
+      <p class="floating-panel-note">Atalhos para as tarefas mais usadas. Os indicadores do painel são calculados a partir dos registros da sua conta.</p>
+     </section>
+     <button class="floating-launcher" id="floatingLauncher" type="button" aria-label="Abrir ações rápidas" aria-expanded="false">✦</button>
+    </div>
+    <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+    <div class="footer">
+     Minha Estética • Seus registros são salvos na sua conta.
+    </div>
+   </main>
+  </div>
+  <script>
+const SUPABASE_URL='https://bfxgthcsmxrxgsmcwcvn.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_CIHwVMpZjtIP6ewP7rVL8w_U2ry9uI1';
+if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+  document.getElementById('authMsg').textContent = 'Não foi possível carregar o serviço de autenticação. Atualize a página e tente novamente.';
+  throw new Error('Biblioteca Supabase JS não carregada.');
+}
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id);const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(n)||0);const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
+// Converte datas do Supabase para o horário local do navegador e vice-versa.
+const appointmentLocalParts=value=>{const d=new Date(value);if(Number.isNaN(d.getTime()))throw new Error('Data ou horário do agendamento inválido.');return {date:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`,time:`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};};
+const appointmentToISO=(date,time)=>{
+ const match=/^(\d{4})-(\d{2})-(\d{2})$/.exec(date||'');
+ if(!match||!/^([01]\d|2[0-3]):[0-5]\d$/.test(time||''))throw new Error('Informe uma data e um horário válidos.');
+ const [y,m,dn]=match.slice(1).map(Number),check=new Date(y,m-1,dn);
+ if(check.getFullYear()!==y||check.getMonth()!==m-1||check.getDate()!==dn)throw new Error('A data informada não existe no calendário.');
+ const d=new Date(`${date}T${time}:00`);
+ if(Number.isNaN(d.getTime()))throw new Error('Data ou horário do agendamento inválido.');
+ return d.toISOString();
+};
+let user=null,data={finance:[],procedures:[],clients:[],appointments:[]},calendar=null,editingClientId=null,calendarTooltip=null;
+// Modo Privacidade: guarda a preferência neste navegador; os dados financeiros permanecem intactos.
+const PRIVACY_STORAGE_KEY = 'minhaEstetica_privacidade';
+let privacyMode = localStorage.getItem(PRIVACY_STORAGE_KEY) !== 'false'; // Privacidade ativada por padrão
+const displayMoney = value => privacyMode ? '••••••' : money(value);
+function updatePrivacyButton() {
+    const button = $('privacyToggleBtn');
+    if (!button) return;
+    button.textContent = privacyMode ? '🙈 Mostrar valores' : '👁️ Ocultar valores';
+    button.setAttribute('aria-pressed', String(privacyMode));
+    button.setAttribute('aria-label', privacyMode ? 'Mostrar valores financeiros' : 'Ocultar valores financeiros');
+    button.title = privacyMode ? 'Mostrar valores financeiros' : 'Ocultar valores financeiros';
+}
+function togglePrivacyMode() {
+    privacyMode = !privacyMode;
+    localStorage.setItem(PRIVACY_STORAGE_KEY, String(privacyMode));
+    updatePrivacyButton();
+    render();
+}
+$('privacyToggleBtn')?.addEventListener('click', togglePrivacyMode);
+updatePrivacyButton();
+function msg(t,isError=false){const el=$('authMsg');if(el){el.textContent=t;el.style.color=isError?'#a84d48':'#47765c'}}
+function toast(message,type='success',duration=3600){
+ const region=$('toastRegion');if(!region){console.log(message);return;}
+ const item=document.createElement('div');item.className='app-toast '+(type==='error'?'error':type==='success'?'success':'');
+ item.textContent=String(message);region.appendChild(item);
+ window.setTimeout(()=>{item.style.opacity='0';item.style.transform='translateX(10px)';window.setTimeout(()=>item.remove(),220);},duration);
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+const titles={inicio:['Seja bem-vindo! ✨','Aqui está um resumo do seu negócio.'],financeiro:['Financeiro','Entradas, despesas e acompanhamento do caixa.'],fichas:['Fichas técnicas','Organize seus procedimentos e calcule custos.'],clientes:['Clientes','Seus cadastros e contatos em um só lugar.'],agenda:['Agenda','Organize os próximos atendimentos.'],comunicacao:['Comunicação','Relacionamento e lembretes para seus clientes.']};
+function go(view) {
+    document.querySelectorAll('.section').forEach(s =>
+        s.classList.remove('active')
+    );
+
+    if (!titles[view] || !$('view-' + view)) return;
+    $('view-' + view).classList.add('active');
+
+    document.querySelectorAll('.nav button').forEach(b =>
+        b.classList.toggle('active', b.dataset.view === view)
+    );
+
+    $('pageTitle').textContent = titles[view][0];
+    $('pageSubtitle').textContent = titles[view][1];
+
+    if (view === 'comunicacao') loadCommunication();
+    if (view === 'clientes') { populateProgressClients(); $('progressDate').value = today(); }
+
+    if (view === 'agenda') {
+        if (!calendar) initCalendar();
+
+        requestAnimationFrame(() => {
+            if (calendar) { calendar.updateSize(); refreshCalendar(); }
+        });
+    }
+}
+
+function initCalendar() {
+    const el = $('calendar');
+
+    if (!el || !window.FullCalendar) {
+        console.error('Biblioteca do calendário não carregada.');
+        return;
+    }
+
+    calendar = new FullCalendar.Calendar(el, {
+        locale: 'pt-br',
+        initialView: 'timeGridWeek',
+        height: 'auto',
+contentHeight: 650,
+expandRows: true,
+nowIndicator: true,
+slotMinTime: '07:00:00',
+slotMaxTime: '22:00:00',
+slotDuration: '00:30:00',
+scrollTime: '08:00:00',
+allDaySlot: false,
+
+        headerToolbar: { left: 'prev,next', center: 'title', right: 'today dayGridMonth,timeGridWeek,timeGridDay,listWeek' },
+        footerToolbar: false,
+        dayHeaderFormat: { weekday: 'short', day: '2-digit' },
+        stickyHeaderDates: true,
+        handleWindowResize: true,
+        windowResize: function() { applyCalendarToolbar(); },
+
+        buttonText: {
+            today: 'Hoje',
+            month: 'Mês',
+            week: 'Semana',
+            day: 'Dia',
+            list: 'Lista'
+        },
+
+        
+
+        dateClick: function(info) {
+            const clicked = info.date;
+            const pad = n => String(n).padStart(2, '0');
+            $('apptDate').value = `${clicked.getFullYear()}-${pad(clicked.getMonth()+1)}-${pad(clicked.getDate())}`;
+            $('apptTime').value = info.allDay ? '09:00' : `${pad(clicked.getHours())}:${pad(clicked.getMinutes())}`;
+            $('apptDate').focus({preventScroll:true});
+            $('apptTime').focus({preventScroll:true});
+            const saveButton = $('appointmentForm')?.querySelector('button[type="submit"]');
+            if (saveButton) {
+                const original = saveButton.textContent;
+                saveButton.textContent = '✓ Data e horário selecionados';
+                window.setTimeout(() => { saveButton.textContent = original; }, 1800);
+            }
+        },
+
+        eventClick: function(info) {
+    info.jsEvent.preventDefault();
+
+    const evento = info.event;
+    const statusAtual = evento.extendedProps.status || 'agendado';
+
+    const janela = document.createElement('div');
+
+    janela.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(40, 30, 20, 0.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        padding: 20px;
+    `;
+
+    janela.innerHTML = `
+        <div style="
+            background: #FFFEFB;
+            color: #514538;
+            width: 100%;
+            max-width: 380px;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0,0,0,.2);
+        ">
+            <h3 style="margin:0 0 8px;">Atendimento</h3>
+
+            <p style="margin:0 0 18px;color:#877B6C;">
+                ${evento.title.replace(/</g, '&lt;').replace(/>/g, '&gt;')}
+            </p>
+
+            <label for="novoStatus" style="display:block;margin-bottom:8px;">
+                Status do atendimento
+            </label>
+
+            <select id="novoStatus" style="
+                width:100%;
+                padding:12px;
+                border:1px solid #E3D5C2;
+                border-radius:8px;
+                background:#FFFEFB;
+                color:#514538;
+                margin-bottom:20px;
+            ">
+                <option value="agendado">Agendado</option>
+                <option value="realizado">Realizado</option>
+                <option value="cancelado">Cancelado</option>
+                <option value="faltou">Faltou</option>
+            </select>
+
+            <div style="display:flex;gap:10px;justify-content:flex-end;">
+                <button id="cancelarStatus" class="btn">Cancelar</button>
+                <button id="salvarStatus" class="btn primary">Salvar status</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(janela);
+
+    janela.querySelector('#novoStatus').value = statusAtual;
+
+    janela.querySelector('#cancelarStatus').onclick = () => {
+        janela.remove();
+    };
+
+    janela.onclick = (e) => {
+        if (e.target === janela) janela.remove();
+    };
+
+    janela.querySelector('#salvarStatus').onclick = async () => {
+        const novoStatus = janela.querySelector('#novoStatus').value;
+
+        if (novoStatus === statusAtual) {
+            janela.remove();
+            return;
+        }
+
+        const botao = janela.querySelector('#salvarStatus');
+        botao.disabled = true;
+              botao.textContent = 'Salvando...';
+
+        try {
+            const salvo = await updateStatus(evento.id, novoStatus);
+
+            if (salvo) {
+                janela.remove();
+            } else {
+                botao.disabled = false;
+                botao.textContent = 'Salvar status';
+            }
+        } catch (erro) {
+            botao.disabled = false;
+            botao.textContent = 'Salvar status';
+            console.error(erro);
+            alert('Não foi possível atualizar o status.');
+        }
+    };
+},
+
+        eventDidMount: function(info) {
+            if (!calendarTooltip) {
+                calendarTooltip = document.createElement('div');
+                calendarTooltip.className = 'calendar-event-tooltip';
+                calendarTooltip.setAttribute('role', 'tooltip');
+                document.body.appendChild(calendarTooltip);
+            }
+
+            const details = info.event.extendedProps;
+            const dateLabel = details.date
+                ? new Date(details.date + 'T12:00:00').toLocaleDateString('pt-BR')
+                : '';
+
+            info.el.addEventListener('mouseenter', () => {
+                calendarTooltip.textContent =
+                    'Cliente: ' + (details.clientName || 'Não informado') +
+                    '\nHorário: ' + (details.time || 'Não informado') +
+                    (dateLabel ? '\nData: ' + dateLabel : '') +
+                    '\nProcedimento: ' + (details.procedureName || 'Não informado');
+                calendarTooltip.style.display = 'block';
+            });
+
+            info.el.addEventListener('mousemove', (event) => {
+                const gap = 14;
+                const width = calendarTooltip.offsetWidth || 280;
+                const height = calendarTooltip.offsetHeight || 100;
+                let left = event.clientX + gap;
+                let top = event.clientY + gap;
+
+                if (left + width > window.innerWidth - 8) {
+                    left = event.clientX - width - gap;
+                }
+                if (top + height > window.innerHeight - 8) {
+                    top = event.clientY - height - gap;
+                }
+
+                calendarTooltip.style.left = Math.max(8, left) + 'px';
+                calendarTooltip.style.top = Math.max(8, top) + 'px';
+            });
+
+            info.el.addEventListener('mouseleave', () => {
+                if (calendarTooltip) calendarTooltip.style.display = 'none';
+            });
+        },
+
+        events: []
+    });
+
+    calendar.render();
+    applyCalendarToolbar();
+    refreshCalendar();
+    if (!window.__minhaEsteticaCalendarResizeBound) {
+      window.__minhaEsteticaCalendarResizeBound = true;
+      let resizeTimer;
+      window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(calendar){applyCalendarToolbar();calendar.updateSize();}},160);});
+    }
+}
+
+function applyCalendarToolbar() {
+    if (!calendar) return;
+    const compact = window.matchMedia('(max-width: 700px)').matches;
+    calendar.setOption('headerToolbar', compact
+      ? { left: 'prev,next', center: 'title', right: 'today' }
+      : { left: 'prev,next', center: 'title', right: 'today dayGridMonth,timeGridWeek,timeGridDay,listWeek' });
+    calendar.setOption('footerToolbar', compact
+      ? { left: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek', center: '', right: '' }
+      : false);
+}
+
+function refreshCalendar() {
+    if (!calendar) return;
+
+    const colors = {
+        agendado: '#b08d57',
+        realizado: '#47765c',
+        cancelado: '#a84d48',
+        faltou: '#858585'
+    };
+
+    const events = data.appointments.map(x => {
+        const client = data.clients.find(c =>
+            String(c.id) === String(x.client_id)
+        );
+
+        const procedure = data.procedures.find(p =>
+            String(p.id) === String(x.procedure_id)
+        );
+
+        const status = x.status || 'agendado';
+        const statusLabels = {
+            agendado: 'Agendado',
+            realizado: 'Realizado',
+            cancelado: 'Cancelado',
+            faltou: 'Faltou'
+        };
+
+        return {
+            id: String(x.id),
+            title: (client?.name || 'Cliente') +
+                (procedure ? ' · ' + procedure.name : '') +
+                ' · ' + (statusLabels[status] || 'Agendado'),
+            start: x.date + 'T' + x.time + ':00',
+            backgroundColor: colors[status] || colors.agendado,
+            borderColor: colors[status] || colors.agendado,
+            extendedProps: {
+                status: x.status,
+                clientName: client?.name || 'Cliente',
+                procedureName: procedure?.name || 'Não informado',
+                date: x.date,
+                time: x.time
+            }
+        };
+    });
+
+    calendar.removeAllEvents();
+    calendar.addEventSource(events);
+}
+
+// COMUNICAÇÃO — configurações, consentimentos e histórico.
+// O navegador apenas registra preferências. O envio real exige Edge Function,
+// agendamento seguro e credenciais da API oficial armazenadas como secrets.
+let whatsappSettings = null;
+let whatsappConsents = [];
+
+function whatsappStatusLabel(status) {
+  return status === 'connected' ? 'Conectado' : 'Desconectado';
+}
+
+function renderWhatsappConsent() {
+  const target = $('whatsappConsentRows');
+  if (!target) return;
+
+  if (!data.clients.length) {
+    target.innerHTML = '<tr><td colspan="4">Nenhum cliente cadastrado.</td></tr>';
+    return;
+  }
+
+  target.innerHTML = data.clients.map(client => {
+    const consent = whatsappConsents.find(item => String(item.client_id) === String(client.id));
+    const authorized = !!consent?.authorized && !consent?.revoked_at;
+    return `<tr>
+      <td>${esc(client.name)}</td>
+      <td>${esc(client.phone || '—')}</td>
+      <td>${authorized ? '<span class="pill">Autorizado</span>' : '<span class="pill">Não autorizado</span>'}</td>
+      <td><button class="btn" type="button" onclick="setWhatsappConsent('${esc(client.id)}',${authorized ? 'false' : 'true'})">${authorized ? 'Revogar' : 'Registrar autorização'}</button></td>
+    </tr>`;
+  }).join('');
+}
+
+async function loadCommunication() {
+  if (!user) return;
+
+  const [settingsResult, logsResult, consentsResult] = await Promise.all([
+    db.from('whatsapp_settings').select('*').eq('user_id', user.id).maybeSingle(),
+    db.from('whatsapp_message_logs').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(100),
+    db.from('whatsapp_consents').select('*').eq('user_id', user.id)
+  ]);
+
+  if (settingsResult.error) {
+    console.error('Erro ao carregar configurações do WhatsApp:', settingsResult.error);
+  }
+  if (logsResult.error) {
+    console.error('Erro ao carregar histórico do WhatsApp:', logsResult.error);
+  }
+  if (consentsResult.error) {
+    console.error('Erro ao carregar autorizações do WhatsApp:', consentsResult.error);
+  }
+
+  const schemaErrors=[settingsResult.error,logsResult.error,consentsResult.error].filter(Boolean);
+  const missingSchema=schemaErrors.some(error=>/does not exist|schema cache|relation .* not found/i.test(error.message||''));
+  if(missingSchema)toast('A área de comunicação precisa das tabelas whatsapp_settings, whatsapp_message_logs e whatsapp_consents no Supabase. As demais áreas continuam independentes.','info',7000);
+  whatsappSettings = settingsResult.data || null;
+  whatsappConsents = consentsResult.data || [];
+
+  $('whatsappPhone').value = whatsappSettings?.phone_number || '';
+  $('reminderDayBefore').checked = whatsappSettings?.reminder_day_before ?? true;
+  $('reminderDayOf').checked = whatsappSettings?.reminder_day_of ?? true;
+  $('whatsappSendTime').value = whatsappSettings?.send_at_time || '09:00';
+  $('whatsappStatus').textContent = whatsappStatusLabel(whatsappSettings?.integration_status);
+
+  const logs = logsResult.data || [];
+  $('whatsappTotal').textContent = logs.length;
+  $('whatsappSent').textContent = logs.filter(x => x.status === 'sent').length;
+  $('whatsappPending').textContent = logs.filter(x => x.status === 'pending').length;
+
+  $('whatsappHistory').innerHTML = logs.length ? logs.map(item => {
+    const date = item.scheduled_for || item.sent_at || item.created_at;
+    const dateLabel = date ? new Date(date).toLocaleString('pt-BR') : '—';
+    const typeLabel = item.message_type === 'day_before' ? '24 horas antes' : 'No dia';
+    const statusLabel = { pending: 'Pendente', sent: 'Enviada', failed: 'Falhou', cancelled: 'Cancelada' }[item.status] || item.status;
+    return `<tr>
+      <td>${esc(dateLabel)}</td>
+      <td>${esc(typeLabel)}</td>
+      <td>${esc(statusLabel)}</td>
+      <td class="message-content-cell">${esc(item.message_content || '—')}</td>
+      <td><div class="actions">
+        ${item.status === 'pending' ? `<button class="btn" type="button" onclick="cancelWhatsappMessage('${esc(item.id)}')">⏸ Cancelar envio</button>` : ''}
+        <button class="btn danger" type="button" onclick="deleteWhatsappMessage('${esc(item.id)}')">🗑 Apagar</button>
+      </div></td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="5">Nenhuma mensagem registrada.</td></tr>';
+
+  renderWhatsappConsent();
+  renderMessageTemplates();
+}
+
+// Modelos editáveis de mensagem: armazenamento local por conta, sem alterar dados do Supabase.
+const messageTemplatesKey = () => `minhaEstetica_messageTemplates_${user?.id || 'guest'}`;
+function getMessageTemplates() {
+  try { return JSON.parse(localStorage.getItem(messageTemplatesKey()) || '[]'); }
+  catch (error) { console.warn('Modelos de mensagem inválidos no armazenamento local:', error); return []; }
+}
+function renderMessageTemplates() {
+  const target = $('messageTemplateList');
+  if (!target) return;
+  const templates = getMessageTemplates();
+  target.innerHTML = templates.length ? templates.map(item => `
+    <article class="message-template-card">
+      <div class="message-template-copy"><strong>${esc(item.title)}</strong><p>${esc(item.body)}</p></div>
+      <div class="actions">
+        <button class="btn" type="button" onclick="copyMessageTemplate('${esc(item.id)}')">Copiar texto</button>
+        <button class="btn danger" type="button" onclick="deleteMessageTemplate('${esc(item.id)}')">Apagar modelo</button>
+      </div>
+    </article>`).join('') : '<div class="empty">Nenhum modelo salvo. Crie seu primeiro texto acima.</div>' ;
+}
+$('messageTemplateForm').addEventListener('submit', event => {
+  event.preventDefault();
+  if (!user) return;
+  const title = $('messageTemplateTitle').value.trim();
+  const body = $('messageTemplateBody').value.trim();
+  if (!title || !body) return;
+  const templates = getMessageTemplates();
+  templates.unshift({ id: (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())), title, body });
+  localStorage.setItem(messageTemplatesKey(), JSON.stringify(templates));
+  event.target.reset();
+  renderMessageTemplates();
+});
+async function copyMessageTemplate(id) {
+  const item = getMessageTemplates().find(template => String(template.id) === String(id));
+  if (!item) return;
+  try { await navigator.clipboard.writeText(item.body); alert('Texto copiado. Você já pode colar na conversa do cliente.'); }
+  catch (error) { alert('Não foi possível copiar automaticamente. Selecione o texto do modelo e copie manualmente.'); }
+}
+function deleteMessageTemplate(id) {
+  if (!confirm('Apagar este modelo de mensagem? Essa ação não pode ser desfeita.')) return;
+  localStorage.setItem(messageTemplatesKey(), JSON.stringify(getMessageTemplates().filter(item => String(item.id) !== String(id))));
+  renderMessageTemplates();
+}
+async function cancelWhatsappMessage(id) {
+  if (!user || !confirm('Cancelar esta mensagem pendente?')) return;
+  const { error } = await db.from('whatsapp_message_logs').update({ status: 'cancelled' }).eq('id', id).eq('user_id', user.id).eq('status', 'pending');
+  if (error) { console.error('Erro ao cancelar mensagem:', error); alert('Não foi possível cancelar: ' + error.message); return; }
+  await loadCommunication();
+}
+async function deleteWhatsappMessage(id) {
+  if (!user || !confirm('Apagar este registro do histórico? Se a mensagem estiver pendente, apague somente depois de confirmar que ela não será processada.')) return;
+  const { error } = await db.from('whatsapp_message_logs').delete().eq('id', id).eq('user_id', user.id);
+  if (error) {
+    console.error('Erro ao apagar registro:', error);
+    const detail = /row-level security|permission denied|not allowed|42501/i.test(error.message || '')
+      ? '\n\nO Supabase está bloqueando a exclusão por segurança (RLS). É necessário criar uma política DELETE para whatsapp_message_logs vinculada ao usuário autenticado.'
+      : '';
+    alert('Não foi possível apagar o registro: ' + error.message + detail);
+    return;
+  }
+  await loadCommunication();
+}
+window.copyMessageTemplate = copyMessageTemplate;
+window.deleteMessageTemplate = deleteMessageTemplate;
+window.cancelWhatsappMessage = cancelWhatsappMessage;
+window.deleteWhatsappMessage = deleteWhatsappMessage;
+
+async function setWhatsappConsent(clientId, authorized) {
+  if (!user) return;
+  const client = data.clients.find(item => String(item.id) === String(clientId));
+  if (!client) return;
+
+  const now = new Date().toISOString();
+  const existing = whatsappConsents.find(item => String(item.client_id) === String(clientId));
+  const row = {
+    user_id: user.id,
+    client_id: clientId,
+    authorized,
+    authorized_at: authorized ? now : (existing?.authorized_at || null),
+    revoked_at: authorized ? null : now
+  };
+
+  const { error } = await db.from('whatsapp_consents').upsert(row, { onConflict: 'user_id,client_id' });
+  if (error) {
+    console.error('Erro ao salvar autorização:', error);
+    alert('Não foi possível salvar a autorização: ' + error.message);
+    return;
+  }
+
+  await loadCommunication();
+  alert(authorized
+    ? 'Autorização registrada. Confirme que o cliente realmente consentiu.'
+    : 'Autorização revogada. O cliente não deve receber lembretes.');
+}
+window.setWhatsappConsent = setWhatsappConsent;
+
+$('whatsappSettingsForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!user) return;
+
+  const row = {
+    user_id: user.id,
+    phone_number: $('whatsappPhone').value.trim() || null,
+    reminder_day_before: $('reminderDayBefore').checked,
+    reminder_day_of: $('reminderDayOf').checked,
+    send_at_time: $('whatsappSendTime').value || '09:00',
+    integration_status: whatsappSettings?.integration_status || 'disconnected',
+    updated_at: new Date().toISOString()
+  };
+
+  const { error } = await db.from('whatsapp_settings').upsert(row, { onConflict: 'user_id' });
+  if (error) {
+    console.error('Erro ao salvar configurações:', error);
+    alert('Não foi possível salvar as configurações: ' + error.message);
+    return;
+  }
+
+  alert('Configurações salvas. O envio automático continua desativado até a integração oficial ser configurada.');
+  await loadCommunication();
+});
+
+
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+$('finDate').value=today();$('apptDate').value=today();if($('progressDate'))$('progressDate').value=today();
+async function loadData(){
+ if(!user)return false;
+ try{
+  const [f,p,c,a]=await Promise.all([
+   db.from('financial_transactions').select('*').eq('user_id',user.id).order('transaction_date',{ascending:false}),
+   db.from('procedures').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),
+   db.from('clients').select('*').eq('user_id',user.id).order('created_at',{ascending:false}),
+   db.from('appointments').select('*').eq('user_id',user.id).order('scheduled_at',{ascending:true})
+  ]);
+  for(const r of [f,p,c,a])if(r.error)throw r.error;
+  data.finance=(f.data||[]).map(x=>({...x,desc:x.description,date:x.transaction_date}));
+  data.procedures=(p.data||[]).map(x=>({...x,duration:x.duration_minutes,products:Number(x.material_cost||0),other:Number(x.other_cost||0),price:Number(x.price||0),materials:x.products_used||'',notes:x.description||''}));
+  data.clients=c.data||[];
+  data.appointments=(a.data||[]).map(x=>({...x,...appointmentLocalParts(x.scheduled_at),clientId:x.client_id,procedureId:x.procedure_id,status:x.status}));
+  render();return true;
+ }catch(e){console.error('Falha ao carregar os dados:',e);toast('Não foi possível carregar os dados. Confira a conexão, as tabelas e as políticas do Supabase.','error',6000);return false;}
+}
+async function runSave(query) {
+ try{
+  const {error}=await query;
+  if(error){console.error('Erro ao salvar:',error);toast('Não foi possível salvar: '+error.message,'error',6000);return false;}
+  const refreshed=await loadData();
+  toast(refreshed?'Registro salvo e painel atualizado.':'Registro salvo, mas a atualização da tela falhou. Recarregue para conferir.',refreshed?'success':'info',5000);
+  return true;
+ }catch(error){console.error('Erro inesperado ao salvar:',error);toast('Ocorreu um erro ao salvar. Verifique sua conexão e tente novamente.','error',6000);return false;}
+}
+
+$('financeForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,type:$('finType').value,amount:Number($('finAmount').value),description:$('finDesc').value.trim(),transaction_date:$('finDate').value,payment_status:'pago'};if(await runSave(db.from('financial_transactions').insert(row))){e.target.reset();$('finDate').value=today()}});
+$('procedureForm').addEventListener('submit',async e=>{e.preventDefault();if(!user)return;const row={user_id:user.id,name:$('procName').value.trim(),duration_minutes:$('procDuration').value?Number($('procDuration').value):null,material_cost:Number($('procProducts').value||0),other_cost:Number($('procOther').value||0),price:Number($('procPrice').value||0),products_used:$('procMaterials').value.trim()||null,description:$('procNotes').value.trim()||null};if(await runSave(db.from('procedures').insert(row))){e.target.reset();$('procProducts').value='0';$('procOther').value='0'}});
+function resetClientForm() {
+    editingClientId = null;
+    $('clientForm').reset();
+    $('clientEditId').value = '';
+    $('clientSubmitBtn').textContent = 'Cadastrar cliente';
+    $('cancelClientEdit').style.display = 'none';
+}
+
+function editClient(id) {
+    const client = data.clients.find(item => String(item.id) === String(id));
+    if (!client) {
+        alert('Não foi possível localizar esse cliente.');
+        return;
+    }
+
+    editingClientId = String(client.id);
+    $('clientEditId').value = String(client.id);
+    $('clientName').value = client.name || '';
+    $('clientPhone').value = client.phone || '';
+    $('clientEmail').value = client.email || '';
+    $('clientNotes').value = client.notes || '';
+    $('clientSubmitBtn').textContent = 'Salvar alterações';
+    $('cancelClientEdit').style.display = 'inline-flex';
+    $('clientForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('clientName').focus();
+}
+
+$('cancelClientEdit').addEventListener('click', resetClientForm);
+
+$('clientForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!user) return;
+
+    const clientName=$('clientName').value.trim();
+    if(clientName.length<2){toast('Informe um nome de cliente válido.','error');$('clientName').focus();return;}
+    const row = {
+        user_id: user.id,
+        name: clientName,
+        phone: $('clientPhone').value.trim() || null,
+        email: $('clientEmail').value.trim() || null,
+        notes: $('clientNotes').value.trim() || null
+    };
+
+    let query;
+    if (editingClientId) {
+        query = db.from('clients')
+            .update(row)
+            .eq('id', editingClientId)
+            .eq('user_id', user.id);
+    } else {
+        query = db.from('clients').insert(row);
+    }
+
+    if (await runSave(query)) resetClientForm();
+});
+
+// PRONTUÁRIO VISUAL — armazenamento privado no Supabase Storage.
+const PROGRESS_BUCKET = 'patient-progress';
+let currentProgressPhotos = [];
+function populateProgressClients() {
+ const select=$('progressClient'); if(!select)return;
+ const previous=select.value;
+ select.innerHTML='<option value="">Selecione um cliente</option>'+data.clients.map(c=>`<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+ if(data.clients.some(c=>String(c.id)===String(previous)))select.value=previous;
+}
+$('progressClient')?.addEventListener('change',loadProgressPhotos);
+async function loadProgressPhotos() {
+ const clientId=$('progressClient')?.value,gallery=$('progressGallery');
+ if(!gallery)return;
+ if(!clientId||!user){gallery.innerHTML='<div class="empty">Selecione um cliente para visualizar os registros.</div>';currentProgressPhotos=[];return;}
+ gallery.innerHTML='<div class="empty">Carregando registros...</div>';
+ try{
+  const folder=`${user.id}/${clientId}`;
+  const {data:files,error}=await db.storage.from(PROGRESS_BUCKET).list(folder,{limit:100,sortBy:{column:'name',order:'asc'}});
+  if(error)throw error;
+  const imgs=(files||[]).filter(f=>f.name&&/\.(jpe?g|png|webp)$/i.test(f.name));
+  currentProgressPhotos=await Promise.all(imgs.map(async f=>{
+   const path=`${folder}/${f.name}`,{data:signed,error:signError}=await db.storage.from(PROGRESS_BUCKET).createSignedUrl(path,900);
+   if(signError)throw signError;
+   const m=f.name.match(/^(\d+)_([a-z]+)_(\d{4}-\d{2}-\d{2})\./i);
+   return {name:f.name,path,url:signed.signedUrl,date:m?new Date(m[3]+'T12:00:00').toLocaleDateString('pt-BR'):'',type:m?m[2]:'registro'};
+  }));
+  gallery.innerHTML=currentProgressPhotos.length?currentProgressPhotos.map(p=>`<article class="progress-photo-card"><img src="${p.url}" alt="Registro ${esc(p.type)}" loading="lazy"><div><strong>${p.type==='antes'?'Antes':p.type==='depois'?'Depois':'Evolução'}</strong><small>${esc(p.date)}</small></div></article>`).join(''):'<div class="empty">Nenhuma fotografia cadastrada para este cliente.</div>';
+ }catch(err){console.error(err);gallery.innerHTML=`<div class="empty">Não foi possível carregar. Configure o bucket privado "${PROGRESS_BUCKET}" e suas políticas no Supabase.</div>`;}
+}
+$('progressPhotoForm')?.addEventListener('submit',async e=>{
+ e.preventDefault();if(!user)return;
+ const clientId=$('progressClient').value,file=$('progressPhoto').files?.[0];
+ if(!clientId||!file)return alert('Selecione o cliente e uma fotografia.');
+ if(!['image/jpeg','image/png','image/webp'].includes(file.type))return alert('Use JPG, PNG ou WebP.');
+ if(file.size>6*1024*1024)return alert('A fotografia deve ter no máximo 6 MB.');
+ if(!$('progressConsent').checked)return alert('Confirme a autorização expressa do cliente.');
+ const btn=$('progressUploadBtn');btn.disabled=true;btn.textContent='Enviando imagem...';
+ try{
+  const ext=file.type==='image/png'?'png':file.type==='image/webp'?'webp':'jpg';
+  const recordDate=$('progressDate').value || today();
+  const path=`${user.id}/${clientId}/${Date.now()}_${$('progressType').value}_${recordDate}.${ext}`;
+  const {error}=await db.storage.from(PROGRESS_BUCKET).upload(path,file,{contentType:file.type,upsert:false,cacheControl:'3600'});
+  if(error)throw error;
+  $('progressPhoto').value='';$('progressConsent').checked=false;
+  await loadProgressPhotos();alert('Fotografia armazenada com acesso privado.');
+ }catch(err){console.error(err);alert('Não foi possível salvar: '+(err.message||err)+'. Confira bucket e políticas do Supabase.');}
+ finally{btn.disabled=false;btn.textContent='＋ Salvar fotografia';}
+});
+async function imageUrlToDataUrl(url){
+ const response=await fetch(url);if(!response.ok)throw new Error('Falha ao preparar imagem para PDF.');
+ const blob=await response.blob();return await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(blob);});
+}
+$('progressPdfBtn')?.addEventListener('click',async()=>{
+ if(!user)return;
+ const client=data.clients.find(c=>String(c.id)===String($('progressClient').value));
+ if(!client)return alert('Selecione um cliente.');
+ if(!window.jspdf?.jsPDF)return alert('Biblioteca PDF indisponível. Atualize a página.');
+ const btn=$('progressPdfBtn');btn.disabled=true;btn.textContent='Preparando PDF...';
+ try{
+  if(!currentProgressPhotos.length)await loadProgressPhotos();
+  const {jsPDF}=window.jspdf,pdf=new jsPDF({unit:'mm',format:'a4'});
+  pdf.setFillColor(64,49,38);pdf.rect(0,0,210,35,'F');pdf.setTextColor(255,248,238);pdf.setFont('helvetica','bold');pdf.setFontSize(19);pdf.text('MINHA ESTÉTICA',16,17);
+  pdf.setFont('helvetica','normal');pdf.setFontSize(9);pdf.text('RELATÓRIO DE EVOLUÇÃO DO CLIENTE',16,25);
+  pdf.setTextColor(64,49,38);pdf.setFontSize(12);pdf.setFont('helvetica','bold');pdf.text('Dados do cliente',16,48);
+  pdf.setFont('helvetica','normal');pdf.setFontSize(10);pdf.text(`Nome: ${client.name||'-'}`,16,57);pdf.text(`Telefone: ${client.phone||'-'}`,16,64);pdf.text(`E-mail: ${client.email||'-'}`,16,71);pdf.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`,16,78);
+  let y=91;pdf.setFont('helvetica','bold');pdf.text('Registros fotográficos',16,y);y+=8;
+  if(!currentProgressPhotos.length){pdf.setFont('helvetica','normal');pdf.text('Nenhuma fotografia registrada.',16,y);}
+  for(const photo of currentProgressPhotos){
+   const dataUrl=await imageUrlToDataUrl(photo.url),format=dataUrl.startsWith('data:image/png')?'PNG':'JPEG',props=pdf.getImageProperties(dataUrl);
+   const w=Math.min(100,props.width*85/props.height),h=w*props.height/props.width;
+   if(y+h+10>280){pdf.addPage();y=20;}
+   pdf.setFont('helvetica','bold');pdf.setFontSize(10);pdf.text(`${photo.type.toUpperCase()} · ${photo.date}`,16,y);y+=5;
+   pdf.addImage(dataUrl,format,16,y,w,h,undefined,'FAST');y+=h+10;
+  }
+  if(client.notes){if(y>265){pdf.addPage();y=20;}pdf.setFont('helvetica','bold');pdf.text('Observações cadastrais',16,y);y+=6;pdf.setFont('helvetica','normal');pdf.text(pdf.splitTextToSize(String(client.notes),178),16,y);}
+  pdf.setFontSize(8);pdf.setTextColor(130,115,98);pdf.text('Documento confidencial. Compartilhe somente com autorização do cliente.',16,289);
+  const safe=String(client.name||'cliente').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/gi,'-').toLowerCase();
+  pdf.save(`minha-estetica-${safe}-evolucao.pdf`);
+ }catch(err){console.error(err);alert('Não foi possível gerar o PDF: '+(err.message||err));}
+ finally{btn.disabled=false;btn.textContent='⇩ Gerar PDF do cliente';}
+});
+
+$('appointmentForm').addEventListener('submit',async e=>{
+ e.preventDefault();if(!user)return;
+ const client=$('apptClient').value,date=$('apptDate').value,time=$('apptTime').value;
+ if(!client){toast('Cadastre e selecione um cliente antes de agendar.','error');return;}
+ let scheduledAt;try{scheduledAt=appointmentToISO(date,time);}catch(err){toast(err.message,'error');return;}
+ const conflict=data.appointments.find(a=>a.date===date&&a.time===time&&a.status==='agendado');
+ if(conflict){toast('Já existe um atendimento agendado nesse horário. Escolha outro horário ou revise a agenda.','error',5000);return;}
+ const row={user_id:user.id,client_id:client,procedure_id:$('apptProcedure').value||null,scheduled_at:scheduledAt,status:$('apptStatus').value,notes:null};
+ if(await runSave(db.from('appointments').insert(row))){e.target.reset();$('apptDate').value=today();}
+});
+async function del(type, id) {
+
+    if (!user) {
+        alert('Entre na sua conta para excluir registros.');
+        return;
+    }
+
+    const table = {
+        finance: 'financial_transactions',
+        procedures: 'procedures',
+        clients: 'clients',
+        appointments: 'appointments'
+    }[type];
+
+    if (!table) {
+        console.error('Tipo de registro inválido:', type);
+        return;
+    }
+
+    const confirmMessage = type === 'procedures'
+        ? 'Deseja excluir esta ficha técnica? Os agendamentos vinculados a ela também serão excluídos.'
+        : type === 'clients'
+        ? 'Deseja excluir este cliente? Os agendamentos vinculados também serão excluídos.'
+        : 'Deseja excluir este registro?';
+
+    if (!confirm(confirmMessage)) return;
+
+    try {
+
+        // Exclui primeiro os agendamentos vinculados ao cliente.
+        if (type === 'clients') {
+
+            const { error } = await db
+                .from('appointments')
+                .delete()
+                .eq('client_id', id)
+                .eq('user_id', user.id);
+
+            if (error) throw error;
+        }
+
+        // Exclui primeiro os registros dependentes do procedimento.
+        if (type === 'procedures') {
+
+            // 1. Exclui agendamentos vinculados.
+            const { error: appointmentError } = await db
+                .from('appointments')
+                .delete()
+                .eq('procedure_id', id)
+                .eq('user_id', user.id);
+
+            if (appointmentError) throw appointmentError;
+
+        }
+
+        // 3. Exclui o registro principal.
+        const { error } = await db
+            .from(table)
+            .delete()
+            .eq('id', id)
+            .eq('user_id', user.id);
+
+        if (error) throw error;
+
+        await loadData();
+
+        toast('Registro excluído com sucesso.','success');
+
+    } catch (error) {
+
+        console.error('Erro ao excluir registro:', error);
+
+        toast('Não foi possível excluir o registro: '+error.message,'error',6500);
+    }
+}
+
+function render(){populateProgressClients();const ins=data.finance.filter(x=>x.type==='entrada').reduce((a,x)=>a+Number(x.amount),0),outs=data.finance.filter(x=>x.type==='despesa').reduce((a,x)=>a+Number(x.amount),0);$('dashIn').textContent=displayMoney(ins);$('dashOut').textContent=displayMoney(outs);$('dashBalance').textContent=displayMoney(ins-outs);$('dashClients').textContent=data.clients.length;
+$('financeRows').innerHTML = data.finance.length
+  ? data.finance.map(x => {
+      const dateLabel = x.date
+        ? new Date(`${x.date}T12:00:00`).toLocaleDateString('pt-BR')
+        : 'Data não informada';
+      const isIncome = x.type === 'entrada';
+      return `
+        <article class="finance-card ${isIncome ? 'finance-card-in' : 'finance-card-out'}">
+          <div class="finance-card-top">
+            <div class="finance-card-info">
+              <div class="finance-card-icon" aria-hidden="true">
+                <span>${isIncome ? '↙' : '↗'}</span>
+              </div>
+              <div class="finance-card-description">
+                <strong>${esc(x.desc)}</strong>
+                <small class="finance-card-date">${dateLabel}</small>
+              </div>
+            </div>
+            <span class="finance-card-type">${isIncome ? 'Entrada' : 'Despesa'}</span>
+          </div>
+          <div class="finance-card-bottom">
+            <strong class="finance-card-value ${isIncome ? 'money-in' : 'money-out'}">
+              ${isIncome ? '+' : '−'} ${displayMoney(x.amount)}
+            </strong>
+            <button class="btn finance-delete" type="button"
+              onclick="del('finance','${esc(x.id)}')" aria-label="Excluir lançamento ${esc(x.desc)}">
+              Excluir
+            </button>
+          </div>
+        </article>`;
+    }).join('')
+  : '<div class="empty">Nenhum lançamento financeiro registrado.</div>';
+
+$('procedureRows').innerHTML=data.procedures.length?data.procedures.map(x=>`<tr><td><strong>${esc(x.name)}</strong><small>${esc(x.materials||'')}</small></td><td>${x.duration?esc(x.duration)+' min':'—'}</td><td>${displayMoney(x.products+x.other)}</td><td>${displayMoney(x.price)}</td><td class="${x.price-x.products-x.other>=0?'money-in':'money-out'}">${displayMoney(x.price-x.products-x.other)}</td><td><button class="btn" onclick="del('procedures','${x.id}')">Excluir</button></td></tr>`).join(''):'<tr><td colspan="6">Nenhuma ficha técnica.</td></tr>';
+$('clientRows').innerHTML=data.clients.length?data.clients.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone||'—')}</td><td>${esc(x.email||'—')}</td><td>${esc(x.notes||'—')}</td><td>${(whatsappConsents.find(c=>String(c.client_id)===String(x.id))?.authorized && !whatsappConsents.find(c=>String(c.client_id)===String(x.id))?.revoked_at)?'Autorizado':'Não autorizado'}</td><td><div class="actions"><button class="btn" type="button" onclick="editClient('${esc(x.id)}')">Editar</button><button class="btn" type="button" onclick="del('clients','${esc(x.id)}')">Excluir</button></div></td></tr>`).join(''):'<tr><td colspan="6">Nenhum cliente cadastrado.</td></tr>';
+$('apptClient').innerHTML='<option value="">Selecione um cliente</option>'+data.clients.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');$('apptProcedure').innerHTML='<option value="">Selecione um procedimento (opcional)</option>'+data.procedures.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
+const sorted=[...data.appointments].sort((a,b)=>a.scheduled_at.localeCompare(b.scheduled_at));$('appointmentRows').innerHTML=sorted.length?sorted.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<tr><td>${esc(x.date)} ${esc(x.time)}</td><td>${esc(c?.name||'Cliente')}</td><td>${esc(p?.name||'—')}</td><td><select aria-label="Status" data-current-status="${esc(x.status||'agendado')}" onchange="updateStatus('${esc(x.id)}',this.value,this)"><option value="agendado" ${x.status==='agendado'?'selected':''}>Agendado</option><option value="realizado" ${x.status==='realizado'?'selected':''}>Realizado</option><option value="cancelado" ${x.status==='cancelado'?'selected':''}>Cancelado</option><option value="faltou" ${x.status==='faltou'?'selected':''}>Faltou</option></select></td><td><button class="btn" onclick="del('appointments','${x.id}')">Excluir</button></td></tr>`}).join(''):'<tr><td colspan="5">Nenhum agendamento.</td></tr>';
+const upcoming=sorted.filter(x=>x.date>=today()&&x.status==='agendado').slice(0,4);$('dashAppointments').innerHTML=upcoming.length?upcoming.map(x=>{const c=data.clients.find(y=>y.id===x.client_id),p=data.procedures.find(y=>y.id===x.procedure_id);return `<div class="row"><div><strong>${esc(c?.name||'Cliente')}</strong><small>${esc(x.date)} às ${esc(x.time)}${p?' • '+esc(p.name):''}</small></div><span class="pill">Agendado</span></div>`}).join(''):'<div class="empty">Nenhum atendimento futuro cadastrado.</div>';
+ renderSmartPanels();
+ refreshCalendar();
+}
+
+function renderSmartPanels(){
+ const now=new Date(),todayKey=today(),monthKey=todayKey.slice(0,7);
+ const todayAppts=data.appointments.filter(a=>a.date===todayKey&&a.status!=='cancelado'&&a.status!=='faltou').sort((a,b)=>a.time.localeCompare(b.time));
+ const doneToday=data.appointments.filter(a=>a.date===todayKey&&a.status==='realizado').length;
+ const next=todayAppts.find(a=>a.status==='agendado'&&a.time>=`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`);
+ $('smartTodayCount').textContent=String(todayAppts.length);
+ $('smartTodayMeta').textContent=todayAppts.length===1?'Atendimento previsto para hoje':'Atendimentos previstos para hoje';
+ $('smartNextTime').textContent=next?next.time:'—';
+ $('smartDoneToday').textContent=String(doneToday);
+ const monthRows=data.finance.filter(x=>(x.date||'').slice(0,7)===monthKey);
+ const monthIn=monthRows.filter(x=>x.type==='entrada').reduce((n,x)=>n+Number(x.amount||0),0);
+ const monthOut=monthRows.filter(x=>x.type==='despesa').reduce((n,x)=>n+Number(x.amount||0),0);
+ $('smartMonthBalance').textContent=displayMoney(monthIn-monthOut);
+ $('smartMonthIn').textContent=displayMoney(monthIn);
+ $('smartMonthOut').textContent=displayMoney(monthOut);
+ const insights=[];
+ const futurePending=data.appointments.filter(a=>a.date>=todayKey&&a.status==='agendado').length;
+ const todayPending=data.appointments.filter(a=>a.date===todayKey&&a.status==='agendado').length;
+ const noProcedure=data.appointments.filter(a=>a.date>=todayKey&&a.status==='agendado'&&!a.procedure_id).length;
+ const unprofitable=data.procedures.filter(p=>Number(p.price)<=Number(p.products)+Number(p.other)).length;
+ if(!data.clients.length)insights.push({text:'Cadastre seu primeiro cliente para começar a organizar sua carteira.',alert:false});
+ if(!data.procedures.length)insights.push({text:'Cadastre os procedimentos e custos para acompanhar a margem de cada serviço.',alert:false});
+ if(todayPending)insights.push({text:`Você tem ${todayPending} atendimento(s) ainda marcado(s) como agendado para hoje.`,alert:false});
+ if(noProcedure)insights.push({text:`${noProcedure} agendamento(s) futuro(s) estão sem procedimento associado.`,alert:false});
+ if(unprofitable)insights.push({text:`${unprofitable} procedimento(s) têm preço igual ou inferior aos custos variáveis cadastrados. Revise a precificação.`,alert:true});
+ if(monthOut>monthIn)insights.push({text:'Neste mês, as despesas registradas superam as entradas. Revise os lançamentos e o fluxo de caixa.',alert:true});
+ if(!monthRows.length)insights.push({text:'Ainda não há lançamentos financeiros neste mês. Registre entradas e despesas para visualizar o resultado.',alert:false});
+ if(!insights.length)insights.push({text:`Tudo em ordem nos indicadores básicos. Você tem ${futurePending} atendimento(s) futuro(s) agendado(s).`,alert:false});
+ $('smartRecommendations').innerHTML=insights.slice(0,4).map(i=>`<li class="${i.alert?'alert':''}">${esc(i.text)}</li>`).join('');
+ const months=[];
+ for(let offset=5;offset>=0;offset--){
+  const d=new Date(now.getFullYear(),now.getMonth()-offset,1);
+  const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+  const rows=data.finance.filter(x=>(x.date||'').slice(0,7)===key);
+  months.push({label:d.toLocaleDateString('pt-BR',{month:'short'}).replace('.',''),in:rows.filter(x=>x.type==='entrada').reduce((n,x)=>n+Number(x.amount||0),0),out:rows.filter(x=>x.type==='despesa').reduce((n,x)=>n+Number(x.amount||0),0)});
+ }
+ const max=Math.max(1,...months.flatMap(m=>[m.in,m.out]));
+ $('smartTrend').innerHTML=months.map(m=>`<div class="trend-month"><div class="trend-bars" aria-label="${esc(m.label)}: entradas ${money(m.in)}, despesas ${money(m.out)}"><i class="trend-bar" style="height:${Math.max(3,m.in/max*100)}%"></i><i class="trend-bar expense" style="height:${Math.max(3,m.out/max*100)}%"></i></div><small>${esc(m.label)}</small></div>`).join('');
+}
+
+async function updateStatus(id, status, control=null) {
+ if(!user)return false;
+ const allowed=['agendado','realizado','cancelado','faltou'];
+ if(!allowed.includes(status)){if(control)control.value=control.dataset.currentStatus||'agendado';toast('Status inválido.','error');return false;}
+ const previous=control?.dataset.currentStatus||'agendado';
+ const saved=await runSave(db.from('appointments').update({status}).eq('id',id).eq('user_id',user.id));
+ if(!saved&&control)control.value=previous;
+ return saved;
+}
+window.del=del;window.updateStatus=updateStatus;window.editClient=editClient;
+// AUTENTICAÇÃO — fluxo único de login, cadastro e recuperação de senha.
+const authForm = $('authForm');
+const authSubmit = $('authSubmit');
+const toggleAuth = $('toggleAuth');
+const resetPasswordForm = $('resetPasswordForm');
+const saveNewPassword = $('saveNewPassword');
+const forgotPasswordBtn = document.createElement('button');
+forgotPasswordBtn.id = 'forgotPasswordBtn';
+forgotPasswordBtn.type = 'button';
+forgotPasswordBtn.className = 'btn';
+forgotPasswordBtn.textContent = 'Esqueci minha senha';
+forgotPasswordBtn.style.cssText = 'width:100%;margin-top:10px;';
+authForm.appendChild(forgotPasswordBtn);
+
+let authBusy = false;
+let passwordRecoveryMode = false;
+let sessionSyncPromise = null;
+
+function setAuthBusy(busy, label) {
+  authBusy = busy;
+  [authSubmit, toggleAuth, forgotPasswordBtn, saveNewPassword].forEach(button => {
+    if (button) button.disabled = busy;
+  });
+  if (authSubmit) {
+    authSubmit.textContent = busy
+      ? label
+      : ($('authMode').value === 'signup' ? 'Criar conta' : 'Entrar');
+  }
+  if (saveNewPassword) saveNewPassword.textContent = busy ? label : 'Salvar nova senha';
+}
+
+function authErrorMessage(error, mode) {
+  const message = String(error?.message || error || '').toLowerCase();
+  if (message.includes('invalid login credentials') || message.includes('invalid_credentials')) {
+    return 'E-mail ou senha incorretos. Confira seus dados e tente novamente.';
+  }
+  if (message.includes('email not confirmed')) {
+    return 'Seu e-mail ainda não foi confirmado. Confira sua caixa de entrada.';
+  }
+  if (message.includes('too many requests') || message.includes('rate limit')) {
+    return 'Muitas tentativas. Aguarde alguns minutos antes de tentar novamente.';
+  }
+  if (message.includes('network') || message.includes('fetch') || message.includes('failed to fetch')) {
+    return 'Falha de conexão. Verifique sua internet e tente novamente.';
+  }
+  if (message.includes('redirect') || message.includes('not allowed')) {
+    return 'O endereço de retorno não está autorizado no Supabase. Confira Authentication > URL Configuration.';
+  }
+  return mode === 'signup'
+    ? 'Não foi possível criar a conta. Verifique os dados e tente novamente.'
+    : 'Não foi possível entrar. Verifique os dados e tente novamente.';
+}
+
+function showLoginForm(message = '') {
+  passwordRecoveryMode = false;
+  resetPasswordForm.style.display = 'none';
+  authForm.style.display = '';
+  $('appShell').style.display = 'none';
+  $('authScreen').style.display = 'grid';
+  $('authMode').value='login';
+  $('authPassword').value='';
+  authSubmit.textContent='Entrar';
+  toggleAuth.textContent='Não tenho conta — criar cadastro';
+  forgotPasswordBtn.style.display='';
+  if (message) msg(message);
+}
+
+function showPasswordResetForm() {
+  passwordRecoveryMode = true;
+  $('appShell').style.display = 'none';
+  $('authScreen').style.display = 'grid';
+  authForm.style.display = 'none';
+  forgotPasswordBtn.style.display='none';
+  resetPasswordForm.style.display = 'grid';
+  $('newPassword').value = '';
+  $('confirmPassword').value = '';
+  msg('Acesse sua nova senha abaixo e confirme para concluir a recuperação.');
+}
+
+authForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (authBusy || passwordRecoveryMode) return;
+
+  const email = $('authEmail').value.trim();
+  const password = $('authPassword').value;
+  const mode = $('authMode').value;
+
+  if (!email || !password) return msg('Informe seu e-mail e sua senha.', true);
+  if (password.length < 6) return msg('A senha deve ter pelo menos 6 caracteres.', true);
+
+  setAuthBusy(true, mode === 'signup' ? 'Criando conta...' : 'Entrando...');
+  msg(mode === 'signup' ? 'Criando sua conta...' : 'Verificando seus dados...');
+
+  try {
+    const { data: authData, error } = mode === 'signup'
+      ? await db.auth.signUp({ email, password })
+      : await db.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      console.error('Erro de autenticação:', error);
+      msg(authErrorMessage(error, mode), true);
+      return;
+    }
+
+    if (mode === 'signup' && !authData.session) {
+      msg('Cadastro iniciado! Confirme seu e-mail pelo link enviado e depois entre na sua conta.');
+      return;
+    }
+
+    if (!authData.session) {
+      msg('A autenticação não retornou uma sessão. Confira a confirmação do e-mail e tente novamente.', true);
+      return;
+    }
+
+    msg('Login realizado. Carregando seus dados...');
+    await syncSession();
+  } catch (error) {
+    console.error('Falha inesperada no login/cadastro:', error);
+    msg(authErrorMessage(error, mode), true);
+  } finally {
+    setAuthBusy(false);
+  }
+});
+
+toggleAuth.addEventListener('click', () => {
+  if (authBusy) return;
+  const signup = $('authMode').value !== 'signup';
+  $('authMode').value = signup ? 'signup' : 'login';
+  $('authPassword').value = '';
+  $('authPassword').autocomplete = signup ? 'new-password' : 'current-password';
+  authSubmit.textContent = signup ? 'Criar conta' : 'Entrar';
+  toggleAuth.textContent = signup ? 'Já tenho conta — entrar' : 'Não tenho conta — criar cadastro';
+  msg('');
+});
+
+forgotPasswordBtn.addEventListener('click', async () => {
+  if (authBusy) return;
+  const email = $('authEmail').value.trim();
+  if (!email) {
+    msg('Digite seu e-mail antes de solicitar a recuperação.', true);
+    $('authEmail').focus();
+    return;
+  }
+  if (window.location.protocol === 'file:') {
+    msg('Abra o endereço publicado na Vercel para solicitar a recuperação de senha.', true);
+    return;
+  }
+
+  setAuthBusy(true, 'Enviando...');
+  msg('Solicitando recuperação de senha...');
+  try {
+    const redirectTo = window.location.origin + window.location.pathname;
+    const { error } = await db.auth.resetPasswordForEmail(email, { redirectTo });
+    if (error) {
+      console.error('Erro ao solicitar recuperação:', error);
+      msg(authErrorMessage(error, 'login'), true);
+      return;
+    }
+    msg('Solicitação enviada. Confira sua caixa de entrada e a pasta de spam para criar uma nova senha.');
+  } catch (error) {
+    console.error('Falha na recuperação de senha:', error);
+    msg(authErrorMessage(error, 'login'), true);
+  } finally {
+    setAuthBusy(false);
+  }
+});
+
+resetPasswordForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (authBusy) return;
+  const password = $('newPassword').value;
+  const confirmation = $('confirmPassword').value;
+  if (password.length < 6) return msg('A nova senha deve ter pelo menos 6 caracteres.', true);
+  if (password !== confirmation) return msg('As senhas não coincidem. Digite novamente.', true);
+
+  setAuthBusy(true, 'Salvando...');
+  msg('Atualizando sua senha...');
+  try {
+    const { error } = await db.auth.updateUser({ password });
+    if (error) {
+      console.error('Erro ao atualizar senha:', error);
+      msg(authErrorMessage(error, 'login'), true);
+      return;
+    }
+    await db.auth.signOut();
+    user = null;
+    showLoginForm('Senha alterada com sucesso. Entre usando sua nova senha.');
+    $('authPassword').value = '';
+  } catch (error) {
+    console.error('Falha ao atualizar senha:', error);
+    msg(authErrorMessage(error, 'login'), true);
+  } finally {
+    setAuthBusy(false);
+  }
+});
+
+$('cancelPasswordReset').addEventListener('click', async () => {
+  if (authBusy) return;
+  try { await db.auth.signOut(); } catch (error) { console.warn('Não foi possível encerrar a sessão de recuperação:', error); }
+  user = null;
+  showLoginForm('Recuperação cancelada. Você pode entrar normalmente.');
+});
+
+async function syncSession() {
+  if (sessionSyncPromise) return sessionSyncPromise;
+  sessionSyncPromise = (async () => {
+    const { data: sessionData, error } = await db.auth.getSession();
+    if (error) {
+      console.error('Erro ao consultar sessão:', error);
+      msg('Não foi possível verificar sua sessão. Atualize a página e tente novamente.', true);
+      return;
+    }
+    const session = sessionData?.session || null;
+    user = session?.user || null;
+
+    if (passwordRecoveryMode) {
+      showPasswordResetForm();
+      return;
+    }
+    if (user) {
+      $('authScreen').style.display = 'none';
+      $('appShell').style.display = 'grid';
+      $('userEmail').textContent = user.email || '';
+      await loadData();
+    } else {
+      $('authScreen').style.display = 'grid';
+      $('appShell').style.display = 'none';
+    }
+  })().finally(() => { sessionSyncPromise = null; });
+  return sessionSyncPromise;
+}
+
+db.auth.onAuthStateChange((event) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    passwordRecoveryMode = true;
+    setTimeout(showPasswordResetForm, 0);
+    return;
+  }
+  setTimeout(() => { syncSession(); }, 0);
+});
+
+
+// Central flutuante: atalhos reais para os formulários já existentes.
+(()=>{
+ const launcher=$('floatingLauncher'),panel=$('floatingPanel'),close=$('floatingClose');
+ if(!launcher||!panel)return;
+ const setOpen=open=>{panel.classList.toggle('open',open);panel.setAttribute('aria-hidden',String(!open));launcher.setAttribute('aria-expanded',String(open));launcher.textContent=open?'×':'✦';};
+ launcher.addEventListener('click',()=>setOpen(!panel.classList.contains('open')));
+ close?.addEventListener('click',()=>setOpen(false));
+ panel.querySelectorAll('[data-float-go]').forEach(button=>button.addEventListener('click',()=>{
+  const view=button.dataset.floatGo;setOpen(false);go(view);
+  const target={clientes:'clientName',agenda:'apptClient',financeiro:'finAmount',fichas:'procName'}[view];
+  window.setTimeout(()=>$(target)?.focus({preventScroll:false}),120);
+ }));
+ document.addEventListener('keydown',event=>{if(event.key==='Escape')setOpen(false);});
+ document.addEventListener('click',event=>{if(panel.classList.contains('open')&&!panel.contains(event.target)&&!launcher.contains(event.target))setOpen(false);});
+})();
+
+// Inicializa a interface com a sessão já existente, se houver.
+syncSession().catch(error => {
+  console.error('Erro ao inicializar autenticação:', error);
+  msg('Não foi possível iniciar a autenticação. Atualize a página.', true);
+});
+
+$('logoutBtn').addEventListener('click', async () => {
+ const button=$('logoutBtn');button.disabled=true;button.textContent='Saindo...';
+ try{
+  const {error}=await db.auth.signOut();
+  if(error)throw error;
+  user=null;data={finance:[],procedures:[],clients:[],appointments:[]};currentProgressPhotos=[];
+  showLoginForm('Você saiu da sua conta.');
+ }catch(error){console.error('Erro ao sair:',error);toast('Não foi possível encerrar a sessão: '+error.message,'error',6000);}
+ finally{button.disabled=false;button.textContent='Sair';}
+});
+</script>
+ </body>
+</html>
